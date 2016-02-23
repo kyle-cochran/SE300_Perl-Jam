@@ -1,4 +1,4 @@
-
+import java.io.DataInputStream;
 
 /**
  * @author Kyle
@@ -8,7 +8,7 @@
 public class CameraDriver {
 
 	private Image lotImage;
-	private DataInputFeed lotVideoFeed;
+	private DataInputStream lotVideoFeed;
 
 	public CameraDriver(){
 

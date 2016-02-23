@@ -1,7 +1,7 @@
 import java.io.DataInputStream;
 
 /**
- * @author Kyle
+ * @author Kyle, Taylor, Matt and Austin
  * @version 1.0
  * @created 18-Feb-2016 11:36:16 AM
  */

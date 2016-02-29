@@ -1,3 +1,6 @@
+import java.util.Vector;
+import java.io.*;
+
 
 
 /**
@@ -7,7 +10,7 @@
  */
 public class ProcessingManager {
 
-	private List<Lot> currentStates;
+	private Vector<Lot> currentStates;
 	public int refreshFreq;
 	public UIManager m_UIManager;
 
@@ -18,15 +21,15 @@ public class ProcessingManager {
 	public void finalize() throws Throwable {
 
 	}
-	public List<boolean> getLotHistory(){
+	public boolean[] getLotHistory(){
 		return null;
 	}
 
-	public List<boolean> getLotHistory(){
-		return null;
+	public void setLotHistory(boolean[] array){
+		
 	}
 
-	public List<boolean> getLotState(){
+	public boolean[] getLotState(){
 		return null;
 	}
 

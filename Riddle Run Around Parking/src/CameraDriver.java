@@ -1,4 +1,6 @@
+import java.awt.Image;
 import java.io.DataInputStream;
+
 
 /**
  * @author Kyle, Taylor, Matt and Austin

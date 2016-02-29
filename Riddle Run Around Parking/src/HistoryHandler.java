@@ -1,3 +1,5 @@
+import java.io.*;
+
 
 
 /**
@@ -20,11 +22,11 @@ public class HistoryHandler {
 
 	}
 
-	public List<boolean> retrieveData(){
+	public boolean[] retrieveData(boolean[] array){
 		return null;
 	}
 
-	public List<List<boolean>> retrieveData(){
+	public boolean[][] retrieveData(boolean[][] array){
 		return null;
 	}
 

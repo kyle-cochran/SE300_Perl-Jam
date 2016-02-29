@@ -1,3 +1,5 @@
+import java.awt.Image;
+
 
 
 /**
@@ -8,7 +10,7 @@
 public class ImageProcessor {
 
 	private Image lotImage;
-	private List<boolean> spotMatrix;
+	private boolean[] spotMatrix;
 
 	public ImageProcessor(){
 
@@ -17,7 +19,7 @@ public class ImageProcessor {
 	public void finalize() throws Throwable {
 
 	}
-	private List<boolean> generateSpotMatrix(){
+	private boolean[] generateSpotMatrix(){
 		return null;
 	}
 

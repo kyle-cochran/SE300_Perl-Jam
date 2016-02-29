@@ -1,3 +1,5 @@
+import javax.swing.JPanel;
+
 
 
 /**
@@ -8,7 +10,7 @@
 public class LotPane {
 
 	public Lot currentLot;
-	public List<boolean> currentState;
+	public boolean[] currentState;
 	public JPanel lotDisplay;
 
 	public LotPane(){

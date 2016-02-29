@@ -1,3 +1,5 @@
+import javax.swing.JPanel;
+
 
 
 /**
@@ -9,7 +11,7 @@ public class HistoryPane {
 
 	public JPanel graph1;
 	public JPanel graph2;
-	public List<List<boolean>> history;
+	public boolean[][] history;
 
 	public HistoryPane(){
 

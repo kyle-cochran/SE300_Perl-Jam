@@ -14,5 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv_2_4_10"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv_javacvthing"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/videoinput"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaCV"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

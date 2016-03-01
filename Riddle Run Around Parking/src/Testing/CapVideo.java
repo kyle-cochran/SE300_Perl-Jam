@@ -12,11 +12,11 @@ public class CapVideo
 {
 	 public static void main(String[] args) throws Exception 
 	 {
-	     FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking lot 3.mp4");
+	     FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking lot 1.mp4");
 		 CanvasFrame canvasFrame = new CanvasFrame("Test");
 		 frameGrabber.start();
 		 
-		 while(true)
+		 //while(true)
 		 canvasFrame.showImage(frameGrabber.grab());
 	}
 }

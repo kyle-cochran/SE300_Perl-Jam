@@ -10,15 +10,15 @@ import org.bytedeco.javacv.FrameGrabber;
  
 public class CapVideo 
 {
-	 public static void main(String[] args) throws Exception 
-	 {
-	     FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking lot 1.mp4");
-		 CanvasFrame canvasFrame = new CanvasFrame("Test");
-		 frameGrabber.start();
-		 
-		 //while(true)
-		 canvasFrame.showImage(frameGrabber.grab());
-	}
+//	 public static void main(String[] args) throws Exception 
+//	 {
+//	     FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking lot 1.mp4");
+//		 CanvasFrame canvasFrame = new CanvasFrame("Test");
+//		 frameGrabber.start();
+//		 
+//		 //while(true)
+//		 canvasFrame.showImage(frameGrabber.grab());
+//	}
 }
 
 

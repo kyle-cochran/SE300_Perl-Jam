@@ -28,7 +28,7 @@ public class ImageProcessor {
 	}
 
 	public int[][] getSpotMatrix(){
-		int[][] lines = new int[][4];
+		int[][] lines = new int[31][4];
 		
 		lines[0][0] = 209;
 		lines[0][1] = 165;

@@ -12,12 +12,9 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
  */
 public class CameraDriver {
 
-		private Frame lotImage;
+	private Frame lotFrame;
 	//	private DataInputStream lotVideoFeed;
-
 	private FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking lot 3.mp4");
-//	private CanvasFrame canvasFrame = new CanvasFrame("Test");
-	OpenCVFrameConverter.ToIplImage converterToIplImage = new OpenCVFrameConverter.ToIplImage();
 
 	public CameraDriver(){
 		try {
@@ -29,11 +26,11 @@ public class CameraDriver {
 
 	public Frame getImage() {
 		try {
-			lotImage = frameGrabber.grab();
+			lotFrame = frameGrabber.grab();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return lotImage;
+		return lotFrame;
 	}
 
 	//	private boolean acquireFeed(){

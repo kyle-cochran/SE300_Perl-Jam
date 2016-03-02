@@ -1,3 +1,4 @@
+import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -11,12 +12,13 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
  */
 public class ImageProcessor  {
 
-	private Frame lotImageFrame;
+	private Frame lotFrame;
+	private IplImage lotIplImage;
 	//private boolean[] spotMatrix;
 	
 	private CameraDriver camDrive = new CameraDriver();
 	CanvasFrame canvasFrame = new CanvasFrame("");
-	OpenCVFrameConverter.ToIplImage converterToIplImage = new OpenCVFrameConverter.ToIplImage();
+	OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 	
 
 	public ImageProcessor(){
@@ -24,8 +26,11 @@ public class ImageProcessor  {
 	}
 	
 	public void Process(){
-		lotImageFrame = camDrive.getImage();
-		canvasFrame.showImage(lotImageFrame);
+		lotFrame = camDrive.getImage();
+		
+		canvasFrame.showImage(lotFrame);
+		
+		lotIplImage = converter.convert(lotFrame);
 		
 		
 		//TODO put your code here

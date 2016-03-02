@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javacv2"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/artoolkitplus"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ffmpeg"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/flandmark"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/flycapture"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javacpp"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javacv"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/libfreenect"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv_2_4_10"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv_javacvthing"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/videoinput"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaCV"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

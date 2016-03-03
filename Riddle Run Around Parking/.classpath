@@ -18,7 +18,7 @@
 	<classpathentry kind="lib" path="javafx-src/javafx/animation/Animation.java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx"/>
 	<classpathentry kind="lib" path="C:/Users/Taylor/Desktop/javafx lib/jfxrt.jar"/>
-	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaCV"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/openCV2.4.11"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
-

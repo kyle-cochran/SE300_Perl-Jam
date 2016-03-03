@@ -15,7 +15,7 @@ import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.OpenCVFrameConverter;
 
 /**
- * @author Austin, Kyle, Matt, Taylor
+ * @author Austin, Kyle and Matt
  * @version 1.0
  * @created 18-Feb-2016 11:36:20 AM
  */
@@ -28,9 +28,15 @@ public class ImageProcessor  {
 	private IplImage diff;
 	//private boolean[] spotMatrix;
 	
-	private CameraDriver camDrive = new CameraDriver();
-	CanvasFrame canvasFrame = new CanvasFrame("Test");
+
+	private int[][] binaryArray = new int[1440][1080];//these values may need to be change later if we crop the pic
+	
+	private CameraDriver cameraDriver = new CameraDriver();
+	CanvasFrame canvasFrame = new CanvasFrame("");
+
 	OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
+	
+	private MatToBinary matToBinary = new MatToBinary();
 	
 
 	public ImageProcessor(){
@@ -39,9 +45,12 @@ public class ImageProcessor  {
 	}
 	
 	public void Process(){
+
+		lotFrame = cameraDriver.getImage();
+
 		
 		//obtain frame and convert to Ipl image
-		lotFrame = camDrive.getImage();
+
 		lotIplImage = converter.convert(lotFrame);
 		
 		cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
@@ -49,6 +58,7 @@ public class ImageProcessor  {
 		lotIplImage_gray = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
 		diff = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
 		
+
 	    cvCvtColor(lotIplImage, lotIplImage_gray, CV_RGB2GRAY);
 		canvasFrame.showImage(converter.convert(refPic));
         cvAbsDiff(lotIplImage_gray, refPic, diff);
@@ -56,7 +66,13 @@ public class ImageProcessor  {
         cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
         
         
-	
+
+		//this is the binary array of ones and zeros from the diff.jpg 
+		binaryArray = matToBinary.toBinaryArray();
+		//TODO will need to use this one when the rest of the code is here.
+		//TODO when you use this one go change MatToBinary so it does not read from a file.
+//		binaryArray = matToBinary.toBinaryArray(mat);
+
 	}
 
 //	private boolean[] generateSpotMatrix(){

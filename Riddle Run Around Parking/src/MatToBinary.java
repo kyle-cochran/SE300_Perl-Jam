@@ -1,5 +1,11 @@
-import org.opencv.core.Mat;
+
 import org.opencv.highgui.Highgui;
+
+import java.nio.IntBuffer;
+
+import org.bytedeco.javacpp.opencv_core.Mat;
+
+//import org.opencv.core.Mat;
 
 /**
  * @author Austin
@@ -12,20 +18,22 @@ import org.opencv.highgui.Highgui;
 
 public class MatToBinary {
 	
-//	public int[][] toBinaryArray(Mat mat){ //TODO use this when your ready to pass it a mat
-	public int[][] toBinaryArray(){
+	public int[][] toBinaryArray(Mat mat){ 
+	
 		
 		System.loadLibrary("opencv_java2411");//has to be first
-		Mat mat = Highgui.imread("diff.JPG");//TODO get rid of this when your ready to pass it a mat
 		
 		//1440X1080
-		int width = (int)mat.size().width;
-		int height = (int)mat.size().height;
+		int width = (int)mat.size().width();
+		int height = (int)mat.size().height();
 		int[][] binaryArray = new int[width][height];
+		
+		
 		
 		for(int x = 0; x <= width-1; x++){
 			for(int y = 0; y <= height-1; y++){
 				if (mat.get(y, x)[0] > 100){
+				
 					//white pixels
 					binaryArray[x][y] = 1;
 				}

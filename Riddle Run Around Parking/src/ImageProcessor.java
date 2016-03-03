@@ -10,6 +10,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -26,6 +27,7 @@ public class ImageProcessor  {
 	private IplImage lotIplImage_gray;
 	private IplImage refPic;
 	private IplImage diff;
+	private Mat matDiff;
 	//private boolean[] spotMatrix;
 	
 
@@ -34,7 +36,8 @@ public class ImageProcessor  {
 	private CameraDriver cameraDriver = new CameraDriver();
 	CanvasFrame canvasFrame = new CanvasFrame("");
 
-	OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
+	OpenCVFrameConverter.ToIplImage iplConverter = new OpenCVFrameConverter.ToIplImage();
+	OpenCVFrameConverter.ToMat matConverter = new OpenCVFrameConverter.ToMat();
 	
 	private MatToBinary matToBinary = new MatToBinary();
 	
@@ -44,6 +47,7 @@ public class ImageProcessor  {
 		cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
 	}
 	
+	
 	public void Process(){
 
 		lotFrame = cameraDriver.getImage();
@@ -51,7 +55,7 @@ public class ImageProcessor  {
 		
 		//obtain frame and convert to Ipl image
 
-		lotIplImage = converter.convert(lotFrame);
+		lotIplImage = iplConverter.convert(lotFrame);
 		
 		cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
 		
@@ -60,18 +64,15 @@ public class ImageProcessor  {
 		
 
 	    cvCvtColor(lotIplImage, lotIplImage_gray, CV_RGB2GRAY);
-		canvasFrame.showImage(converter.convert(refPic));
+		canvasFrame.showImage(iplConverter.convert(refPic));
         cvAbsDiff(lotIplImage_gray, refPic, diff);
 
         cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
         
-        
+        matDiff = matConverter.convert(iplConverter.convert(diff));
 
 		//this is the binary array of ones and zeros from the diff.jpg 
-		binaryArray = matToBinary.toBinaryArray();
-		//TODO will need to use this one when the rest of the code is here.
-		//TODO when you use this one go change MatToBinary so it does not read from a file.
-//		binaryArray = matToBinary.toBinaryArray(mat);
+		binaryArray = matToBinary.toBinaryArray(matDiff);
 
 	}
 

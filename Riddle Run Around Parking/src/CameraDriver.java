@@ -14,7 +14,7 @@ public class CameraDriver {
 
 	private Frame lotFrame;
 	//	private DataInputStream lotVideoFeed;
-	private FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking lot 3.mp4");
+	private FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking_lot_1.mp4");
 
 	public CameraDriver(){
 		try {

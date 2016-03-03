@@ -1,12 +1,21 @@
+import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
+import static org.bytedeco.javacpp.opencv_core.cvAbsDiff;
+import static org.bytedeco.javacpp.opencv_imgcodecs.CV_LOAD_IMAGE_GRAYSCALE;
+import static org.bytedeco.javacpp.opencv_imgcodecs.cvLoadImage;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_GAUSSIAN;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_RGB2GRAY;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_BINARY;
+import static org.bytedeco.javacpp.opencv_imgproc.cvSmooth;
+import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
+import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
+
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.OpenCVFrameConverter;
 
-
-
 /**
- * @author Kyle
+ * @author Austin, Kyle, Matt, Taylor
  * @version 1.0
  * @created 18-Feb-2016 11:36:20 AM
  */
@@ -14,26 +23,40 @@ public class ImageProcessor  {
 
 	private Frame lotFrame;
 	private IplImage lotIplImage;
+	private IplImage lotIplImage_gray;
+	private IplImage refPic;
+	private IplImage diff;
 	//private boolean[] spotMatrix;
 	
 	private CameraDriver camDrive = new CameraDriver();
-	CanvasFrame canvasFrame = new CanvasFrame("");
+	CanvasFrame canvasFrame = new CanvasFrame("Test");
 	OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 	
 
 	public ImageProcessor(){
-		
+		refPic = cvLoadImage("media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+		cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
 	}
 	
 	public void Process(){
+		
+		//obtain frame and convert to Ipl image
 		lotFrame = camDrive.getImage();
-		
-		canvasFrame.showImage(lotFrame);
-		
 		lotIplImage = converter.convert(lotFrame);
 		
+		cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
 		
-		//TODO put your code here
+		lotIplImage_gray = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
+		diff = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
+		
+	    cvCvtColor(lotIplImage, lotIplImage_gray, CV_RGB2GRAY);
+		canvasFrame.showImage(converter.convert(refPic));
+        cvAbsDiff(lotIplImage_gray, refPic, diff);
+
+        cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
+        
+        
+	
 	}
 
 //	private boolean[] generateSpotMatrix(){

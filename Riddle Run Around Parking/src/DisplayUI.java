@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 public class DisplayUI extends Region {
 	BorderPane border = new BorderPane ();
 	HBox hbox = addHBox();
+	VBox vbox= addVbox();
 	
 	private HBox addHBox() {
 		HBox hbox = new HBox();

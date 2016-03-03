@@ -7,6 +7,8 @@
  */
 public class RiddleRunAroundParking {
 
+	private static ImageProcessor imageProc = new ImageProcessor();
+	
 	public RiddleRunAroundParking(){
 
 	}
@@ -18,7 +20,8 @@ public class RiddleRunAroundParking {
 	 * 
 	 * @param args
 	 */
-	public static void main(String args){
-
+	public static void main(String[] args){
+		imageProc.Process();
+		
 	}
 }//end RiddleRunAroundParking

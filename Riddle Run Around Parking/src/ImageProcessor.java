@@ -1,4 +1,7 @@
-import java.awt.Image;
+import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 
 
@@ -7,25 +10,35 @@ import java.awt.Image;
  * @version 1.0
  * @created 18-Feb-2016 11:36:20 AM
  */
-public class ImageProcessor {
+public class ImageProcessor  {
 
-	private Image lotImage;
-	private boolean[] spotMatrix;
+	private Frame lotFrame;
+	private IplImage lotIplImage;
+	//private boolean[] spotMatrix;
+	
+	private CameraDriver camDrive = new CameraDriver();
+	CanvasFrame canvasFrame = new CanvasFrame("");
+	OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
+	
 
 	public ImageProcessor(){
-
+		
+	}
+	
+	public void Process(){
+		lotFrame = camDrive.getImage();
+		
+		canvasFrame.showImage(lotFrame);
+		
+		lotIplImage = converter.convert(lotFrame);
+		
+		
+		//TODO put your code here
 	}
 
-	public void finalize() throws Throwable {
-
-	}
-	private boolean[] generateSpotMatrix(){
-		return null;
-	}
-
-	public int getImage(){
-		return 0;
-	}
+//	private boolean[] generateSpotMatrix(){
+//		return null;
+//	}
 
 	public int[][] getSpotMatrix(){
 		int[][] lines = new int[31][4];

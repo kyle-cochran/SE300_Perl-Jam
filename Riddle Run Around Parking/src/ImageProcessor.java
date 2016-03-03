@@ -6,8 +6,8 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
 
 
 /**
- * @author Kyle
- * @version 1.0
+ * @author Kyle and Austin
+ * @version 1.1
  * @created 18-Feb-2016 11:36:20 AM
  */
 public class ImageProcessor  {
@@ -16,9 +16,13 @@ public class ImageProcessor  {
 	private IplImage lotIplImage;
 	//private boolean[] spotMatrix;
 	
-	private CameraDriver camDrive = new CameraDriver();
+	private int[][] binaryArray = new int[1440][1080];//these values may need to be change later if we crop the pic
+	
+	private CameraDriver cameraDriver = new CameraDriver();
 	CanvasFrame canvasFrame = new CanvasFrame("");
 	OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
+	
+	private MatToBinary matToBinary = new MatToBinary();
 	
 
 	public ImageProcessor(){
@@ -26,14 +30,23 @@ public class ImageProcessor  {
 	}
 	
 	public void Process(){
-		lotFrame = camDrive.getImage();
+		lotFrame = cameraDriver.getImage();
 		
 		canvasFrame.showImage(lotFrame);
 		
 		lotIplImage = converter.convert(lotFrame);
 		
 		
-		//TODO put your code here
+		//TODO Kyle put your code here
+		
+		
+		
+		//this is the binary array of ones and zeros from the diff.jpg 
+		binaryArray = matToBinary.toBinaryArray();
+		//TODO will need to use this one when the rest of the code is here.
+		//TODO when you use this one go change MatToBinary so it does not read from a file.
+//		binaryArray = matToBinary.toBinaryArray(mat);
+
 	}
 
 //	private boolean[] generateSpotMatrix(){

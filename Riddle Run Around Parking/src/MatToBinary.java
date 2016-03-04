@@ -1,11 +1,7 @@
-
-import org.opencv.highgui.Highgui;
-
-import java.nio.IntBuffer;
-
 import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.indexer.IntIndexer;
 
-//import org.opencv.core.Mat;
+//import opencv.core.Mat;
 
 /**
  * @author Austin
@@ -20,8 +16,10 @@ public class MatToBinary {
 	
 	public int[][] toBinaryArray(Mat mat){ 
 	
-		
 		System.loadLibrary("opencv_java2411");//has to be first
+		
+		//added indexer
+		IntIndexer index = mat.createIndexer();
 		
 		//1440X1080
 		int width = (int)mat.size().width();
@@ -29,10 +27,10 @@ public class MatToBinary {
 		int[][] binaryArray = new int[width][height];
 		
 		
-		
 		for(int x = 0; x <= width-1; x++){
 			for(int y = 0; y <= height-1; y++){
-				if (mat.get(y, x)[0] > 100){
+				//old way:	if (mat.get(y, x)[0] > 100){
+				if (index.get(y, x) > 100){
 				
 					//white pixels
 					binaryArray[x][y] = 1;

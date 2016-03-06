@@ -1,8 +1,9 @@
+import java.net.URL;
+
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameGrabber.Exception;
-import org.bytedeco.javacv.OpenCVFrameConverter;
 
 
 /**
@@ -14,9 +15,22 @@ public class CameraDriver {
 
 	private Frame lotFrame;
 	//	private DataInputStream lotVideoFeed;
-	private FrameGrabber frameGrabber = new FFmpegFrameGrabber("parking_lot_1.mp4");
-
+	private FrameGrabber frameGrabber;
+	
+	
 	public CameraDriver(){
+		
+		
+        URL location = CameraDriver.class.getProtectionDomain().getCodeSource().getLocation();
+        System.out.println(location.getFile());
+	   
+	    //grab a frame from the video file
+        String videoPath = location.getFile()+"../src/SE_300_Files/parking_lot_1.mp4";
+		
+	
+		
+		frameGrabber = new FFmpegFrameGrabber(videoPath);
+		
 		try {
 			frameGrabber.start();
 		} catch (Exception e) {

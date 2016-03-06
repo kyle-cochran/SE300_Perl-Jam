@@ -44,6 +44,9 @@ public class ImageProcessor  {
 
 	public ImageProcessor(){
 		refPic = cvLoadImage("media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+		if(refPic == null){
+			System.out.println("no picture loaded");
+		}
 		cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
 	}
 

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.net.URL;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
@@ -23,13 +24,12 @@ public class CameraDriver {
 		
         URL location = CameraDriver.class.getProtectionDomain().getCodeSource().getLocation();
         System.out.println(location.getFile());
-	   
+	    
+        File videoFile = new File(location.getFile()+"../src/media/parking_lot_1.mp4");
+        
 	    //grab a frame from the video file
-        String videoPath = location.getFile()+"../src/SE_300_Files/parking_lot_1.mp4";
 		
-	
-		
-		frameGrabber = new FFmpegFrameGrabber(videoPath);
+		frameGrabber = new FFmpegFrameGrabber(videoFile);
 		
 		try {
 			frameGrabber.start();

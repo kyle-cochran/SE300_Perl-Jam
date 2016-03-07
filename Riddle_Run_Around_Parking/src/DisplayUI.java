@@ -4,12 +4,14 @@ import java.lang.Object;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -23,13 +25,6 @@ public class DisplayUI extends Pane {
 	
 	HBox hbox= addHBox();
 	VBox vbox= addVbox();
-	
-	//help here please if you know what do, I am not sure why
-	//it wont add :( 
-	//borderpane.setTop(hbox); 
-	//borderpane.setLeft(vbox);
-	//borderpane.setCenter(r);
-	
 	
 	public HBox addHBox() {
 		HBox hbox = new HBox();
@@ -73,9 +68,19 @@ public class DisplayUI extends Pane {
 	} 
 		
 	
-	
+	public void start(Stage primaryStage) throws Exception{
+		Scene scene= new Scene(borderpane, 600,600);
+		borderpane.setTop(hbox); 
+		borderpane.setLeft(vbox);
+		borderpane.setCenter(r);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Riddle Run Around Parking");
+		primaryStage.show();
+		
+	}
+	}
 	
 	
 	
 
-}
+

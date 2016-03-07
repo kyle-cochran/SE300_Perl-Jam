@@ -84,9 +84,13 @@ public class ImageProcessor  {
 	}
 
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
-		int[] isEmpty = new int[1];
-		int[] count = new int[1];
+		int[] isEmpty = new int[28];
+		int[] count = new int[28];
 
+		for (int i = 0; i <= count.length-1; i++){
+			count[i]=0;
+		}
+		
 		//For the first block of cars
 		for (int i = 0; i <= 3; i++) {
 			//Go from the lower x bound to the higher x bound

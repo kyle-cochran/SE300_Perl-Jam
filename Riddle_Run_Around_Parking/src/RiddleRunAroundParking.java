@@ -22,9 +22,15 @@ public class RiddleRunAroundParking extends Application{
 	 * @param args
 	 */
 	public static void main(String[] args){
-		imageProc.Process();
-		launch(args);
-		
+		//imageProc.Process();
+		//launch(args);
+		DisplayUI ui = new DisplayUI();
+		try {
+			ui.start(new Stage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

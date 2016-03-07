@@ -26,7 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.*;
  
 public class DisplayUI extends Pane {
-	//create new borderpane 
+	//create new border pane 
 	BorderPane borderpane = new BorderPane ();
 	/*call methods to create a rectangle, button and vbox
 	 *their return value is then set to a corresponding variable 
@@ -93,7 +93,7 @@ public class DisplayUI extends Pane {
 		
 		//creates a new pane that will display the parking lot with highlighted spots
 		Pane pane = new Pane();
-		pane.setBackground(new Background(new BackgroundImage(new Image("image directory string"), 
+		pane.setBackground(new Background(new BackgroundImage(new Image("file:media\frame1.jpg"), 
 				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, 
 				new BackgroundSize(100,100,true,true,true,true))));
 		pane.getChildren().add(r);

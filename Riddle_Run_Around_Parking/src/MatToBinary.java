@@ -1,5 +1,5 @@
+import org.bytedeco.javacpp.indexer.UByteBufferIndexer;
 import org.bytedeco.javacpp.opencv_core.Mat;
-import org.bytedeco.javacpp.indexer.IntIndexer;
 
 //import opencv.core.Mat;
 
@@ -16,10 +16,11 @@ public class MatToBinary {
 	
 	public int[][] toBinaryArray(Mat mat){ 
 	
-		System.loadLibrary("opencv_java2411");//has to be first
+		//System.loadLibrary("opencv_java2411");//has to be first
 		
 		//added indexer
-		IntIndexer index = mat.createIndexer();
+//		IntIndexer index = mat.createIndexer();
+		UByteBufferIndexer index = mat.createIndexer();
 		
 		//1440X1080
 		int width = (int)mat.size().width();

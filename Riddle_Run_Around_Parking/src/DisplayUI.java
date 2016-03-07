@@ -4,12 +4,14 @@ import java.lang.Object;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -24,17 +26,10 @@ public class DisplayUI extends Pane {
 	HBox hbox= addHBox();
 	VBox vbox= addVbox();
 	
-	//help here please if you know what do, I am not sure why
-	//it wont add :( 
-	//borderpane.setTop(hbox); 
-	//borderpane.setLeft(vbox);
-	//borderpane.setCenter(r);
-	
-	
 	public HBox addHBox() {
 		HBox hbox = new HBox();
-		hbox.setPadding(new Insets(15, 12, 15, 12));
-		hbox.setSpacing(10);
+		//hbox.setPadding(new Insets(15, 12, 15, 12));
+		//hbox.setSpacing(10);
 		hbox.setStyle("-fx-background-color: #336699;");
 		
 		Button buttonPHistory=new Button("Parking History");
@@ -45,8 +40,8 @@ public class DisplayUI extends Pane {
 	
 	public VBox addVbox() {
 		VBox vbox=new VBox();
-		vbox.setPadding(new Insets(10));
-		vbox.setSpacing(8);
+		//vbox.setPadding(new Insets(10));
+		//vbox.setSpacing(8);
 		
 		Text title= new Text("Available Parking Spots");
 		title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -73,9 +68,20 @@ public class DisplayUI extends Pane {
 	} 
 		
 	
-	
+	public void start(Stage primaryStage) throws Exception{
+		Scene scene= new Scene(borderpane);
+		borderpane.setTop(hbox); 
+		borderpane.setLeft(vbox);
+		borderpane.setCenter(r);
+		primaryStage.setScene(scene);
+		primaryStage.setMaximized(true);
+		primaryStage.setTitle("Riddle Run Around Parking");
+		primaryStage.show();
+		
+	}
+	}
 	
 	
 	
 
-}
+

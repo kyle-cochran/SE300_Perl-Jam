@@ -69,11 +69,12 @@ public class DisplayUI extends Pane {
 		
 	
 	public void start(Stage primaryStage) throws Exception{
-		Scene scene= new Scene(borderpane, 600,600);
+		Scene scene= new Scene(borderpane);
 		borderpane.setTop(hbox); 
 		borderpane.setLeft(vbox);
 		borderpane.setCenter(r);
 		primaryStage.setScene(scene);
+		primaryStage.setMaximized(true);
 		primaryStage.setTitle("Riddle Run Around Parking");
 		primaryStage.show();
 		

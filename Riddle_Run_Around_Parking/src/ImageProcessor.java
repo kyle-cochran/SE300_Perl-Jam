@@ -7,6 +7,9 @@ import static org.bytedeco.javacpp.opencv_imgproc.CV_RGB2GRAY;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_BINARY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvSmooth;
 import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
+
+import java.io.File;
+
 import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
@@ -43,10 +46,9 @@ public class ImageProcessor  {
 
 
 	public ImageProcessor(){
-		refPic = cvLoadImage("media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-		if(refPic == null){
-			System.out.println("no picture loaded");
-		}
+
+		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+
 		cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
 	}
 

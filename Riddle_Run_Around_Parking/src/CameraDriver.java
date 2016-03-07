@@ -25,7 +25,7 @@ public class CameraDriver {
         URL location = CameraDriver.class.getProtectionDomain().getCodeSource().getLocation();
         System.out.println(location.getFile());
 	    
-        File videoFile = new File(location.getFile()+"../src/media/parking_lot_1.mp4");
+        File videoFile = new File("src/media/parking_lot_1.mp4");
         
 	    //grab a frame from the video file
 		

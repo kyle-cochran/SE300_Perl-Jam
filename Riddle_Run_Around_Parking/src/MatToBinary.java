@@ -4,33 +4,36 @@ import org.bytedeco.javacpp.opencv_core.Mat;
 //import opencv.core.Mat;
 
 /**
- * @author Austin
- * @version 1.0
- * @created 3-March-2016 1:00:00 PM
+ * Converter: org.bytedeco.javacpp.opencv_core.Mat -> int[][] binaryArray
  * 
- * The method in this class will take a black and white mat image and create an integer
- * array of ones and zeros. 1 being white and 0 being black.
+ * @author Austin Musser
+ * @version 1.0
+ * @created 3-March-2016
  */
 
 public class MatToBinary {
 	
+	/**
+	 * Take a black and white mat image and create an integer
+	 * array of ones and zeros. 1 being white and 0 being black.
+	 * 
+	 * @param mat
+	 * @return binaryArray an array of integers that represents a two-tone greyscale image.
+	 */
 	public int[][] toBinaryArray(Mat mat){ 
 	
-		//System.loadLibrary("opencv_java2411");//has to be first
-		
-		//added indexer
-//		IntIndexer index = mat.createIndexer();
+		//indexer to access Mat image pixels
 		UByteBufferIndexer index = mat.createIndexer();
 		
-		//1440X1080
+		//match array dimensions to input image: 1440X1080
 		int width = (int)mat.size().width();
 		int height = (int)mat.size().height();
 		int[][] binaryArray = new int[width][height];
 		
-		
+		//cycle through pixels and copy value to matrix
 		for(int x = 0; x <= width-1; x++){
 			for(int y = 0; y <= height-1; y++){
-				//old way:	if (mat.get(y, x)[0] > 100){
+
 				if (index.get(y, x) > 100){
 				
 					//white pixels
@@ -40,7 +43,6 @@ public class MatToBinary {
 					//black pixels
 					binaryArray[x][y] = 0;
 				}
-//				System.out.println(binaryArray[x][y]);
 			}
 		}
 		return binaryArray;

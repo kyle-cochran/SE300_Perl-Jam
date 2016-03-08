@@ -19,70 +19,83 @@ import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.OpenCVFrameConverter;
 
 /**
- * @author Austin, Kyle and Matt
+ * Class that manages all image processing and comparison. Handles access and manipulation of frames for comparison.
+ * 
+ * @author Austin Musser, Kyle Cochran, Matthew Caixeiro
  * @version 1.0
- * @created 18-Feb-2016 11:36:20 AM
+ * @created 18-Feb-2016
  */
 public class ImageProcessor  {
 
-	private Frame lotFrame;	
 	private IplImage lotIplImage;
 	private IplImage lotIplImage_gray;
 	private IplImage refPic;
 	private IplImage diff;
 	private Mat matDiff;
-	//private boolean[] spotMatrix;
+	private OpenCVFrameConverter.ToIplImage iplConverter;
+	private OpenCVFrameConverter.ToMat matConverter;
 
-
-	private int[][] binaryArray = new int[1440][1080];//these values may need to be change later if we crop the pic
-
+	private int[][] binaryArray = new int[1440][1080]; //these values may need to be change later if we crop the pic
 	private CameraDriver cameraDriver = new CameraDriver();
-	CanvasFrame canvasFrame = new CanvasFrame("");
-
-	OpenCVFrameConverter.ToIplImage iplConverter = new OpenCVFrameConverter.ToIplImage();
-	OpenCVFrameConverter.ToMat matConverter = new OpenCVFrameConverter.ToMat();
-
 	private MatToBinary matToBinary = new MatToBinary();
 
-
+	
+	/**
+	 * Constructor initializes image converter objects and loads reference image.
+	 */
 	public ImageProcessor(){
 
+		//initialize necessary image converters
+		iplConverter = new OpenCVFrameConverter.ToIplImage();
+		matConverter = new OpenCVFrameConverter.ToMat();
+		
+		//load reference image from file as greyscale
 		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-
-		cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
 	}
 
-
+	
+	/**
+	 * Takes in the current lot frame as an image and compares it to the lot reference image. 
+	 * Converts difference to a binary array that shows which pixels match.
+	 * 
+	 * @return binaryArray an array of integers that represent the state of each pixel (black/white) of the lot image difference with the reference image.
+	 */
 	public int[][] Process(){
 
-		lotFrame = cameraDriver.getImage();
+		lotIplImage = iplConverter.convert(cameraDriver.getImage());
 
-
-		//obtain frame and convert to Ipl image
-
-		lotIplImage = iplConverter.convert(lotFrame);
-
+		//add a blur to lot image and reference image to eliminate jitter effects
 		cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
-
+		cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
+		
+		//create image containers for the greyscale lot picture and the b/w difference picture
 		lotIplImage_gray = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
 		diff = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
 
-
+		//convert lot image to greyscale
 		cvCvtColor(lotIplImage, lotIplImage_gray, CV_RGB2GRAY);
-		canvasFrame.showImage(iplConverter.convert(refPic));
+		
+		//compare lot image with reference and store difference in diff
 		cvAbsDiff(lotIplImage_gray, refPic, diff);
 
+		//modify difference image to ignore some minor changes details
 		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
-
+		
+		//convert to mat object, then to custom binary array
 		matDiff = matConverter.convert(iplConverter.convert(diff));
-
-		//this is the binary array of ones and zeros from the diff.jpg 
 		binaryArray = matToBinary.toBinaryArray(matDiff);
 
 		return binaryArray;
 
 	}
-
+	/**
+	 * Cycles through binary array picture and looks for objects present in expected lot positions. If objects are present in a certain 
+	 * threshold percentage of the lot, the spot is marked full. This state is saved in an ordered array of spot states in the lot.
+	 * 
+	 * @param binaryArray
+	 * @param lines
+	 * @return isEmpty an array the represents the state of each parking spot in a given lot
+	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
 		int[] isEmpty = new int[28];
 		int[] count = new int[28];
@@ -177,11 +190,19 @@ public class ImageProcessor  {
 		return isEmpty;
 	}
 
+	/**
+	 * @ignore
+	 */
+		private boolean[] generateSpotMatrix(){
+			boolean[] temp = {false,false,false};
+			return temp;
+		}
 
-	//	private boolean[] generateSpotMatrix(){
-	//		return null;
-	//	}
-
+	/**
+	 * Identify where divisor lines are in current lot view.
+	 * 
+	 * @return lines an array of coordinate pairs that represents the pixel location of parking spots divisor lines
+	 */
 	public int[][] getSpotMatrix(){
 		int[][] lines = new int[31][4];
 

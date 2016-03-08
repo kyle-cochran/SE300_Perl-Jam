@@ -1,6 +1,3 @@
-
-import java.lang.Object;
-
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -25,21 +22,41 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle; 
 import javafx.scene.shape.*;
  
+
+/**
+ * @author Taylor Hester, Matthew Caixeiro
+ * @version 1.0
+ * @created 1-Mar-2016
+ */
+
+
 public class DisplayUI extends Pane {
 	//create new border pane 
-	BorderPane borderpane = new BorderPane ();
+	BorderPane borderpane;
+	
 	/*call methods to create a rectangle, button and vbox
 	 *their return value is then set to a corresponding variable 
 	 * so that the create objects can be displayed in a stage
 	 */
 	
-	Rectangle r = addRectangle();
-	Button PHbutton= buttonHistory();
-	VBox vbox= addVbox();
+	Rectangle r;
+	Button PHbutton;
+	VBox vbox;
+	
+	public DisplayUI(){
+		borderpane = new BorderPane ();
+		r = addRectangle();
+		PHbutton = buttonHistory();
+		vbox = addVbox();
+	}
 	
 	
-	/* creates a new method that creates a new button that when clicked
-	 * will display the parking history
+	
+	/** 
+	 * Creates a new method that creates a new button that when clicked
+	 * will display the parking history.
+	 * 
+	 * @return buttonPHistory A button to access the parking history
 	 */
 	public Button buttonHistory(){
 		Button buttonPHistory=new Button("Parking History");
@@ -48,8 +65,11 @@ public class DisplayUI extends Pane {
 		return buttonPHistory;
 	}
 	
-	/* creates a new method that creates a vbox that will
+	/** 
+	 * Creates a vbox that will
 	 * display the data regarding the parking availability 
+	 * 
+	 * @return vbox a vbox to show available spots
 	 */
 	public VBox addVbox() {
 		VBox vbox=new VBox();
@@ -64,26 +84,32 @@ public class DisplayUI extends Pane {
 		return vbox;
 		
 	}
-	/* creates a new method that creates a rectangle that will
+	/** 
+	 * Creates a rectangle that will
 	 * display the image of the parking lot
+	 * 
+	 * @return rectangle a rectangle of a set size to fit in the application window
 	 */
-
 	public Rectangle addRectangle() {
 		Rectangle rectangle = new Rectangle();
-		r.setX(50);
-		r.setY(50);
-		r.setWidth(200);
-		r.setHeight(100);
-		r.setArcWidth(20);
-		r.setArcHeight(20);
-		r.setFill(null);
+		rectangle.setX(50);
+		rectangle.setY(50);
+		rectangle.setWidth(200);
+		rectangle.setHeight(100);
+		rectangle.setArcWidth(20);
+		rectangle.setArcHeight(20);
+		rectangle.setFill(null);
 		// set background to parking lot
 		
 		return rectangle;
 		
 	} 
 		
-	
+	/**
+	 * Initializes the main window and sets all display sub-components
+	 * 
+	 * @param primaryStage
+	 */
 	public void start(Stage primaryStage) throws Exception{
 		//creates a new scene 
 		Scene scene= new Scene(borderpane);

@@ -2,9 +2,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * @author Kyle
+ * Main application class
+ * 
+ * @author Taylor Hester, Matthew Caixeiro
  * @version 1.0
- * @created 18-Feb-2016 11:36:22 AM
+ * @created 18-Feb-2016
  */
 public class RiddleRunAroundParking extends Application{
 	
@@ -18,6 +20,7 @@ public class RiddleRunAroundParking extends Application{
 
 	}
 	/**
+	 * Main method: initializes the image processor and UI display.
 	 * 
 	 * @param args
 	 */
@@ -33,7 +36,11 @@ public class RiddleRunAroundParking extends Application{
 		}
 	}
 	
-	@Override
+	/**
+	 * Starts the UI display.
+	 * 
+	 * @param primaryStage The stage containing the main application window
+	 */
 	public void start(Stage primaryStage) throws Exception{
 		DisplayUI ui = new DisplayUI();
 		ui.start(primaryStage);

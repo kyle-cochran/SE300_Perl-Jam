@@ -1,6 +1,4 @@
 import java.io.File;
-import java.net.URL;
-
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
@@ -8,29 +6,28 @@ import org.bytedeco.javacv.FrameGrabber.Exception;
 
 
 /**
- * @author Kyle, Taylor, Matt and Austin
+ * Class responsible for access the video feed/file
+ * 
+ * @author Austin Musser
  * @version 1.0
  * @created 18-Feb-2016 11:36:16 AM
  */
 public class CameraDriver {
 
 	private Frame lotFrame;
-	//	private DataInputStream lotVideoFeed;
+	private File videoFile;
 	private FrameGrabber frameGrabber;
 	
 	
 	public CameraDriver(){
 		
+		//Find the lot video file and saves as a File object
+		videoFile = new File("src/media/parking_lot_1.mp4");
 		
-        URL location = CameraDriver.class.getProtectionDomain().getCodeSource().getLocation();
-        System.out.println(location.getFile());
-	    
-        File videoFile = new File("src/media/parking_lot_1.mp4");
-        
-	    //grab a frame from the video file
-		
+		//create a grabber object to extract frames from the video file
 		frameGrabber = new FFmpegFrameGrabber(videoFile);
 		
+	    //grab a frame from the video file
 		try {
 			frameGrabber.start();
 		} catch (Exception e) {
@@ -38,6 +35,12 @@ public class CameraDriver {
 		}
 	}
 
+	/**
+	 * Attempts to grab the next frame of the input video feed/file.
+	 * 
+	 * @return lotFrame the next frame of the acquired video feed/file
+	 */
+	
 	public Frame getImage() {
 		try {
 			lotFrame = frameGrabber.grab();

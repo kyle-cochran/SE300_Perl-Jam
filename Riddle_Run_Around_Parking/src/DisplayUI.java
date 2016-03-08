@@ -24,9 +24,10 @@ import javafx.scene.shape.*;
  
 
 /**
+ * Class responsible for displaying main window and children objects
+ * 
  * @author Taylor Hester, Matthew Caixeiro
  * @version 1.0
- * @created 1-Mar-2016
  */
 
 
@@ -108,7 +109,7 @@ public class DisplayUI extends Pane {
 	/**
 	 * Initializes the main window and sets all display sub-components
 	 * 
-	 * @param primaryStage
+	 * @param primaryStage a stage to host children objects
 	 */
 	public void start(Stage primaryStage) throws Exception{
 		//creates a new scene 

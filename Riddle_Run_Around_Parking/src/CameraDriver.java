@@ -10,7 +10,6 @@ import org.bytedeco.javacv.FrameGrabber.Exception;
  * 
  * @author Austin Musser
  * @version 1.0
- * @created 18-Feb-2016 11:36:16 AM
  */
 public class CameraDriver {
 

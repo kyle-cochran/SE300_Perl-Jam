@@ -23,7 +23,6 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
  * 
  * @author Austin Musser, Kyle Cochran, Matthew Caixeiro
  * @version 1.0
- * @created 18-Feb-2016
  */
 public class ImageProcessor  {
 
@@ -92,8 +91,8 @@ public class ImageProcessor  {
 	 * Cycles through binary array picture and looks for objects present in expected lot positions. If objects are present in a certain 
 	 * threshold percentage of the lot, the spot is marked full. This state is saved in an ordered array of spot states in the lot.
 	 * 
-	 * @param binaryArray
-	 * @param lines
+	 * @param binaryArray an array of integers that represents the two-tone lot difference image
+	 * @param lines an array of ordered coordinate pairs that represent the parking spot divisor lines
 	 * @return isEmpty an array the represents the state of each parking spot in a given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {

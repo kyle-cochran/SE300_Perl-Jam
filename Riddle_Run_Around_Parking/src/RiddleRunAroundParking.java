@@ -6,7 +6,6 @@ import javafx.stage.Stage;
  * 
  * @author Taylor Hester, Matthew Caixeiro
  * @version 1.0
- * @created 18-Feb-2016
  */
 public class RiddleRunAroundParking extends Application{
 	
@@ -22,7 +21,7 @@ public class RiddleRunAroundParking extends Application{
 	/**
 	 * Main method: initializes the image processor and UI display.
 	 * 
-	 * @param args
+	 * @param args command line arguments
 	 */
 	public static void main(String[] args){
 		//imageProc.Process();

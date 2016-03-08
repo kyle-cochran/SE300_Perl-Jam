@@ -4,11 +4,10 @@ import org.bytedeco.javacpp.opencv_core.Mat;
 //import opencv.core.Mat;
 
 /**
- * Converter: org.bytedeco.javacpp.opencv_core.Mat -> int[][] binaryArray
+ * Converter: org.bytedeco.javacpp.opencv_core.Mat  -{@literal >}  int[][] binaryArray
  * 
  * @author Austin Musser
  * @version 1.0
- * @created 3-March-2016
  */
 
 public class MatToBinary {
@@ -17,7 +16,7 @@ public class MatToBinary {
 	 * Take a black and white mat image and create an integer
 	 * array of ones and zeros. 1 being white and 0 being black.
 	 * 
-	 * @param mat
+	 * @param mat a mat image type
 	 * @return binaryArray an array of integers that represents a two-tone greyscale image.
 	 */
 	public int[][] toBinaryArray(Mat mat){ 

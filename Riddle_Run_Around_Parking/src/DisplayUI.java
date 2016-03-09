@@ -61,7 +61,7 @@ public class DisplayUI extends Pane {
 	 */
 	public Button buttonHistory(){
 		Button buttonPHistory=new Button("Parking History");
-		buttonPHistory.setPrefSize(100,20);
+		buttonPHistory.setPrefSize(500,20);
 		
 		return buttonPHistory;
 	}
@@ -120,10 +120,12 @@ public class DisplayUI extends Pane {
 		
 		//creates a new pane that will display the parking lot with highlighted spots
 		Pane pane = new Pane();
-		pane.setBackground(new Background(new BackgroundImage(new Image("file:media\frame1.jpg"), 
+		pane.setBackground(new Background(new BackgroundImage(new Image("file:src/media/frame1.jpg"), //TODO: un-hardcode this path
 				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, 
 				new BackgroundSize(100,100,true,true,true,true))));
 		pane.getChildren().add(r);
+		//TODO: MMMMMAAAAAAATTTTTTTTTTTT
+		
 		
 		//sets pane to the center of border pane
 		borderpane.setCenter(pane);
@@ -136,8 +138,3 @@ public class DisplayUI extends Pane {
 		
 	}
 	}
-	
-	
-	
-
-

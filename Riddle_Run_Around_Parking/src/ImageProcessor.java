@@ -203,7 +203,7 @@ public class ImageProcessor  {
 	 * @return lines an array of coordinate pairs that represents the pixel location of parking spots divisor lines
 	 */
 	public int[][] getSpotMatrix(){
-		int[][] lines = new int[31][4];
+		int[][] lines = new int[32][4];
 
 		int offset = 179;
 		

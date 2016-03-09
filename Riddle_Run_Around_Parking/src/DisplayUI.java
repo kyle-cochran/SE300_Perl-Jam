@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -125,6 +126,18 @@ public class DisplayUI extends Pane {
 				new BackgroundSize(100,100,true,true,true,true))));
 		pane.getChildren().add(r);
 		//TODO: MMMMMAAAAAAATTTTTTTTTTTT
+		//Create image processor class so the lines can be created
+		ImageProcessor ip = new ImageProcessor();
+		int[][] lines = ip.getSpotMatrix();
+		
+		//Create the lines in a loop
+		for (int i = 0; i <= lines.length - 1; i++){
+			Line temp = new Line(lines[i][0],lines[i][1],lines[i][2],lines[i][3]);
+			temp.setStroke(Color.WHITE);
+			pane.getChildren().add(temp);
+		}
+		
+		
 		
 		
 		//sets pane to the center of border pane

@@ -59,7 +59,7 @@ public class DisplayUI extends Pane {
 		PHbutton = buttonHistory();
 		infoPanel = addInfoPanel();
 		spacing = addSpacing();
-		hbox = addHox();
+		hbox = addHBox();
 		title = addTitle();
 	}
 	
@@ -73,7 +73,7 @@ public class DisplayUI extends Pane {
 	 */
 	public Button buttonHistory(){
 		Button button = new Button("Parking History");
-		button.setPrefSize(500,20);
+		button.setPrefSize(200,20);
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -99,12 +99,15 @@ public class DisplayUI extends Pane {
 		Text title= new Text("Available Parking Spots");
 		title.maxWidth(200);
 		title.setWrappingWidth(200);
+		title.setTextAlignment(TextAlignment.CENTER);
 		title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		title.setStyle("-fx-font-size: 42");
 		
 		Label parkingInfo = new Label("Future Parking information text goes here");
 		parkingInfo.setWrapText(true);
 		parkingInfo.setMaxWidth(200);
 		parkingInfo.setTextAlignment(TextAlignment.CENTER);
+		
 		
 		vbox.getChildren().addAll(title, parkingInfo, PHbutton);
 		
@@ -119,22 +122,24 @@ public class DisplayUI extends Pane {
 		VBox vbox = new VBox();
 		
 		Rectangle placeholder = new Rectangle(200,1000);
+		placeholder.setFill(Color.WHITE);
 		vbox.getChildren().add(placeholder);
 		
 		return vbox;
 	}
 	
-	public HBox addHox() {
+	public HBox addHBox() {
 		HBox hbox = new HBox(100);
 		
-		Rectangle graph1 = new Rectangle (200,300);
-		Rectangle graph2 = new Rectangle (200,300);
-		Rectangle graph3 = new Rectangle (200,300);
+		Rectangle graph1 = new Rectangle(200,300);
+		Rectangle graph2 = new Rectangle(200,300);
+		Rectangle graph3 = new Rectangle(200,300);
 		
 		graph1.setFill(Color.BLACK);
 		graph2.setFill(Color.BLACK);
 		graph3.setFill(Color.BLACK);
 		
+		hbox.getChildren().addAll(graph1,graph2,graph3);
 		
 		return hbox;
 	}
@@ -165,8 +170,9 @@ public class DisplayUI extends Pane {
 		Label title = new Label("Riddle Run Around Parking");
 		title.setAlignment(Pos.CENTER);
 		title.setTextAlignment(TextAlignment.CENTER);
-		title.setStyle("-fx-font-family: 'Comic Sans MS'");
+		title.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 80");
 		title.setTextFill(Color.HOTPINK);
+	
 		hbox.getChildren().add(title);
 		
 		return hbox;
@@ -188,10 +194,11 @@ public class DisplayUI extends Pane {
 		
 		//creates a new pane that will display the parking lot with highlighted spots
 		Pane pane = new Pane();
-		pane.setBackground(new Background(new BackgroundImage(new Image("file:src/media/frame1.jpg"), //TODO: un-hardcode this path
-				BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, 
+		pane.setBackground(new Background(new BackgroundImage(new ImageProcessor().IplImageToWritableImage(new
+				CameraDriver().getImage()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, 
 				new BackgroundSize(100,100,true,true,true,true))));
 		pane.getChildren().add(r);
+		pane.setMaxSize(500, 500);
 		//TODO: MMMMMAAAAAAATTTTTTTTTTTT
 		//Create image processor class so the lines can be created
 		ImageProcessor ip = new ImageProcessor();

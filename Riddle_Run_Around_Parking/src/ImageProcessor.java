@@ -397,13 +397,10 @@ public class ImageProcessor  {
 	 * @return wr a WritableImage object (child of Java Image object) from the JavaFX library
 	 */
 	
-	public static WritableImage IplImageToWritableImage(IplImage src) {
+	public WritableImage IplImageToWritableImage(Frame framesrc) {
 
-		OpenCVFrameConverter.ToIplImage grabberConverter = new OpenCVFrameConverter.ToIplImage();
 		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
-		Frame frame = grabberConverter.convert(src);
-
-		BufferedImage bf = paintConverter.getBufferedImage(frame,1);
+		BufferedImage bf = paintConverter.getBufferedImage(framesrc,1);
 
 		WritableImage wr = null;
 

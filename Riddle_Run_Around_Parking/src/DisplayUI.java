@@ -1,8 +1,12 @@
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -10,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -20,7 +25,6 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle; 
 import javafx.scene.shape.*;
  
 
@@ -43,13 +47,20 @@ public class DisplayUI extends Pane {
 	
 	Rectangle r;
 	Button PHbutton;
-	VBox vbox;
+	VBox infoPanel;
+	VBox spacing;
+	HBox hbox;
+	HBox title;
+	
 	
 	public DisplayUI(){
 		borderpane = new BorderPane ();
 		r = addRectangle();
 		PHbutton = buttonHistory();
-		vbox = addVbox();
+		infoPanel = addInfoPanel();
+		spacing = addSpacing();
+		hbox = addHox();
+		title = addTitle();
 	}
 	
 	
@@ -61,10 +72,17 @@ public class DisplayUI extends Pane {
 	 * @return buttonPHistory A button to access the parking history
 	 */
 	public Button buttonHistory(){
-		Button buttonPHistory=new Button("Parking History");
-		buttonPHistory.setPrefSize(500,20);
+		Button button = new Button("Parking History");
+		button.setPrefSize(500,20);
 		
-		return buttonPHistory;
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e){
+				//TODO Make button DO
+			}
+		});
+		
+		return button;
 	}
 	
 	/** 
@@ -73,18 +91,52 @@ public class DisplayUI extends Pane {
 	 * 
 	 * @return vbox a vbox to show available spots
 	 */
-	public VBox addVbox() {
+	public VBox addInfoPanel() {
 		VBox vbox=new VBox();
 		//vbox.setPadding(new Insets(10));
 		//vbox.setSpacing(8);
 		
 		Text title= new Text("Available Parking Spots");
+		title.maxWidth(200);
+		title.setWrappingWidth(200);
 		title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		vbox.getChildren().add(title);
+		
+		Label parkingInfo = new Label("Future Parking information text goes here");
+		parkingInfo.setWrapText(true);
+		parkingInfo.setMaxWidth(200);
+		parkingInfo.setTextAlignment(TextAlignment.CENTER);
+		
+		vbox.getChildren().addAll(title, parkingInfo, PHbutton);
 		
 		//insert data regarding parking availability here
 		return vbox;
 		
+	}
+	
+	
+	
+	public VBox addSpacing() {
+		VBox vbox = new VBox();
+		
+		Rectangle placeholder = new Rectangle(200,1000);
+		vbox.getChildren().add(placeholder);
+		
+		return vbox;
+	}
+	
+	public HBox addHox() {
+		HBox hbox = new HBox(100);
+		
+		Rectangle graph1 = new Rectangle (200,300);
+		Rectangle graph2 = new Rectangle (200,300);
+		Rectangle graph3 = new Rectangle (200,300);
+		
+		graph1.setFill(Color.BLACK);
+		graph2.setFill(Color.BLACK);
+		graph3.setFill(Color.BLACK);
+		
+		
+		return hbox;
 	}
 	/** 
 	 * Creates a rectangle that will
@@ -106,6 +158,19 @@ public class DisplayUI extends Pane {
 		return rectangle;
 		
 	} 
+	
+	public HBox addTitle(){
+		HBox hbox = new HBox();
+		
+		Label title = new Label("Riddle Run Around Parking");
+		title.setAlignment(Pos.CENTER);
+		title.setTextAlignment(TextAlignment.CENTER);
+		title.setStyle("-fx-font-family: 'Comic Sans MS'");
+		title.setTextFill(Color.HOTPINK);
+		hbox.getChildren().add(title);
+		
+		return hbox;
+	}
 		
 	/**
 	 * Initializes the main window and sets all display sub-components
@@ -116,8 +181,10 @@ public class DisplayUI extends Pane {
 		//creates a new scene 
 		Scene scene= new Scene(borderpane);
 		//sets the created button and vbox to a location within the border pane
-		borderpane.setTop(PHbutton); 
-		borderpane.setLeft(vbox);
+		borderpane.setTop(title); 
+		borderpane.setLeft(infoPanel);
+		borderpane.setBottom(hbox);
+		borderpane.setRight(spacing);
 		
 		//creates a new pane that will display the parking lot with highlighted spots
 		Pane pane = new Pane();

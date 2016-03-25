@@ -25,7 +25,7 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
  * @version 1.0
  */
 public class ImageProcessor  {
-
+	private CanvasFrame canvas=new CanvasFrame("Test");
 	private IplImage lotIplImage;
 	private IplImage lotIplImage_gray;
 	private IplImage refPic;
@@ -76,9 +76,12 @@ public class ImageProcessor  {
 		
 		//compare lot image with reference and store difference in diff
 		cvAbsDiff(lotIplImage_gray, refPic, diff);
-
+		
+		
 		//modify difference image to ignore some minor changes details
 		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
+		
+		canvas.showImage(iplConverter.convert(diff));
 		
 		//convert to mat object, then to custom binary array
 		matDiff = matConverter.convert(iplConverter.convert(diff));

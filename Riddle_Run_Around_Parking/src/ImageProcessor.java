@@ -8,6 +8,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_BINARY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvSmooth;
 import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
@@ -16,7 +17,11 @@ import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
+
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 
 /**
  * Class that manages all image processing and comparison. Handles access and manipulation of frames for comparison.
@@ -379,5 +384,39 @@ public class ImageProcessor  {
 		//End
 
 		return lines;
+	}
+	
+	/**
+	 * Converts a JavaCV IPLImage object to a JavaFX WritableImage object to allow compatibility with JavaFX graphics.
+	 * Code is a hybrid from the following sources:
+	 * 
+	 * https://blog.idrsolutions.com/2012/11/convert-bufferedimage-to-javafx-image/
+ 	 * http://stackoverflow.com/questions/31873704/javacv-how-to-convert-iplimage-tobufferedimage 
+	 * 
+	 * @param src an IPLImage from the OpenCV/JavaCV library
+	 * @return wr a WritableImage object (child of Java Image object) from the JavaFX library
+	 */
+	
+	public static WritableImage IplImageToWritableImage(IplImage src) {
+
+		OpenCVFrameConverter.ToIplImage grabberConverter = new OpenCVFrameConverter.ToIplImage();
+		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
+		Frame frame = grabberConverter.convert(src);
+
+		BufferedImage bf = paintConverter.getBufferedImage(frame,1);
+
+		WritableImage wr = null;
+
+		if (bf != null) {
+			wr = new WritableImage(bf.getWidth(), bf.getHeight());
+			PixelWriter pw = wr.getPixelWriter();
+			for (int x = 0; x < bf.getWidth(); x++) {
+				for (int y = 0; y < bf.getHeight(); y++) {
+					pw.setArgb(x, y, bf.getRGB(x, y));
+				}
+			}
+		}
+
+		return wr;
 	}
 }//end ImageProcessor

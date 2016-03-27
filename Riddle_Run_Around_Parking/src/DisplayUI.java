@@ -329,4 +329,3 @@ public LineChart lastWeekToday(){
 		primaryStage.show();
 		
 	}
-	}

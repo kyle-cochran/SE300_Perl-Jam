@@ -1,34 +1,45 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.*;
  
 
 /**
@@ -51,13 +62,7 @@ public class DisplayUI extends Pane {
 	 *their return value is then set to a corresponding variable 
 	 * so that the create objects can be displayed in a stage
 	 */
-	
-	Rectangle r;
-	Button PHbutton;
-	VBox infoPanel;
-	VBox spacing;
-	HBox hbox;
-	HBox title;
+
 	
 	File parkingHistoryFile = new File("Parking Spot History.txt");
 	
@@ -77,13 +82,8 @@ public class DisplayUI extends Pane {
 		title = addTitle();
 	}
 	
-	
-/**
- * This method creates a line chart of the data from last week on the current day.
- * 
- * @return it returns the lineChart from the data of last week today
- */
-public LineChart lastWeekToday(){
+
+	public LineChart lastWeekToday(){
 	
 	//TODO call a method to get these values
 	int[] percentFull = {10,50,80,70,90,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100};// = new int[27];
@@ -108,6 +108,7 @@ public LineChart lastWeekToday(){
     
     return lineChart;
 }
+
 	
 	/** 
 	 * Creates a new method that creates a new button that when clicked
@@ -217,8 +218,22 @@ public LineChart lastWeekToday(){
 		parkingInfo.setMaxWidth(200);
 		parkingInfo.setTextAlignment(TextAlignment.CENTER);
 		
+		//date and calender not sure how to add to UI
+		//TODO: add these to UI if not already there 
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		//get current date time with Date()
+		Date date = new Date();
+		System.out.println(dateFormat.format(date));
+		
+		//get current date time with Calender
+		Calendar cal = Calendar.getInstance();
+		System.out.println(dateFormat.format(cal.getTime()));
+		
+		
 		
 		vbox.getChildren().addAll(title, parkingInfo, PHbutton);
+		//add all does not accept date and calender types
 		
 		//insert data regarding parking availability here
 		return vbox;
@@ -332,4 +347,5 @@ public LineChart lastWeekToday(){
 		primaryStage.setTitle("Riddle Run Around Parking");
 		primaryStage.show();
 		
+	}
 	}

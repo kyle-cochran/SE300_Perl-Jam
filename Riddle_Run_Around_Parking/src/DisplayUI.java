@@ -16,6 +16,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -51,6 +53,10 @@ import javafx.scene.shape.*;
 public class DisplayUI extends Pane {
 	//create new border pane 
 	BorderPane borderpane;
+	Rectangle r;
+	Button PHbutton;
+
+	
 	
 	/*call methods to create a rectangle, button and vbox
 	 *their return value is then set to a corresponding variable 

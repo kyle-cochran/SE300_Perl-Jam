@@ -1,9 +1,9 @@
 #This is a comment
 #hashtags and whitespace are ignored
-#// is a tag (used for days)
+#/ is a tag (used for days)
 #data is ordered by day, lines are time incremented by 30 mins, columns are ordered spots
 
-//monday
+/formatted_date
 01110110110110101000001001010
 01110110110110101000001001010
 01110110110110101000001001010
@@ -26,17 +26,4 @@
 01110110110110101000001001010
 01110110110110101000001001010
 
-//tuesday
-
-//wednesday
-
-//thursday
-
-
-//friday
-
-
-//saturday
-
-
-//sunday
+/tuesday

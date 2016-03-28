@@ -17,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -55,6 +57,11 @@ public class DisplayUI extends Pane {
 	BorderPane borderpane;
 	Rectangle r;
 	Button PHbutton;
+	VBox infoPanel;
+	HBox hbox;
+	HBox title;
+	VBox spacing;
+	File parkingHistoryFile = new File("Parking Spot History.txt");
 
 	
 	
@@ -64,7 +71,7 @@ public class DisplayUI extends Pane {
 	 */
 
 	
-	File parkingHistoryFile = new File("Parking Spot History.txt");
+	
 	
 	String[] timeOfDay =  {"7:00 AM","7:30 AM","8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM",
 			"12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM",

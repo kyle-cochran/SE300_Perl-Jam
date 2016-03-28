@@ -1,39 +1,34 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
  
 
 /**
@@ -62,6 +57,11 @@ public class DisplayUI extends Pane {
 	
 	File parkingHistoryFile = new File("Parking Spot History.txt");
 	
+	String[] timeOfDay =  {"7:00 AM","7:30 AM","8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM",
+			"12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM",
+			"5:00 PM","5:30 PM","6:00 PM","6:30 PM","7:00 PM","7:30 PM","8:00 PM","8:30 PM","9:00 PM"};
+
+	
 	
 	public DisplayUI(){
 		borderpane = new BorderPane ();
@@ -74,6 +74,36 @@ public class DisplayUI extends Pane {
 	}
 	
 	
+/**
+ * This method creates a line chart of the data from last week on the current day.
+ * 
+ * @return it returns the lineChart from the data of last week today
+ */
+public LineChart lastWeekToday(){
+	
+	//TODO call a method to get these values
+	int[] percentFull = {10,50,80,70,90,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100};// = new int[27];
+	
+	final CategoryAxis xAxis = new CategoryAxis();
+    final NumberAxis yAxis = new NumberAxis();
+    yAxis.setLabel("Percent Full");       
+    
+    final LineChart<String,Number> lineChart = new LineChart<String,Number>(xAxis,yAxis);
+            
+    lineChart.setTitle("Last Week Parking");
+                            
+    XYChart.Series series = new XYChart.Series();
+    
+    for(int i = 0; i <28; i++)
+    {
+    	series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
+    }
+
+    
+    lineChart.getData().add(series);
+    
+    return lineChart;
+}
 	
 	/** 
 	 * Creates a new method that creates a new button that when clicked

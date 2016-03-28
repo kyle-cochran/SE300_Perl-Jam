@@ -56,15 +56,14 @@ public class DisplayUI extends Pane {
 	 *their return value is then set to a corresponding variable 
 	 * so that the create objects can be displayed in a stage
 	 */
-	
-	Rectangle r;
-	Button PHbutton;
-	VBox infoPanel;
-	VBox spacing;
-	HBox hbox;
-	HBox title;
+
 	
 	File parkingHistoryFile = new File("Parking Spot History.txt");
+	
+	String[] timeOfDay =  {"7:00 AM","7:30 AM","8:00 AM","8:30 AM","9:00 AM","9:30 AM","10:00 AM","10:30 AM","11:00 AM",
+			"12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM",
+			"5:00 PM","5:30 PM","6:00 PM","6:30 PM","7:00 PM","7:30 PM","8:00 PM","8:30 PM","9:00 PM"};
+
 	
 	
 	public DisplayUI(){
@@ -77,7 +76,33 @@ public class DisplayUI extends Pane {
 		title = addTitle();
 	}
 	
+
+	public LineChart lastWeekToday(){
 	
+	//TODO call a method to get these values
+	int[] percentFull = {10,50,80,70,90,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100};// = new int[27];
+	
+	final CategoryAxis xAxis = new CategoryAxis();
+    final NumberAxis yAxis = new NumberAxis();
+    yAxis.setLabel("Percent Full");       
+    
+    final LineChart<String,Number> lineChart = new LineChart<String,Number>(xAxis,yAxis);
+            
+    lineChart.setTitle("Last Week Parking");
+                            
+    XYChart.Series series = new XYChart.Series();
+    
+    for(int i = 0; i <28; i++)
+    {
+    	series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
+    }
+
+    
+    lineChart.getData().add(series);
+    
+    return lineChart;
+}
+
 	
 	/** 
 	 * Creates a new method that creates a new button that when clicked

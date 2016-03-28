@@ -42,6 +42,10 @@ import javafx.stage.Stage;
 public class DisplayUI extends Pane {
 	//create new border pane 
 	BorderPane borderpane;
+	Rectangle r;
+	Button PHbutton;
+
+	
 	
 	/*call methods to create a rectangle, button and vbox
 	 *their return value is then set to a corresponding variable 

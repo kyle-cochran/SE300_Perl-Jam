@@ -64,7 +64,7 @@ public class ImageProcessor  {
 	 * 
 	 * @return binaryArray an array of integers that represent the state of each pixel (black/white) of the lot image difference with the reference image.
 	 */
-	public int[][] Process(){
+	public int[][] diffAsBinArray(){
 
 		lotIplImage = iplConverter.convert(cameraDriver.getImage());
 

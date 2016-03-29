@@ -24,7 +24,7 @@ public class RiddleRunAroundParking extends Application{
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args){
-		imageProc.Process();
+		imageProc.diffAsBinArray();
 		launch(args);
 	}
 	

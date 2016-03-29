@@ -10,17 +10,17 @@ import java.io.*;
  */
 public class ProcessingManager {
 
-	private Vector<Lot> currentStates;
+	private int[] currentSpots;
 	public int refreshFreq;
-	public UIManager m_UIManager;
+	ImageProcessor imP;
+
 
 	public ProcessingManager(){
-
+		refreshFreq = 1; //indicates that analysis should refresh one per second
+		
 	}
 
-	public void finalize() throws Throwable {
 
-	}
 	public boolean[] getLotHistory(){
 		return null;
 	}
@@ -38,6 +38,6 @@ public class ProcessingManager {
 	}
 
 	public void updateStates(){
-
+		imP.process();
 	}
-}//end ProcessingManager
+}//end ProcessigManager

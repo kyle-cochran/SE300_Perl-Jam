@@ -60,13 +60,21 @@ public class ImageProcessor {
 		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 	}
 
+	/**
+	 * A method to unify the processing methods of this class.
+	 * 
+	 * @return an array of integers that represents the current lot state
+	 */
+	public int[] returnCurrentSpots() {
+		return generateIsEmptyMatrix(diffAsBinArray(), getSpotMatrix());
+	}
 
 	/**
 	 * Takes in the current lot frame as an image and compares it to the lot
 	 * reference image. Converts difference to a binary array that shows which
 	 * pixels match.
 	 * 
-	 * @return binaryArray an array of integers that represent the state of each
+	 * @return an array of integers that represent the state of each
 	 *         pixel (black/white) of the lot image difference with the
 	 *         reference image.
 	 */
@@ -93,7 +101,6 @@ public class ImageProcessor {
 		// modify difference image to ignore some minor changes details
 		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
 
-
 		// convert to mat object, then to custom binary array
 		matDiff = matConverter.convert(iplConverter.convert(diff));
 		binaryArray = matToBinary.toBinaryArray(matDiff);
@@ -114,7 +121,7 @@ public class ImageProcessor {
 	 * @param lines
 	 *            an array of ordered coordinate pairs that represent the
 	 *            parking spot divisor lines
-	 * @return isEmpty an array the represents the state of each parking spot in
+	 * @return an array that represents the state of each parking spot in
 	 *         a given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
@@ -230,7 +237,7 @@ public class ImageProcessor {
 	/**
 	 * Identify where divisor lines are in current lot view.
 	 * 
-	 * @return lines an array of coordinate pairs that represents the pixel
+	 * @return an array of coordinate pairs that represents the pixel
 	 *         location of parking spots divisor lines
 	 */
 	public int[][] getSpotMatrix() {
@@ -420,7 +427,7 @@ public class ImageProcessor {
 	 * 
 	 * @param src
 	 *            an IPLImage from the OpenCV/JavaCV library
-	 * @return wr a WritableImage object (child of Java Image object) from the
+	 * @return a WritableImage object (child of Java Image object) from the
 	 *         JavaFX library
 	 */
 

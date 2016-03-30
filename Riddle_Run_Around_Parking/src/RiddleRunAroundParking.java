@@ -7,34 +7,51 @@ import javafx.stage.Stage;
  * @author Taylor Hester, Matthew Caixeiro
  * @version 1.0
  */
-public class RiddleRunAroundParking extends Application{
-	
-	private static ImageProcessor imageProc = new ImageProcessor();
-	
-	public RiddleRunAroundParking(){
+public class RiddleRunAroundParking extends Application {
 
+	//private static ImageProcessor imageProc = new ImageProcessor();
+	private static ProcessingManager pm = new ProcessingManager();
+
+	public RiddleRunAroundParking() {
 	}
 
 	public void finalize() throws Throwable {
-
 	}
+
 	/**
 	 * Main method: initializes the image processor and UI display.
 	 * 
-	 * @param args command line arguments
+	 * @param args
+	 *            command line arguments
 	 */
-	public static void main(String[] args){
-		imageProc.diffAsBinArray();
-		launch(args);
+	public static void main(String[] args) {
+		// imageProc.diffAsBinArray();
+
+		pm.beginProcThread();
+		//while(true){
+		try {
+			Thread.sleep(5);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(pm.getLotState() != null){
+		System.out.println(pm.getLotState()[0] + " " + pm.getLotState()[1] + " " + pm.getLotState()[2] + " "
+				+ pm.getLotState()[3] + " " + pm.getLotState()[4]);
+		}
+		//}
+		// launch(args);
 	}
-	
+
 	/**
 	 * Starts the UI display.
 	 * 
-	 * @param primaryStage The stage containing the main application window
+	 * @param primaryStage
+	 *            The stage containing the main application window
 	 */
-	public void start(Stage primaryStage) throws Exception{
+	public void start(Stage primaryStage) throws Exception {
 		DisplayUI ui = new DisplayUI();
 		ui.start(primaryStage);
 	}
-}//end RiddleRunAroundParking
+}// end RiddleRunAroundParking

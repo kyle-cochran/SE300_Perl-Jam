@@ -60,11 +60,6 @@ public class ImageProcessor {
 		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 	}
 
-	public int[] returnNewestStates() {
-		Random rando = new Random();
-		int[] ia = {rando.nextInt(1),rando.nextInt(10),rando.nextInt(1),rando.nextInt(1),rando.nextInt(1)};
-		return ia;//generateIsEmptyMatrix(diffAsBinArray(), getSpotMatrix());
-	};
 
 	/**
 	 * Takes in the current lot frame as an image and compares it to the lot
@@ -98,7 +93,6 @@ public class ImageProcessor {
 		// modify difference image to ignore some minor changes details
 		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
 
-		canvas.showImage(iplConverter.convert(diff));
 
 		// convert to mat object, then to custom binary array
 		matDiff = matConverter.convert(iplConverter.convert(diff));

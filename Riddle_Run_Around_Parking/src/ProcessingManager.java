@@ -77,7 +77,7 @@ public class ProcessingManager implements Runnable {
 		currentSpots = imP.returnNewestStates();
 	}
 
-	public int[] getLotState() {
+	public int[] getCurrentSpots() {
 		return currentSpots;
 	}
 

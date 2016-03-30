@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -28,20 +30,8 @@ public class RiddleRunAroundParking extends Application {
 		// imageProc.diffAsBinArray();
 
 		pm.beginProcThread();
-		//while(true){
-		try {
-			Thread.sleep(5);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(pm.getLotState() != null){
-		System.out.println(pm.getLotState()[0] + " " + pm.getLotState()[1] + " " + pm.getLotState()[2] + " "
-				+ pm.getLotState()[3] + " " + pm.getLotState()[4]);
-		}
-		//}
-		// launch(args);
+
+		launch(args);
 	}
 
 	/**

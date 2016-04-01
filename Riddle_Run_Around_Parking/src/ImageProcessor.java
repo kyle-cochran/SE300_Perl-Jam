@@ -69,7 +69,6 @@ public class ImageProcessor {
 		return generateIsEmptyMatrix(diffAsBinArray(), getSpotMatrix());
 	}
 	
-	
 	public double returnCurrentPercent(){
 		
 		int[] spots = returnCurrentSpots();
@@ -80,7 +79,7 @@ public class ImageProcessor {
 		}
 		return total;
 	}
-	
+
 	/**
 	 * Takes in the current lot frame as an image and compares it to the lot
 	 * reference image. Converts difference to a binary array that shows which

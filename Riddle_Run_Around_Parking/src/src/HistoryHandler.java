@@ -2,6 +2,8 @@ package src;
 
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
@@ -27,8 +29,18 @@ import org.w3c.dom.NodeList;
 public class HistoryHandler {
 	//Some class definitions
 	File historyFile = new File("/src/media/7_day_history.xml"); //the file where the parking history will be stored
-	DocumentBuilderFactory dbFactory; //A document builder builder
-	DocumentBuilder dBuilder; //A document builder
+	DocumentBuilderFactory dbFactory; //A document builder builder (for making a document object)
+	DocumentBuilder dBuilder; //A document builder (for making a document object)
+	Document doc;
+	
+	TransformerFactory transformerFactory; //For writing the document object to a file
+	Transformer transformer; //For writing the document object to a file
+	DOMSource source; //For writing document object to a file
+	StreamResult result = new StreamResult(historyFile);//output to write to
+
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); //this is how the date will be formatted in the xml
+	DateFormat timeFormat = new SimpleDateFormat("H:mm a"); // this is how the time will be formatted in the xml
+	
 	int histL = 7; //the number of past days that will be stored at any one time
 	int timeIncr = 28; //the number of different time steps during the day that will be considered
 	int numSpots = 32; //the number of parking spots in one lot
@@ -49,17 +61,66 @@ public class HistoryHandler {
 			"12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","2:30 PM","3:00 PM","3:30 PM","4:00 PM","4:30 PM",
 			"5:00 PM","5:30 PM","6:00 PM","6:30 PM","7:00 PM","7:30 PM","8:00 PM","8:30 PM","9:00 PM"};
 
-	/*
-	public static void main(String[] args) {
-		HistoryTester ht = new HistoryTester();
-		ht.commitWeekData(ht.makeRandSpots3(), ht.dates);
+	public HistoryHandler(){
+		
+		dbFactory = DocumentBuilderFactory.newInstance();
+		try{
+			//make the document builder, then the document
+			dBuilder = dbFactory.newDocumentBuilder();
+			doc = dBuilder.parse(historyFile);
+			
+			//make the objects that do the writing
+			transformerFactory = TransformerFactory.newInstance();
+			transformer = transformerFactory.newTransformer();
+			
+			//makes the xml formatted nicely
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			
+			//set the input and output for writing
+			source = new DOMSource(doc);
+			result = new StreamResult(historyFile);
 
-		//ht.appendDay(ht.makeRandSpots2(), ht.dates[0]);
-		System.out.println(ht.timeOfDay.length);
+		}catch(Exception e){}
 	}
-	 */
 
+	public void appendCurrentTime(int[] nowSpots){
+		
+		try{
+		//make a new DOM object from the history document
+		doc = dBuilder.parse(historyFile);
+		doc.getDocumentElement().normalize();
 
+		//extract the root element
+		Element rootElement = doc.getDocumentElement();
+
+		//get this list of days
+		NodeList days = rootElement.getElementsByTagName("day");
+		
+		//make sure that there is already a day for today
+		boolean todayIsOnFile = days.item(days.getLength()-1).getAttributes().getNamedItem("date").toString().equals(dateFormat.format(Calendar.getInstance().getTime()));
+		if(!todayIsOnFile){
+			Element day = doc.createElement("day");
+			rootElement.appendChild(day);
+			day.setAttribute("date", dateFormat.format(Calendar.getInstance().getTime()));
+			days = rootElement.getElementsByTagName("day");
+		}
+		
+		//make a new element to hold the data at the current time, set it's "time" attribute to be the current time, set it's text content to be the data
+		Element currentData = doc.createElement("spotmatrix");
+		currentData.setAttribute("time", timeFormat.format(Calendar.getInstance().getTime()));
+		currentData.setTextContent(intMatToStr(nowSpots));
+		
+		//add the current data element to the rest of the document object
+		days.item(days.getLength()-1).appendChild(currentData);
+
+		//writes to the xml file
+		transformer.transform(source, result);
+		
+		}catch(Exception e){}
+
+		
+	}
 
 	/**
 	 * This method modifies the history file completely, committing a whole new set of data.
@@ -72,17 +133,13 @@ public class HistoryHandler {
 
 		this.spots = spots;
 
-		dbFactory = DocumentBuilderFactory.newInstance();
-		try{
-			dBuilder = dbFactory.newDocumentBuilder();
-		}catch(Exception e){}
 
 		//make new dom object using the builder
-		Document wdoc = dBuilder.newDocument();
+		doc = dBuilder.newDocument();
 
 		//create the root element which is just a lot and add it to doc
-		Element rootElement = wdoc.createElement("lot");
-		wdoc.appendChild(rootElement);
+		Element rootElement = doc.createElement("lot");
+		doc.appendChild(rootElement);
 		Element[] day = new Element[histL];
 		Element[] spotmatrix = new Element[timeIncr];
 
@@ -92,34 +149,24 @@ public class HistoryHandler {
 		for(int i=0;i<histL;i++){
 
 			//create an element for days, give it a date attribute, and add it as a child of lot
-			day[i] = wdoc.createElement("day");
+			day[i] = doc.createElement("day");
 			rootElement.appendChild(day[i]);
 			day[i].setAttribute("date", dates[i].get(Calendar.YEAR) + "-" + dates[i].get(Calendar.MONTH) + "-" + dates[i].get(Calendar.DAY_OF_MONTH));
 
 			//loop through all the times of day
 			for(int j=0;j<timeIncr;j++){
 				//create an element to hold the actual data, give it a time attribute, add it as a child of day
-				spotmatrix[j] = wdoc.createElement("spotmatrix");
+				spotmatrix[j] = doc.createElement("spotmatrix");
 				day[i].appendChild(spotmatrix[j]);
 				spotmatrix[j].setAttribute("time", timeOfDay[j]);
-				spotmatrix[j].appendChild(wdoc.createTextNode(intMatToStr(spots[i][j])));
+				spotmatrix[j].appendChild(doc.createTextNode(intMatToStr(spots[i][j])));
 			}
 		}
-
+		//--------------------------------------------------------------
+		
 		// write the content into xml file
 		try{
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(wdoc);
-			StreamResult result = new StreamResult(new File("/home/kyle/history.xml"));
-
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
 			transformer.transform(source, result);
-			// Output to console for testing
-			StreamResult consoleResult = new StreamResult(System.out);
-			transformer.transform(source, consoleResult);
 		}catch(Exception e){}
 	}
 
@@ -132,12 +179,8 @@ public class HistoryHandler {
 	 * @param dates A GregorianCalendar object that holds the corresponding date for the day being committed
 	 */
 	public void appendDay(int[][] spots, GregorianCalendar date){
-
-		Document doc;
-		dbFactory = DocumentBuilderFactory.newInstance();
-
+		
 		try {
-			dBuilder = dbFactory.newDocumentBuilder();
 			doc = dBuilder.parse(historyFile);
 
 
@@ -167,21 +210,10 @@ public class HistoryHandler {
 				spotmatrix[j].appendChild(doc.createTextNode(intMatToStr(spots[j])));
 			}
 			//---------------------------------------------------------------------------------------------------
-
-			// write the content into xml file (this part is black magic)
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-
-			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File("/home/kyle/history.xml"));
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			
+			//write the DOM to the xml file
 			transformer.transform(source, result);
 
-
-			// Output to console for testing
-			StreamResult consoleResult = new StreamResult(System.out);
-			transformer.transform(source, consoleResult);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -198,11 +230,8 @@ public class HistoryHandler {
 		spots = new int[histL][timeIncr][numSpots];
 
 		try {	
-			dbFactory = DocumentBuilderFactory.newInstance();
-			dBuilder = dbFactory.newDocumentBuilder();
-
 			//make a new DOM object from the history document
-			Document doc = dBuilder.parse(historyFile);
+			doc = dBuilder.parse(historyFile);
 			doc.getDocumentElement().normalize();
 
 			//extract the root element

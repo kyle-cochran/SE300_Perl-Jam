@@ -108,6 +108,50 @@ public class DisplayUI extends Pane {
 
 		return lineChart;
 	}
+	
+	public LineChart lastWeekYesterday(){
+		//TODO call a method to get these values
+		int[] percentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100};
+		final CategoryAxis xAxis = new CategoryAxis();
+		final NumberAxis yAxis = new NumberAxis();
+		yAxis.setLabel("Percent Full");
+		
+		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
+		
+		lineChart.setTitle("Yesterday Last Week");
+		
+		XYChart.Series series = new  XYChart.Series<>();
+		
+		for (int i =0; i<28; i++){
+			series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
+		}
+		
+		lineChart.getData().add(series);
+		return lineChart;
+	}
+
+	public LineChart lastWeekTomorrow(){
+		//TODO call a method to get these values
+		int[] percentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100};
+		final CategoryAxis xAxis = new CategoryAxis();
+		final NumberAxis yAxis = new NumberAxis();
+		yAxis.setLabel("Percent Full");
+		
+		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
+		
+		lineChart.setTitle("Yesterday Last Week");
+		
+		XYChart.Series series = new  XYChart.Series<>();
+		
+		for (int i =0; i<28; i++){
+			series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
+		}
+		
+		lineChart.getData().add(series);
+		return lineChart;
+	}
 
 	/**
 	 * Creates a new method that creates a new button that when clicked will

@@ -449,7 +449,7 @@ public class ImageProcessor {
 	 *         JavaFX library
 	 */
 
-	public void IplImageToWritableImage(Frame framesrc) {
+	public static void IplImageToWritableImage(Frame framesrc) {
 
 		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
 		BufferedImage bf = paintConverter.getBufferedImage(framesrc, 1);

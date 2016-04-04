@@ -35,12 +35,14 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.*;
@@ -245,7 +247,7 @@ public class DisplayUI extends Pane {
 	public VBox addSpacing() {
 		VBox vbox = new VBox();
 
-		Rectangle placeholder = new Rectangle(200, 1000);
+		Rectangle placeholder = new Rectangle(800,500);
 		placeholder.setFill(Color.WHITE);
 		vbox.getChildren().add(placeholder);
 
@@ -254,6 +256,8 @@ public class DisplayUI extends Pane {
 
 	public HBox addHBox() {
 		HBox hbox = new HBox(100);
+		hbox.setAlignment(Pos.CENTER);
+		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
 
 		Rectangle graph1 = new Rectangle(200, 300);
 		Rectangle graph2 = new Rectangle(200, 300);
@@ -321,7 +325,7 @@ public class DisplayUI extends Pane {
 		// creates a new pane that will display the parking lot with highlighted
 		// spots
 		pane.getChildren().add(r);
-		pane.setMaxSize(500, 500);
+		pane.setMinSize(800, 500);
 
 		// Create image processor class so the lines can be created
 		ImageProcessor ip = new ImageProcessor();

@@ -25,6 +25,11 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
 
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 /**
  * Class that manages all image processing and comparison. Handles access and
@@ -444,7 +449,7 @@ public class ImageProcessor {
 	 *         JavaFX library
 	 */
 
-	public WritableImage IplImageToWritableImage(Frame framesrc) {
+	public void IplImageToWritableImage(Frame framesrc) {
 
 		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
 		BufferedImage bf = paintConverter.getBufferedImage(framesrc, 1);
@@ -460,7 +465,8 @@ public class ImageProcessor {
 				}
 			}
 		}
-
-		return wr;
+		
+		DisplayUI.pane.setBackground(new Background(new BackgroundImage(wr,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, 
+				BackgroundPosition.DEFAULT,new BackgroundSize(100, 100, true, true, true, true))));
 	}
 }// end ImageProcessor

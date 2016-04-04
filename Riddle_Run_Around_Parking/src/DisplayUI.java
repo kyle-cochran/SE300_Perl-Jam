@@ -62,6 +62,7 @@ public class DisplayUI extends Pane {
 	HBox title;
 	VBox spacing;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
+	static Pane pane = new Pane();
 
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
@@ -319,14 +320,9 @@ public class DisplayUI extends Pane {
 
 		// creates a new pane that will display the parking lot with highlighted
 		// spots
-		Pane pane = new Pane();
-		pane.setBackground(new Background(
-				new BackgroundImage(new ImageProcessor().IplImageToWritableImage(new CameraDriver().getImage()),
-						BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-						new BackgroundSize(100, 100, true, true, true, true))));
 		pane.getChildren().add(r);
 		pane.setMaxSize(500, 500);
-		// TODO: MMMMMAAAAAAATTTTTTTTTTTT
+
 		// Create image processor class so the lines can be created
 		ImageProcessor ip = new ImageProcessor();
 		int[][] lines = ip.getSpotMatrix();

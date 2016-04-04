@@ -17,6 +17,8 @@ public class CameraDriver {
 	private Frame lotFrame;
 	private FrameGrabber frameGrabber;
 	
+	ImageProcessor imageP = new ImageProcessor(); 
+	
 	
 	public CameraDriver(){
 		
@@ -40,6 +42,7 @@ public class CameraDriver {
 	public Frame getImage() {
 		try {
 			lotFrame = frameGrabber.grab();
+			imageP.IplImageToWritableImage(lotFrame);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

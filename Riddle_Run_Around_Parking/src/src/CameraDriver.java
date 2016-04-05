@@ -40,6 +40,7 @@ public class CameraDriver {
 	public Frame getImage() {
 		try {
 			lotFrame = frameGrabber.grab();
+			ImageProcessor.IplImageToWritableImage(lotFrame);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

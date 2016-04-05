@@ -250,174 +250,173 @@ public class ImageProcessor {
 	public int[][] getSpotMatrix() {
 		int[][] lines = new int[32][4];
 
-		int offset = 179;
+		int offset = 0;
 
-		lines[0][0] = 209;
-		lines[0][1] = 165 + offset;
-		lines[0][2] = 201;
-		lines[0][3] = 201 + offset;
+		lines[0][0] = 198;
+		lines[0][1] = 224 + offset;
+		lines[0][2] = 191;
+		lines[0][3] = 253 + offset;
 
-		lines[1][0] = 246;
-		lines[1][1] = 165 + offset;
-		lines[1][2] = 241;
-		lines[1][3] = 204 + offset;
+		lines[1][0] = 223;
+		lines[1][1] = 225 + offset;
+		lines[1][2] = 219;
+		lines[1][3] = 253 + offset;
 
-		lines[2][0] = 294;
-		lines[2][1] = 168 + offset;
-		lines[2][2] = 292;
-		lines[2][3] = 206 + offset;
+		lines[2][0] = 262;
+		lines[2][1] = 228 + offset;
+		lines[2][2] = 260;
+		lines[2][3] = 258 + offset;
 
-		lines[3][0] = 342;
-		lines[3][1] = 160 + offset;
-		lines[3][2] = 344;
-		lines[3][3] = 210 + offset;
+		lines[3][0] = 300;
+		lines[3][1] = 231 + offset;
+		lines[3][2] = 300;
+		lines[3][3] = 261 + offset;
 
-		lines[4][0] = 392;
-		lines[4][1] = 175 + offset;
-		lines[4][2] = 400;
-		lines[4][3] = 212 + offset;
+		lines[4][0] = 336;
+		lines[4][1] = 231 + offset;
+		lines[4][2] = 341;
+		lines[4][3] = 261 + offset;
 
 		// Grass area between these lines
 
-		lines[5][0] = 436;
-		lines[5][1] = 176 + offset;
-		lines[5][2] = 452;
-		lines[5][3] = 216 + offset;
+		lines[5][0] = 379;
+		lines[5][1] = 234 + offset;
+		lines[5][2] = 388;
+		lines[5][3] = 265 + offset;
 
-		lines[6][0] = 485;
-		lines[6][1] = 180 + offset;
-		lines[6][2] = 505;
-		lines[6][3] = 216 + offset;
+		lines[6][0] = 414;
+		lines[6][1] = 234 + offset;
+		lines[6][2] = 426;
+		lines[6][3] = 266 + offset;
 
-		lines[7][0] = 533;
-		lines[7][1] = 182 + offset;
-		lines[7][2] = 555;
-		lines[7][3] = 218 + offset;
+		lines[7][0] = 445;
+		lines[7][1] = 240 + offset;
+		lines[7][2] = 460;
+		lines[7][3] = 268 + offset;
 
-		lines[8][0] = 580;
-		lines[8][1] = 184 + offset;
-		lines[8][2] = 597;
-		lines[8][3] = 222 + offset;
+		lines[8][0] = 478;
+		lines[8][1] = 242 + offset;
+		lines[8][2] = 495;
+		lines[8][3] = 270 + offset;
 
-		lines[9][0] = 620;
-		lines[9][1] = 188 + offset;
-		lines[9][2] = 644;
-		lines[9][3] = 224 + offset;
+		lines[9][0] = 504;
+		lines[9][1] = 242 + offset;
+		lines[9][2] = 525;
+		lines[9][3] = 271 + offset;
 
-		lines[10][0] = 661;
-		lines[10][1] = 191 + offset;
-		lines[10][2] = 680;
-		lines[10][3] = 224 + offset;
+		lines[10][0] = 532;
+		lines[10][1] = 245 + offset;
+		lines[10][2] = 558;
+		lines[10][3] = 273 + offset;
 
-		lines[11][0] = 700;
-		lines[11][1] = 193 + offset;
-		lines[11][2] = 725;
-		lines[11][3] = 225 + offset;
+		lines[11][0] = 561;
+		lines[11][1] = 245 + offset;
+		lines[11][2] = 591;
+		lines[11][3] = 272 + offset;
 
 		// New row
 
-		lines[12][0] = 203;
-		lines[12][1] = 228 + offset;
-		lines[12][2] = 192;
-		lines[12][3] = 276 + offset;
+		lines[12][0] = 200;
+		lines[12][1] = 275 + offset;
+		lines[12][2] = 189;
+		lines[12][3] = 322 + offset;
 
-		lines[13][0] = 266;
-		lines[13][1] = 230 + offset;
-		lines[13][2] = 260;
-		lines[13][3] = 295 + offset;
+		lines[13][0] = 240;
+		lines[13][1] = 278 + offset;
+		lines[13][2] = 233;
+		lines[13][3] = 328 + offset;
 
-		lines[14][0] = 318;
-		lines[14][1] = 233 + offset;
-		lines[14][2] = 320;
-		lines[14][3] = 300 + offset;
+		lines[14][0] = 280;
+		lines[14][1] = 279 + offset;
+		lines[14][2] = 280;
+		lines[14][3] = 329 + offset;
 
-		lines[15][0] = 370;
-		lines[15][1] = 236 + offset;
-		lines[15][2] = 378;
-		lines[15][3] = 300 + offset;
+		lines[15][0] = 319;
+		lines[15][1] = 282 + offset;
+		lines[15][2] = 327;
+		lines[15][3] = 331 + offset;
 
-		lines[16][0] = 422;
-		lines[16][1] = 238 + offset;
-		lines[16][2] = 437;
-		lines[16][3] = 301 + offset;
+		lines[16][0] = 364;
+		lines[16][1] = 283 + offset;
+		lines[16][2] = 374;
+		lines[16][3] = 332 + offset;
 
-		lines[17][0] = 472;
-		lines[17][1] = 240 + offset;
-		lines[17][2] = 494;
-		lines[17][3] = 301 + offset;
+		lines[17][0] = 402;
+		lines[17][1] = 285 + offset;
+		lines[17][2] = 418;
+		lines[17][3] = 333 + offset;
 
-		lines[18][0] = 521;
-		lines[18][1] = 242 + offset;
-		lines[18][2] = 550;
-		lines[18][3] = 303 + offset;
+		lines[18][0] = 440;
+		lines[18][1] = 286 + offset;
+		lines[18][2] = 459;
+		lines[18][3] = 333 + offset;
 
-		lines[19][0] = 570;
-		lines[19][1] = 244 + offset;
-		lines[19][2] = 600;
-		lines[19][3] = 303 + offset;
+		lines[19][0] = 474;
+		lines[19][1] = 286 + offset;
+		lines[19][2] = 500;
+		lines[19][3] = 334 + offset;
 
-		lines[20][0] = 621;
-		lines[20][1] = 244 + offset;
-		lines[20][2] = 650;
-		lines[20][3] = 301 + offset;
+		lines[20][0] = 509;
+		lines[20][1] = 289 + offset;
+		lines[20][2] = 536;
+		lines[20][3] = 332 + offset;
 
-		lines[21][0] = 665;
-		lines[21][1] = 246 + offset;
-		lines[21][2] = 694;
-		lines[21][3] = 303 + offset;
+		lines[21][0] = 543;
+		lines[21][1] = 290 + offset;
+		lines[21][2] = 657;
+		lines[21][3] = 330 + offset;
 
-		lines[22][0] = 703;
-		lines[22][1] = 247 + offset;
-		lines[22][2] = 737;
-		lines[22][3] = 301 + offset;
+		lines[22][0] = 571;
+		lines[22][1] = 292 + offset;
+		lines[22][2] = 600;
+		lines[22][3] = 331 + offset;
 
-		lines[23][0] = 741;
-		lines[23][1] = 247 + offset;
-		lines[23][2] = 777;
-		lines[23][3] = 300 + offset;
+		lines[23][0] = 606;
+		lines[23][1] = 290 + offset;
+		lines[23][2] = 632;
+		lines[23][3] = 329 + offset;
 
-		lines[24][0] = 780;
-		lines[24][1] = 251 + offset;
-		lines[24][2] = 813;
-		lines[24][3] = 299 + offset;
+		lines[24][0] = 632;
+		lines[24][1] = 294 + offset;
+		lines[24][2] = 662;
+		lines[24][3] = 332 + offset;
 
-		lines[25][0] = 817;
-		lines[25][1] = 250 + offset;
-		lines[25][2] = 847;
-		lines[25][3] = 295 + offset;
+		lines[25][0] = 657;
+		lines[25][1] = 290 + offset;
+		lines[25][2] = 685;
+		lines[25][3] = 328 + offset;
 
 		// New line
 
-		lines[26][0] = 98;
-		lines[26][1] = 398 + offset;
-		lines[26][2] = 70;
-		lines[26][3] = 494 + offset;
+		lines[26][0] = 118;
+		lines[26][1] = 405 + offset;
+		lines[26][2] = 100;
+		lines[26][3] = 475 + offset;
 
-		lines[27][0] = 180;
-		lines[27][1] = 400 + offset;
-		lines[27][2] = 165;
-		lines[27][3] = 496 + offset;
+		lines[27][0] = 173;
+		lines[27][1] = 408 + offset;
+		lines[27][2] = 161;
+		lines[27][3] = 480 + offset;
 
-		lines[28][0] = 250;
-		lines[28][1] = 404 + offset;
-		lines[28][2] = 246;
-		lines[28][3] = 495 + offset;
+		lines[28][0] = 228;
+		lines[28][1] = 412 + offset;
+		lines[28][2] = 224;
+		lines[28][3] = 479 + offset;
 
-		lines[29][0] = 323;
-		lines[29][1] = 405 + offset;
-		lines[29][2] = 327;
-		lines[29][3] = 496 + offset;
+		lines[29][0] = 283;
+		lines[29][1] = 414 + offset;
+		lines[29][2] = 287;
+		lines[29][3] = 480 + offset;
 
-		lines[30][0] = 394;
-		lines[30][1] = 405 + offset;
-		lines[30][2] = 410;
-		lines[30][3] = 494 + offset;
+		lines[30][0] = 342;
+		lines[30][1] = 413 + offset;
+		lines[30][2] = 354;
+		lines[30][3] = 481 + offset;
 
-		lines[31][0] = 464;
-		lines[31][1] = 405 + offset;
-		lines[31][2] = 490;
-		lines[31][3] = 495 + offset;
-
+		lines[31][0] = 396;
+		lines[31][1] = 413 + offset;
+		lines[31][2] = 415;
+		lines[31][3] = 480 + offset;
 		// End
 
 		return lines;

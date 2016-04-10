@@ -1,4 +1,4 @@
-package src;
+package src.src;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -114,7 +114,7 @@ public class DisplayUI extends Pane {
 	
 	public LineChart lastWeekYesterday(){
 		//TODO call a method to get these values
-		int[] percentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+		int[] lastPercentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
 				100, 100, 100, 100, 100, 100, 100, 100, 100};
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -136,7 +136,7 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekTomorrow(){
 		//TODO call a method to get these values
-		int[] percentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+		int[]tomorrowPercentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
 				100, 100, 100, 100, 100, 100, 100, 100, 100};
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -144,7 +144,7 @@ public class DisplayUI extends Pane {
 		
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 		
-		lineChart.setTitle("Yesterday Last Week");
+		lineChart.setTitle("Tomorrow of Last Week");
 		
 		XYChart.Series series = new  XYChart.Series<>();
 		
@@ -276,12 +276,12 @@ public class DisplayUI extends Pane {
 		Date date = new Date();
 		System.out.println(dateFormat.format(date));
 
-		// get current date time with Calender
+		// get current date time with Calendar
 		Calendar cal = Calendar.getInstance();
 		System.out.println(dateFormat.format(cal.getTime()));
 
 		vbox.getChildren().addAll(title, parkingInfo, PHbutton);
-		// add all does not accept date and calender types
+		// add all does not accept date and calendar types
 
 		// insert data regarding parking availability here
 		return vbox;
@@ -378,6 +378,12 @@ public class DisplayUI extends Pane {
 		// Create the lines in a loop
 		for (int i = 0; i <= lines.length - 1; i++) {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+			/*TODO: create an array with the percentages of spots filled 
+			 * if int todaySpotsFilled[i] >= 60{
+			 * temp.setStroke(Color.YELLOW);}
+			 * else{
+			 * temp.setStroke(Color.WHITE);}
+			 */
 			temp.setStroke(Color.WHITE);
 			pane.getChildren().add(temp);
 		}

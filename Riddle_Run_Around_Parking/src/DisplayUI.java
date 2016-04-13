@@ -63,7 +63,6 @@ public class DisplayUI extends Pane {
 	HBox hbox;
 	HBox title;
 	VBox spacing;
-	File parkingHistoryFile = new File("Parking Spot History.txt");
 	static Pane pane = new Pane();
 	HistoryHandler history = new HistoryHandler();
 
@@ -88,10 +87,9 @@ public class DisplayUI extends Pane {
 		title = addTitle();
 	}
 
+	
 	public LineChart lastWeekToday() {
-
-		// TODO call a method to get these values
-		double[] percentfull = history.getDaysAgoPercents(7);
+		double[] percentFull = history.getDaysAgoPercents(7);
 
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -174,6 +172,7 @@ public class DisplayUI extends Pane {
 
 		return button;
 	}
+	
 
 	/**
 	 * the readHistory uses the buffered reader to read the high score file and
@@ -184,7 +183,7 @@ public class DisplayUI extends Pane {
 		BufferedReader buffRead = null;
 		try {
 			// tries to read parking history file
-			buffRead = new BufferedReader(new FileReader(parkingHistoryFile));
+			buffRead = new BufferedReader(new FileReader("/src/media/Parking_History.txt"));
 
 			String currentLine = "", fileText = "";
 

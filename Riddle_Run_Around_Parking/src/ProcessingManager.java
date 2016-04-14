@@ -1,4 +1,5 @@
 package src;
+
 import java.io.*;
 import java.util.Calendar;
 
@@ -15,7 +16,7 @@ public class ProcessingManager implements Runnable {
 	public HistoryHandler hH;
 	private volatile boolean procOn;
 	private volatile boolean timeToUpdate;
-	private volatile boolean okayToUpdate=true;
+	private volatile boolean okayToUpdate = true;
 	private Thread t;
 
 	/**
@@ -96,27 +97,28 @@ public class ProcessingManager implements Runnable {
 				e.printStackTrace();
 			}
 
-			//get newest spot data
+			// get newest spot data
 			updateSpots();
-			
-			
-			//logic to update history at certain times of day-----------------------------------------------------------------------
+
+			// logic to update history at certain times of
+			// day-----------------------------------------------------------------------
 			int minutes = Calendar.getInstance().getTime().getMinutes();
-			
-			//checks whether it's 00 or 30 minutes into the hour
-			timeToUpdate = (minutes==0 || minutes==30);
-			
-			//if it's 00 or 30 minutes in an hour, and we haven't update yet, add the spots to history, deactivate update switch
-			if(timeToUpdate && okayToUpdate){
+
+			// checks whether it's 00 or 30 minutes into the hour
+			timeToUpdate = (minutes == 0 || minutes == 30);
+
+			// if it's 00 or 30 minutes in an hour, and we haven't update yet,
+			// add the spots to history, deactivate update switch
+			if (timeToUpdate && okayToUpdate) {
 				hH.appendCurrentTime(currentSpots);
 				okayToUpdate = false;
 			}
-			
-			//if we're past update time, turn the switch back on.
-			if(minutes==1 || minutes==31){
+
+			// if we're past update time, turn the switch back on.
+			if (minutes == 1 || minutes == 31) {
 				okayToUpdate = true;
 			}
-			//-----------------------------------------------------------------------------------------------------------------------
+			// -----------------------------------------------------------------------------------------------------------------------
 		}
 	}
 
@@ -136,17 +138,16 @@ public class ProcessingManager implements Runnable {
 	public int[] getCurrentSpots() {
 		return currentSpots;
 	}
-	
-	public double getCurrentPercent(){
-		
-		int total=0;
-		
-		for(int i = 0; i<currentSpots.length; i++){
+
+	public double getCurrentPercent() {
+
+		int total = 0;
+
+		for (int i = 0; i < currentSpots.length; i++) {
 			total += currentSpots[i];
 		}
-		return 100*total/currentSpots.length;
+		return 100 * total / currentSpots.length;
 	}
-
 
 	public DataInputStream getLotVideoFeed() {
 		return null;

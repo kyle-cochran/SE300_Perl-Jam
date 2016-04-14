@@ -5,7 +5,6 @@ import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameGrabber.Exception;
 
-
 /**
  * Class responsible for access the video feed
  * 
@@ -16,14 +15,13 @@ public class CameraDriver {
 
 	private Frame lotFrame;
 	private FrameGrabber frameGrabber;
-	
-	
-	public CameraDriver(){
-		
-		//create a grabber object to extract frames from this camera
+
+	public CameraDriver() {
+
+		// create a grabber object to extract frames from this camera
 		frameGrabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg");
-		
-	    //grab a frame from the video file
+
+		// grab a frame from the video file
 		try {
 			frameGrabber.start();
 		} catch (Exception e) {
@@ -36,7 +34,7 @@ public class CameraDriver {
 	 * 
 	 * @return lotFrame the next frame of the acquired video feed/file
 	 */
-	
+
 	public Frame getImage() {
 		try {
 			lotFrame = frameGrabber.grab();
@@ -47,4 +45,4 @@ public class CameraDriver {
 		return lotFrame;
 	}
 
-}//end CameraDriver
+}// end CameraDriver

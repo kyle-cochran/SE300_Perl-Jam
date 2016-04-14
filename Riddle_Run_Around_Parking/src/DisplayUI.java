@@ -111,47 +111,47 @@ public class DisplayUI extends Pane {
 
 		return lineChart;
 	}
-	
-	public LineChart lastWeekYesterday(){
-		//TODO call a method to get these values
-		int[] lastPercentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100};
+
+	public LineChart lastWeekYesterday() {
+		// TODO call a method to get these values
+		int[] lastPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
-		
+
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
-		
+
 		lineChart.setTitle("Yesterday Last Week");
-		
-		XYChart.Series series = new  XYChart.Series<>();
-		
-		for (int i =0; i<28; i++){
+
+		XYChart.Series series = new XYChart.Series<>();
+
+		for (int i = 0; i < 28; i++) {
 			series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
 		}
-		
+
 		lineChart.getData().add(series);
 		return lineChart;
 	}
 
-	public LineChart lastWeekTomorrow(){
-		//TODO call a method to get these values
-		int[]tomorrowPercentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100};
+	public LineChart lastWeekTomorrow() {
+		// TODO call a method to get these values
+		int[] tomorrowPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
-		
+
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
-		
+
 		lineChart.setTitle("Tomorrow of Last Week");
-		
-		XYChart.Series series = new  XYChart.Series<>();
-		
-		for (int i =0; i<28; i++){
+
+		XYChart.Series series = new XYChart.Series<>();
+
+		for (int i = 0; i < 28; i++) {
 			series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
 		}
-		
+
 		lineChart.getData().add(series);
 		return lineChart;
 	}
@@ -291,7 +291,7 @@ public class DisplayUI extends Pane {
 	public VBox addSpacing() {
 		VBox vbox = new VBox();
 
-		Rectangle placeholder = new Rectangle(800,500);
+		Rectangle placeholder = new Rectangle(800, 500);
 		placeholder.setFill(Color.WHITE);
 		vbox.getChildren().add(placeholder);
 
@@ -378,10 +378,9 @@ public class DisplayUI extends Pane {
 		// Create the lines in a loop
 		for (int i = 0; i <= lines.length - 1; i++) {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			/*TODO: create an array with the percentages of spots filled 
-			 * if int todaySpotsFilled[i] >= 60{
-			 * temp.setStroke(Color.YELLOW);}
-			 * else{
+			/*
+			 * TODO: create an array with the percentages of spots filled if int
+			 * todaySpotsFilled[i] >= 60{ temp.setStroke(Color.YELLOW);} else{
 			 * temp.setStroke(Color.WHITE);}
 			 */
 			temp.setStroke(Color.WHITE);

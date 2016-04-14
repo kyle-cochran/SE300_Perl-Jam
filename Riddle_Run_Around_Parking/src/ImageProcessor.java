@@ -75,15 +75,15 @@ public class ImageProcessor {
 	public int[] returnCurrentSpots() {
 		return generateIsEmptyMatrix(diffAsBinArray(), getSpotMatrix());
 	}
-	
+
 	/**
 	 * Takes in the current lot frame as an image and compares it to the lot
 	 * reference image. Converts difference to a binary array that shows which
 	 * pixels match.
 	 * 
-	 * @return an array of integers that represent the state of each
-	 *         pixel (black/white) of the lot image difference with the
-	 *         reference image.
+	 * @return an array of integers that represent the state of each pixel
+	 *         (black/white) of the lot image difference with the reference
+	 *         image.
 	 */
 	public int[][] diffAsBinArray() {
 
@@ -128,8 +128,8 @@ public class ImageProcessor {
 	 * @param lines
 	 *            an array of ordered coordinate pairs that represent the
 	 *            parking spot divisor lines
-	 * @return an array that represents the state of each parking spot in
-	 *         a given lot
+	 * @return an array that represents the state of each parking spot in a
+	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
 		int[] isEmpty = new int[28];
@@ -244,8 +244,8 @@ public class ImageProcessor {
 	/**
 	 * Identify where divisor lines are in current lot view.
 	 * 
-	 * @return an array of coordinate pairs that represents the pixel
-	 *         location of parking spots divisor lines
+	 * @return an array of coordinate pairs that represents the pixel location
+	 *         of parking spots divisor lines
 	 */
 	public int[][] getSpotMatrix() {
 		int[][] lines = new int[32][4];
@@ -453,8 +453,9 @@ public class ImageProcessor {
 				}
 			}
 		}
-		
-		DisplayUI.pane.setBackground(new Background(new BackgroundImage(wr,BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, 
-				BackgroundPosition.DEFAULT,new BackgroundSize(100, 100, true, true, true, true))));
+
+		DisplayUI.pane.setBackground(
+				new Background(new BackgroundImage(wr, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
 	}
 }// end ImageProcessor

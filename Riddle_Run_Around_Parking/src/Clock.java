@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.swing.JPanel;
 
-
-
 /**
  * @author Kyle
  * @version 1.0
@@ -16,11 +14,11 @@ public class Clock {
 	public Date currentTime;
 	public JPanel graphic;
 
-	public Clock(){
+	public Clock() {
 
 	}
 
 	public void finalize() throws Throwable {
 
 	}
-}//end Clock
+}// end Clock

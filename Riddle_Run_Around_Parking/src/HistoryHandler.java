@@ -1,9 +1,6 @@
 package src;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,7 +24,6 @@ import org.w3c.dom.NodeList;
  * @version 1.0
  * @created 18-Feb-2016 11:36:18 AM
  */
-
 public class HistoryHandler {
 	// Some class definitions
 	File historyFile = new File("/src/media/7_day_history.xml"); // the file
@@ -36,12 +32,6 @@ public class HistoryHandler {
 																	// history
 																	// will be
 																	// stored
-	File parkingHistoryFile = new File("/src/media/Parking_History.txt"); // file
-																			// used
-																			// to
-																			// display
-																			// parking
-																			// data
 	DocumentBuilderFactory dbFactory; // A document builder builder (for making
 										// a document object)
 	DocumentBuilder dBuilder; // A document builder (for making a document
@@ -74,7 +64,8 @@ public class HistoryHandler {
 	// some random dates used for testing
 	GregorianCalendar[] dates = { new GregorianCalendar(2016, 3, 20), new GregorianCalendar(2016, 3, 21),
 			new GregorianCalendar(2016, 3, 22), new GregorianCalendar(2016, 3, 23), new GregorianCalendar(2016, 3, 24),
-			new GregorianCalendar(2016, 3, 25), new GregorianCalendar(2016, 3, 26) };
+			new GregorianCalendar(2016, 3, 25), new GregorianCalendar(2016, 3, 26),
+			new GregorianCalendar(2016, 3, 27) };
 
 	// All the times of day
 	String[] timeOfDay = { "7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM",
@@ -148,8 +139,8 @@ public class HistoryHandler {
 	}
 
 	/**
-	 * This method modifies the history file completely, committing a whole new
-	 * set of data.
+	 * Write a whole weeks worth of data to the file. Used mostly to generate
+	 * dummy data.
 	 * 
 	 * @param spots
 	 *            An array of integers that represents the new weeks worth of
@@ -159,7 +150,6 @@ public class HistoryHandler {
 	 *            corresponding dates for the days being committed
 	 */
 	public void commitWeekData(int[][][] spots, GregorianCalendar[] dates) {
-
 		this.spots = spots;
 
 		// make new dom object using the builder
@@ -256,16 +246,6 @@ public class HistoryHandler {
 	}
 
 	/**
-	 * Reads the history file and creates a new DOM object in the doc class
-	 * variable
-	 */
-	public void getDOM() {
-		// make a new DOM object from the history document
-		doc = dBuilder.parse(historyFile);
-		doc.getDocumentElement().normalize();
-	}
-
-	/**
 	 * This method retrieves the current parking history and stores it in the
 	 * spots class variable
 	 * 
@@ -274,9 +254,10 @@ public class HistoryHandler {
 
 		spots = new int[histL][timeIncr][numSpots];
 
-		getDOM();
-
 		try {
+			// make a new DOM object from the history document
+			doc = dBuilder.parse(historyFile);
+			doc.getDocumentElement().normalize();
 
 			// extract the root element
 			Element rootElement = doc.getDocumentElement();
@@ -304,7 +285,7 @@ public class HistoryHandler {
 	 * @return spots an array of integers that represents the previous weeks
 	 *         data
 	 */
-	public int[][][] getWeekRaw() {
+	private int[][][] getWeekRaw() {
 		readData();
 		return spots;
 	}
@@ -334,7 +315,7 @@ public class HistoryHandler {
 	 * @return wPercents an array of double that represents the percentage full
 	 *         data of the last week
 	 */
-	public double[][] getAllPercents() {
+	public double[][] getWeekPercents() {
 		readData();
 
 		double[][] wPercents = new double[histL][timeIncr];
@@ -358,25 +339,33 @@ public class HistoryHandler {
 	}
 
 	/**
-	 * Prints the data to a human-readable plaintext file
+	 * Gets the parking history one week before yesterday
 	 * 
-	 * @param parkingHistoryFile
-	 * @throws FileNotFoundException
+	 * @return an array of doubles that holds the percent full of the lot
+	 *         throughout the day
 	 */
-	public void saveAsPlainText(String parkingHistoryFile) throws FileNotFoundException {
+	public double[] getLastWeekYesterday() {
+		return getDaysAgoPercents(8);
+	}
 
-		getDOM(); //make sure the history Document Object Model is up to date
-		NodeList days = doc.getDocumentElement().getElementsByTagName("day");//a list of the day DOM objects
-		double[][] percents = getAllPercents(); //get the percent full data for the saved history
-		BufferedWriter writer = new BufferedWriter(new FileWriter(parkingHistoryFile));
-		
-		writer.write("Date:\tTime:\t%Full:\n");
-		for (int i = 0; i < histL; i++) {
-			for (int j = 0; j < timeIncr; j++){
-				writer.write(days.item(i).getAttributes().getNamedItem("date")+"\t"+days.item(i).getChildNodes().item(j).getAttributes().getNamedItem("time")+"\t"+String.valueOf(percents[i][j])+"\n");
-			}
-		}
-		writer.write("\n\nPerl Jam Software LLC. sincerely thanks you for your support.");
+	/**
+	 * Gets the parking history one week before today
+	 * 
+	 * @return an array of doubles that holds the percent full of the lot
+	 *         throughout the day
+	 */
+	public double[] getLastWeekToday() {
+		return getDaysAgoPercents(7);
+	}
+
+	/**
+	 * Gets the parking history one week before tomorrow
+	 * 
+	 * @return an array of doubles that holds the percent full of the lot
+	 *         throughout the day
+	 */
+	public double[] getLastWeekTomorrow() {
+		return getDaysAgoPercents(6);
 	}
 
 	/**

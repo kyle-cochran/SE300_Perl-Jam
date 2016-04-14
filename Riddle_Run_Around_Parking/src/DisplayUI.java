@@ -63,8 +63,8 @@ public class DisplayUI extends Pane {
 	HBox hbox;
 	HBox title;
 	VBox spacing;
+	File parkingHistoryFile = new File("Parking Spot History.txt");
 	static Pane pane = new Pane();
-	HistoryHandler history = new HistoryHandler();
 
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
@@ -87,9 +87,11 @@ public class DisplayUI extends Pane {
 		title = addTitle();
 	}
 
-	
 	public LineChart lastWeekToday() {
-		double[] percentFull = history.getDaysAgoPercents(7);
+
+		// TODO call a method to get these values
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
 
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -112,7 +114,8 @@ public class DisplayUI extends Pane {
 	
 	public LineChart lastWeekYesterday(){
 		//TODO call a method to get these values
-		double [] percentFull = history.getDaysAgoPercents(8);
+		int[] lastPercentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100};
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
@@ -133,7 +136,8 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekTomorrow(){
 		//TODO call a method to get these values
-		double[] percentFull = history.getDaysAgoPercents(6);
+		int[]tomorrowPercentFull= {10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100};
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
@@ -172,7 +176,6 @@ public class DisplayUI extends Pane {
 
 		return button;
 	}
-	
 
 	/**
 	 * the readHistory uses the buffered reader to read the high score file and
@@ -183,7 +186,7 @@ public class DisplayUI extends Pane {
 		BufferedReader buffRead = null;
 		try {
 			// tries to read parking history file
-			buffRead = new BufferedReader(new FileReader("/src/media/Parking_History.txt"));
+			buffRead = new BufferedReader(new FileReader(parkingHistoryFile));
 
 			String currentLine = "", fileText = "";
 

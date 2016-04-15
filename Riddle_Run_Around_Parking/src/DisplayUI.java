@@ -50,8 +50,8 @@ import javafx.scene.shape.*;
 /**
  * Class responsible for displaying main window and children objects
  * 
- * @author Taylor Hester, Matthew Caixeiro
- * @version 1.0
+ * @author Taylor Hester, Matthew Caixeiro, Austin Musser
+ * @version 2.0
  */
 
 public class DisplayUI extends Pane {
@@ -66,6 +66,8 @@ public class DisplayUI extends Pane {
 	File parkingHistoryFile = new File("Parking Spot History.txt");
 	static Pane pane = new Pane();
 
+	HistoryHandler history = new HistoryHandler();
+	
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
 	 * then set to a corresponding variable so that the create objects can be
@@ -90,9 +92,9 @@ public class DisplayUI extends Pane {
 	public LineChart lastWeekToday() {
 
 		// TODO call a method to get these values
-		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
-
+//		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+//				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
+		double[] percentFull = history.getDaysAgoPercents(7); //Get parking data 7 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
@@ -114,8 +116,10 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekYesterday() {
 		// TODO call a method to get these values
-		int[] lastPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+//		int[] lastPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+//				100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		double[] percentFull = history.getDaysAgoPercents(8); //Get parking data 8 days ago
+		
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
@@ -136,8 +140,9 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekTomorrow() {
 		// TODO call a method to get these values
-		int[] tomorrowPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+//		int[] tomorrowPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+//				100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		double[] percentFull = history.getDaysAgoPercents(6); //Get parking data 6 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");

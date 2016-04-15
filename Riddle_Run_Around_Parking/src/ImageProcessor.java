@@ -363,7 +363,7 @@ public class ImageProcessor {
 
 		lines[21][0] = 543;
 		lines[21][1] = 290 + offset;
-		lines[21][2] = 657;
+		lines[21][2] = 557;
 		lines[21][3] = 330 + offset;
 
 		lines[22][0] = 571;

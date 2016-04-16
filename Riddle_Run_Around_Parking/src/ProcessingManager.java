@@ -14,7 +14,7 @@ public class ProcessingManager implements Runnable {
 	public int refreshFreq;
 	public ImageProcessor imP;
 	public HistoryHandler hH;
-	private volatile boolean procOn;
+	public volatile boolean procOn;
 	private volatile boolean timeToUpdate;
 	private volatile boolean okayToUpdate = true;
 	private Thread t;
@@ -41,6 +41,7 @@ public class ProcessingManager implements Runnable {
 
 		procOn = false;
 		imP = new ImageProcessor();
+		hH = new HistoryHandler();
 	}
 
 	/**
@@ -68,12 +69,12 @@ public class ProcessingManager implements Runnable {
 			t.join(); // waits for the thread to die naturally
 		} catch (InterruptedException e) {
 			System.out.println(
-					"Error: The thread was interrupted when trying to finish execution. Looks like it's slacking.");
+					"Error: The thread was interrupted when trying to finish execution. How rude.");
 			e.printStackTrace();
 		}
 
 		if (!t.isAlive()) {
-			t = null;
+			t = null; // if the thread died successfully, clear the variable
 		} else {
 			System.out.println("Error: killing the thread failed. Try harder next time.");
 		}
@@ -107,7 +108,7 @@ public class ProcessingManager implements Runnable {
 			// checks whether it's 00 or 30 minutes into the hour
 			timeToUpdate = (minutes == 0 || minutes == 30);
 
-			// if it's 00 or 30 minutes in an hour, and we haven't update yet,
+			// if it's 00 or 30 minutes in an hour, and we haven't updated yet,
 			// add the spots to history, deactivate update switch
 			if (timeToUpdate && okayToUpdate) {
 				hH.appendCurrentTime(currentSpots);

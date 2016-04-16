@@ -144,7 +144,7 @@ public class ImageProcessor {
 			// Go from the lower x bound to the higher x bound
 			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
 				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][4]; k++) {
+				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count[i] += binaryArray[j][k];
 				}
@@ -153,7 +153,7 @@ public class ImageProcessor {
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
 			if (count[i] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][4]))))) {
+					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
@@ -168,7 +168,7 @@ public class ImageProcessor {
 			// Go from the lower x bound to the higher x bound
 			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
 				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][4]; k++) {
+				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count[i - 1] += binaryArray[j][k];
 				}
@@ -177,7 +177,7 @@ public class ImageProcessor {
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
 			if (count[i - 1] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][4]))))) {
+					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 1] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
@@ -190,7 +190,7 @@ public class ImageProcessor {
 			// Go from the lower x bound to the higher x bound
 			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
 				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][4]; k++) {
+				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count[i - 2] += binaryArray[j][k];
 				}
@@ -199,7 +199,7 @@ public class ImageProcessor {
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
 			if (count[i - 3] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][4]))))) {
+					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 2] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
@@ -212,7 +212,7 @@ public class ImageProcessor {
 			// Go from the lower x bound to the higher x bound
 			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
 				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][4]; k++) {
+				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count[i - 3] += binaryArray[j][k];
 				}
@@ -221,7 +221,7 @@ public class ImageProcessor {
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
 			if (count[i - 3] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][4]))))) {
+					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 3] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full

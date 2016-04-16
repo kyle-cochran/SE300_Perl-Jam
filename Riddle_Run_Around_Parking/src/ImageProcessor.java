@@ -7,18 +7,14 @@ import static org.bytedeco.javacpp.opencv_imgcodecs.cvLoadImage;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_GAUSSIAN;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_RGB2GRAY;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_THRESH_BINARY;
+import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.cvSmooth;
 import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Random;
-
-import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
-import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;

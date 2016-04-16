@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Calendar;
 
 /**
- * @author Kyle
+ * @author Kyle Cochran
  * @version 1.0
  * @created 18-Feb-2016 11:36:22 AM
  */

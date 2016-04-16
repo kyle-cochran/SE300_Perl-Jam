@@ -24,7 +24,7 @@ public class ProcessingManagerTest {
 	}
 
 	@Test
-	public void testBeginProcThread_1() {
+	public void testBeginProcThread() {
 		pm.beginProcThread();
 		assertTrue(pm.procOn);
 	}

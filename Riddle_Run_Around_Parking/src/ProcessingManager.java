@@ -1,7 +1,10 @@
 package src;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 
 /**
  * @author Kyle Cochran
@@ -24,7 +27,7 @@ public class ProcessingManager implements Runnable {
 	 */
 	public ProcessingManager() {
 		refreshFreq = 1; // indicates that analysis should refresh once per
-							// second
+		// second
 		procOn = false;
 		imP = new ImageProcessor();
 		hH = new HistoryHandler();
@@ -100,6 +103,9 @@ public class ProcessingManager implements Runnable {
 
 			// get newest spot data
 			updateSpots();
+			
+			//Update UI
+			getCurrentPercent();
 
 			// logic to update history at certain times of
 			// day-----------------------------------------------------------------------
@@ -140,14 +146,22 @@ public class ProcessingManager implements Runnable {
 		return currentSpots;
 	}
 
-	public double getCurrentPercent() {
+	public void getCurrentPercent() {
 
 		int total = 0;
 
 		for (int i = 0; i < currentSpots.length; i++) {
 			total += currentSpots[i];
 		}
-		return 100 * total / currentSpots.length;
+		int percent = 100 * total / currentSpots.length;
+
+		//Update UI with cool stuff
+		DisplayUI.parkingPercent.setText(String.format(percent + "%% of the spots in this lot are currently full."));
+
+		// get current date time with Calendar
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		DisplayUI.timeText.setText(String.format("Time: " + cal.getTime()));
 	}
 
 	public DataInputStream getLotVideoFeed() {

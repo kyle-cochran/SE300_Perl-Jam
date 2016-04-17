@@ -65,7 +65,9 @@ public class DisplayUI extends Pane {
 	VBox spacing;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
 	static Pane pane = new Pane();
-
+	static Label parkingPercent = new Label("Default Text");
+    static Label timeText = new Label();
+	
 	HistoryHandler history = new HistoryHandler();
 	
 	/*
@@ -92,12 +94,13 @@ public class DisplayUI extends Pane {
 	public LineChart lastWeekToday() {
 
 		// TODO call a method to get these values
-//		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-//				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
-		double[] percentFull = history.getDaysAgoPercents(7); //Get parking data 7 days ago
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
+		//double[] percentFull = history.getDaysAgoPercents(7); //Get parking data 7 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
+		xAxis.setLabel("Time");
 
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 
@@ -116,14 +119,15 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekYesterday() {
 		// TODO call a method to get these values
-//		int[] lastPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-//				100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-		double[] percentFull = history.getDaysAgoPercents(8); //Get parking data 8 days ago
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+//		double[] percentFull = history.getDaysAgoPercents(8); //Get parking data 8 days ago
 		
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
-
+		xAxis.setLabel("Time");
+		
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 
 		lineChart.setTitle("Yesterday Last Week");
@@ -140,12 +144,13 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekTomorrow() {
 		// TODO call a method to get these values
-//		int[] tomorrowPercentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-//				100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-		double[] percentFull = history.getDaysAgoPercents(6); //Get parking data 6 days ago
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+//		double[] percentFull = history.getDaysAgoPercents(6); //Get parking data 6 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
+		xAxis.setLabel("Time");
 
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 
@@ -258,34 +263,72 @@ public class DisplayUI extends Pane {
 	 */
 	public VBox addInfoPanel() {
 		VBox vbox = new VBox();
-		// vbox.setPadding(new Insets(10));
-		// vbox.setSpacing(8);
+		vbox.setPadding(new Insets(10));
+		vbox.setSpacing(20);
+		vbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		vbox.setAlignment(Pos.CENTER);
 
 		Text title = new Text("Available Parking Spots");
-		title.maxWidth(200);
+		title.maxWidth(500);
+		title.minWidth(500);
 		title.setWrappingWidth(200);
 		title.setTextAlignment(TextAlignment.CENTER);
 		title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		title.setStyle("-fx-font-size: 42");
-
-		Label parkingInfo = new Label("Future Parking information text goes here");
-		parkingInfo.setWrapText(true);
-		parkingInfo.setMaxWidth(200);
-		parkingInfo.setTextAlignment(TextAlignment.CENTER);
+		
+		parkingPercent.setWrapText(true);
+		parkingPercent.setMaxWidth(500);
+		parkingPercent.setMinWidth(500);
+		parkingPercent.setAlignment(Pos.CENTER);
+		parkingPercent.setTextAlignment(TextAlignment.CENTER);
+		parkingPercent.setFont(Font.font("Arial", 14));
+		parkingPercent.setStyle("-fx-font-size: 18");
+		
+		Rectangle fill = new Rectangle();
+		fill.setWidth(500);
+		fill.setWidth(500);
+		fill.setFill(Color.WHITE);
+		fill.setStroke(null);
+		
 
 		// date and calender not sure how to add to UI
 		// TODO: add these to UI if not already there
 
+		Text dateTimeTitle = new Text();
+		Label dateText = new Label();
+		
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		// get current date time with Date()
 		Date date = new Date();
-		System.out.println(dateFormat.format(date));
 
-		// get current date time with Calendar
-		Calendar cal = Calendar.getInstance();
-		System.out.println(dateFormat.format(cal.getTime()));
 
-		vbox.getChildren().addAll(title, parkingInfo, PHbutton);
+		dateTimeTitle.setText("Date and Time");
+		dateTimeTitle.maxWidth(500);
+		dateTimeTitle.minWidth(500);
+		dateTimeTitle.setWrappingWidth(200);
+		dateTimeTitle.setTextAlignment(TextAlignment.CENTER);
+		dateTimeTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		dateTimeTitle.setStyle("-fx-font-size: 42");
+		
+		dateText.setText(String.format("Date: " + dateFormat.format(date)));
+		dateText.setWrapText(true);
+		dateText.setMaxWidth(500);
+		dateText.setMinWidth(500);
+		dateText.setAlignment(Pos.CENTER);
+		dateText.setTextAlignment(TextAlignment.CENTER);
+		dateText.setFont(Font.font("Arial", 14));
+		dateText.setStyle("-fx-font-size: 18");
+		
+		timeText.setWrapText(true);
+		timeText.setMaxWidth(500);
+		timeText.setMinWidth(500);
+		timeText.setAlignment(Pos.CENTER);
+		timeText.setTextAlignment(TextAlignment.CENTER);
+		timeText.setFont(Font.font("Arial", 14));
+		timeText.setStyle("-fx-font-size: 18");
+		
+		vbox.getChildren().addAll(title, parkingPercent, PHbutton, fill, dateTimeTitle, dateText, timeText);
 		// add all does not accept date and calendar types
 
 		// insert data regarding parking availability here
@@ -304,18 +347,13 @@ public class DisplayUI extends Pane {
 	}
 
 	public HBox addHBox() {
-		HBox hbox = new HBox(100);
-		hbox.setAlignment(Pos.CENTER);
+		HBox hbox = new HBox(200);
 		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
 
-		Rectangle graph1 = new Rectangle(200, 300);
-		Rectangle graph2 = new Rectangle(200, 300);
-		Rectangle graph3 = new Rectangle(200, 300);
-
-		graph1.setFill(Color.BLACK);
-		graph2.setFill(Color.BLACK);
-		graph3.setFill(Color.BLACK);
-
+		LineChart graph1 = lastWeekToday();
+		LineChart graph2 = lastWeekTomorrow();
+		LineChart graph3 = lastWeekYesterday();
+		
 		hbox.getChildren().addAll(graph1, graph2, graph3);
 
 		return hbox;
@@ -344,12 +382,13 @@ public class DisplayUI extends Pane {
 
 	public HBox addTitle() {
 		HBox hbox = new HBox();
-
+		hbox.setAlignment(Pos.CENTER);
+		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		
 		Label title = new Label("Riddle Run Around Parking");
 		title.setAlignment(Pos.CENTER);
 		title.setTextAlignment(TextAlignment.CENTER);
-		title.setStyle("-fx-font-family: 'Comic Sans MS'; -fx-font-size: 80");
-		title.setTextFill(Color.HOTPINK);
+		title.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 80");
 
 		hbox.getChildren().add(title);
 
@@ -397,7 +436,6 @@ public class DisplayUI extends Pane {
 
 		// displays the scene with the title
 		primaryStage.setScene(scene);
-		primaryStage.setMaximized(true);
 		primaryStage.setTitle("Riddle Run Around Parking");
 		primaryStage.show();
 

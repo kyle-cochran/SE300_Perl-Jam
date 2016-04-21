@@ -187,12 +187,13 @@ public class ProcessingManager implements Runnable {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
 				if((percentFull[i] >= 60) && (percentFull[i+1] >= 60)){
 			  
-					temp.setStroke(Color.YELLOW);
-					DisplayUI.rectangle = DisplayUI.addRectangle(i);} 
+					temp.setStroke(Color.YELLOW);}
+					//DisplayUI.rectangle = DisplayUI.addRectangle(i);
+					 
 				else{
 					temp.setStroke(Color.WHITE);} 
 		  
-		 DisplayUI.pane.getChildren().add(temp);
+		// DisplayUI.pane.getChildren().add(temp);
 		 DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
 	}
 	}

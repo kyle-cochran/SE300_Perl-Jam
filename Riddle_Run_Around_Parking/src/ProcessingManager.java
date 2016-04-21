@@ -90,7 +90,9 @@ public class ProcessingManager implements Runnable {
 	public void run() {
 
 		updateSpots();
-
+		
+		int minutes;
+		
 		procOn = true;
 
 		while (procOn) {
@@ -109,7 +111,7 @@ public class ProcessingManager implements Runnable {
 
 			// logic to update history at certain times of
 			// day-----------------------------------------------------------------------
-			int minutes = Calendar.getInstance().getTime().getMinutes();
+			minutes = Calendar.getInstance().getTime().getMinutes();
 
 			// checks whether it's 00 or 30 minutes into the hour
 			timeToUpdate = (minutes == 0 || minutes == 30);

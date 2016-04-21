@@ -11,6 +11,7 @@ import org.bytedeco.javacv.FrameGrabber.Exception;
  * @author Austin Musser
  * @version 2.0
  */
+@SuppressWarnings("all")
 public class CameraDriver {
 
 	private Frame lotFrame;

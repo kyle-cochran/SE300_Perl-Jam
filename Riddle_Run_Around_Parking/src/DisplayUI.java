@@ -68,7 +68,7 @@ public class DisplayUI extends Pane {
 	static Rectangle rectangle;
 	static Label parkingPercent = new Label("Default Text");
 	static Label timeText = new Label();
-
+	ProcessingManager pm;
 	HistoryHandler history = new HistoryHandler();
 
 	/*
@@ -82,7 +82,7 @@ public class DisplayUI extends Pane {
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
 
-	public DisplayUI() {
+	public DisplayUI(ProcessingManager pm) {
 		borderpane = new BorderPane();
 		r =  addRectangleNoI();
 		PHbutton = buttonHistory();
@@ -90,6 +90,7 @@ public class DisplayUI extends Pane {
 		spacing = addSpacing();
 		hbox = addHBox();
 		title = addTitle();
+		this.pm = pm;
 	}
 
 	public LineChart lastWeekToday() {
@@ -431,16 +432,16 @@ public class DisplayUI extends Pane {
 		ImageProcessor ip = new ImageProcessor();
 		int[][] lines = ip.getSpotMatrix();
 
-		// Create the lines in a loop
-		double[] percentFull = history.getDaysAgoPercents(0);
-		for (int i = 0; i <= lines.length - 1; i++) {
+		// Create the lines in a looplines.length
+		int[] percentFull = pm.getCurrentSpots();
+		for (int i = 0; i < 28; i++) {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			if ((percentFull[i] >= 60) && percentFull[i + 1] >= 60) {
+			if ((percentFull[i] == 1) ) {
 				temp.setStroke(Color.YELLOW);
 			} else {
 				temp.setStroke(Color.WHITE);
 			}
-
+//&& (percentFull[i + 1] >= 60)
 			pane.getChildren().add(temp);
 		}
 

@@ -170,6 +170,8 @@ public class ProcessingManager implements Runnable {
 		Calendar cal = Calendar.getInstance();
 		DisplayUI.timeText.setText(String.format("Time: " + cal.getTime()));
 	}
+	
+
 
 	public DataInputStream getLotVideoFeed() {
 		return null;
@@ -181,21 +183,21 @@ public class ProcessingManager implements Runnable {
 
 	public void setLotHistory(int[] newHist) {
 	}
-	public void lineColor(){
+	/*public void lineColor(){
 		double[] percentFull = history.getDaysAgoPercents(0); 
 		for (int i = 0; i <= lines.length - 1; i++) {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-				if((percentFull[i] >= 60) && (percentFull[i+1] >= 60)){
+				if((percentFull[i] >= 60)){
 			  
 					temp.setStroke(Color.YELLOW);}
 					//DisplayUI.rectangle = DisplayUI.addRectangle(i);
-					 
+					 // && (percentFull[i+1] >= 60)
 				else{
 					temp.setStroke(Color.WHITE);} 
 		  
-		// DisplayUI.pane.getChildren().add(temp);
-		 DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
+		DisplayUI.pane.getChildren().add(temp);
+		// DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
 	}
-	}
+	}*/
 	
 }// end ProcessigManager

@@ -5,6 +5,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+
 
 /**
  * @author Kyle Cochran
@@ -21,6 +24,10 @@ public class ProcessingManager implements Runnable {
 	private volatile boolean timeToUpdate;
 	private volatile boolean okayToUpdate = true;
 	private Thread t;
+	HistoryHandler history = new HistoryHandler();
+	ImageProcessor ip = new ImageProcessor();
+	int[][] lines = ip.getSpotMatrix();
+
 
 	/**
 	 * Default constructor. Auto-sets refresh frequency to 1 per second.
@@ -174,4 +181,20 @@ public class ProcessingManager implements Runnable {
 
 	public void setLotHistory(int[] newHist) {
 	}
+	public void lineColor(){
+		double[] percentFull = history.getDaysAgoPercents(0); 
+		for (int i = 0; i <= lines.length - 1; i++) {
+			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+				if((percentFull[i] >= 60) && (percentFull[i+1] >= 60)){
+			  
+					temp.setStroke(Color.YELLOW);
+					DisplayUI.rectangle = DisplayUI.addRectangle(i);} 
+				else{
+					temp.setStroke(Color.WHITE);} 
+		  
+		 DisplayUI.pane.getChildren().add(temp);
+		 DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
+	}
+	}
+	
 }// end ProcessigManager

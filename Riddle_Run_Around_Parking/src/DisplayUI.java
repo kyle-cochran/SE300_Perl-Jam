@@ -65,6 +65,7 @@ public class DisplayUI extends Pane {
 	VBox spacing;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
 	static Pane pane = new Pane();
+	static Rectangle rectangle;
 	static Label parkingPercent = new Label("Default Text");
     static Label timeText = new Label();
 	
@@ -83,7 +84,7 @@ public class DisplayUI extends Pane {
 
 	public DisplayUI() {
 		borderpane = new BorderPane();
-		r = addRectangle();
+		//r = addRectangle();
 		PHbutton = buttonHistory();
 		infoPanel = addInfoPanel();
 		spacing = addSpacing();
@@ -365,20 +366,18 @@ public class DisplayUI extends Pane {
 	 * @return rectangle a rectangle of a set size to fit in the application
 	 *         window
 	 */
-	public Rectangle addRectangle() {
+	public static Rectangle addRectangle(int i) {
 		Rectangle rectangle = new Rectangle();
-		rectangle.setX(50);
-		rectangle.setY(50);
-		rectangle.setWidth(200);
-		rectangle.setHeight(100);
-		rectangle.setArcWidth(20);
-		rectangle.setArcHeight(20);
-		rectangle.setFill(null);
-		// set background to parking lot
+		rectangle.setX(i);
+		rectangle.setY(i+1);
+		rectangle.setWidth(i+1);
+		rectangle.setHeight(i+3);
+		rectangle.setFill(Color.YELLOW);
 
 		return rectangle;
 
 	}
+
 
 	public HBox addTitle() {
 		HBox hbox = new HBox();
@@ -419,17 +418,19 @@ public class DisplayUI extends Pane {
 		ImageProcessor ip = new ImageProcessor();
 		int[][] lines = ip.getSpotMatrix();
 
+		
 		// Create the lines in a loop
-		for (int i = 0; i <= lines.length - 1; i++) {
-			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			/*
-			 * TODO: create an array with the percentages of spots filled if int
-			 * todaySpotsFilled[i] >= 60{ temp.setStroke(Color.YELLOW);} else{
-			 * temp.setStroke(Color.WHITE);}
-			 */
-			temp.setStroke(Color.WHITE);
-			pane.getChildren().add(temp);
-		}
+				double[] percentFull = history.getDaysAgoPercents(0); 
+				for (int i = 0; i <= lines.length - 1; i++) {
+					Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+					  if((percentFull[i] >= 60) && percentFull[i+1] >= 60){
+						  temp.setStroke(Color.YELLOW);} 
+					 else{
+					 temp.setStroke(Color.WHITE);}
+					
+					pane.getChildren().add(temp);
+				}
+
 
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);

@@ -451,9 +451,10 @@ public class DisplayUI extends Pane {
 		// spots
 		pane.getChildren().add(r);
 		pane.setMinSize(800, 500);
-
+		
+		/*
 		// Create image processor class so the lines can be created
-		ImageProcessor ip = new ImageProcessor();
+		ImageProcessor ip = pm.returnImProcRef();
 		int[][] lines = ip.getSpotMatrix();
 
 		// Create the lines in a looplines.length
@@ -473,9 +474,10 @@ public class DisplayUI extends Pane {
 			}
 //&& (percentFull[i + 1] >= 60)
 			pane.getChildren().add(temp);
+			
 		
 		}
-
+*/
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 

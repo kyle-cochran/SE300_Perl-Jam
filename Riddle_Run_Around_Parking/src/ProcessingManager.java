@@ -113,8 +113,6 @@ public class ProcessingManager implements Runnable {
 		
 		int minutes;
 		
-		float secondCounter = 0;
-		
 		procOn = true;
 
 		//this will loop to make the processing continuous
@@ -156,15 +154,11 @@ public class ProcessingManager implements Runnable {
 			}
 			// -----------------------------------------------------------------------------------------------------------------------
 		
-			secondCounter += 1/refreshFreq;
 			
-			if(secondCounter > uiRefresh){
 				//Update UI
 				updateUIPercent(getCurrentPercent());
 				updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
 				
-				secondCounter = 0;
-			}
 		}
 	}
 
@@ -231,4 +225,8 @@ public class ProcessingManager implements Runnable {
 	}
 	}
 	
+	
+	public ImageProcessor returnImProcRef(){
+		return imP;
+	}
 }// end ProcessigManager

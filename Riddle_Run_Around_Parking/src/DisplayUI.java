@@ -113,7 +113,7 @@ public class DisplayUI extends Pane {
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
 				+"The yellow highlights show where there are open spots. Please do not"
-				+"use this application and drive. Thank you. ";
+				+"use this application and drive. Thank you.";
 		
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
@@ -391,17 +391,7 @@ public class DisplayUI extends Pane {
 	 * @return rectangle a rectangle of a set size to fit in the application
 	 *         window
 	 */
-	public static Rectangle addRectangle(int i) {
-		Rectangle rectangle = new Rectangle();
-		rectangle.setX(i);
-		rectangle.setY(i + 1);
-		rectangle.setWidth(i + 1);
-		rectangle.setHeight(i + 3);
-		rectangle.setFill(Color.YELLOW);
-
-		return rectangle;
-
-	}
+	
 	
 	public static Rectangle addRectangleNoI() {
 		Rectangle rectangle = new Rectangle();
@@ -462,16 +452,14 @@ public class DisplayUI extends Pane {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
 			if ((percentFull[i] == 0) ) {
 				temp.setStroke(Color.YELLOW);
-				temp.setStrokeWidth(30);
+				temp.setStrokeWidth(2.5);
 				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 				
-				//rectangle = addRectangle(i);
 			} else {
 				temp.setStroke(Color.WHITE);
 				temp.setStrokeWidth(2.5);
 				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 			}
-//&& (percentFull[i + 1] >= 60)
 			pane.getChildren().add(temp);
 		
 		}

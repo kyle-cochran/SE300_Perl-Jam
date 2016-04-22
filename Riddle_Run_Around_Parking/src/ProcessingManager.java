@@ -195,7 +195,7 @@ public class ProcessingManager implements Runnable {
 		if ((percentFull[i] == 0) ) {
 			temp.setStroke(Color.YELLOW);
 			temp.setStroke(Color.YELLOW);
-			temp.setStrokeWidth(30);
+			temp.setStrokeWidth(2.5);
 			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 		} else {
 			temp.setStroke(Color.WHITE);

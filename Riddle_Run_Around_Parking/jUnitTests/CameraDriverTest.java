@@ -1,6 +1,6 @@
 package jUnitTests;
 
-/*import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -31,4 +31,4 @@ public class CameraDriverTest {
 		fail("Not yet implemented");
 	}
 
-}*/
+}

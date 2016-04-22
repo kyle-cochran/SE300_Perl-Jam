@@ -4,6 +4,14 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 
 /**
@@ -14,7 +22,8 @@ import java.util.Calendar;
 public class ProcessingManager implements Runnable {
 
 	private volatile int[] currentSpots;
-	public int refreshFreq;
+	public volatile int refreshFreq;
+	public volatile int uiRefresh;
 	public ImageProcessor imP;
 	public HistoryHandler hH;
 	public volatile boolean procOn;
@@ -28,6 +37,7 @@ public class ProcessingManager implements Runnable {
 	public ProcessingManager() {
 		refreshFreq = 1; // indicates that analysis should refresh once per
 		// second
+		uiRefresh = 2;//amount of seconds between UI refreshes
 		procOn = false;
 		imP = new ImageProcessor();
 		hH = new HistoryHandler();
@@ -56,6 +66,8 @@ public class ProcessingManager implements Runnable {
 		if (t == null) {
 			t = new Thread(this, "proc-thread");
 			t.start();
+		}else{
+		System.out.println("Error: The processing thread failed to initialize. This was likely caused by the presence of a pre-existing processing thread");
 		}
 	}
 
@@ -93,8 +105,11 @@ public class ProcessingManager implements Runnable {
 		
 		int minutes;
 		
+		float secondCounter = 0;
+		
 		procOn = true;
 
+		//this will loop to make the processing continuous
 		while (procOn) {
 			try {
 				Thread.sleep(1000 / refreshFreq);
@@ -106,12 +121,10 @@ public class ProcessingManager implements Runnable {
 			// get newest spot data
 			updateSpots();
 			
-			//Update UI
-			getCurrentPercent();
 
 			// logic to update history at certain times of
 			// day-----------------------------------------------------------------------
-			minutes = Calendar.getInstance().getTime().getMinutes();
+			minutes = GregorianCalendar.getInstance().getTime().getMinutes();
 
 			// checks whether it's 00 or 30 minutes into the hour
 			timeToUpdate = (minutes == 0 || minutes == 30);
@@ -128,6 +141,16 @@ public class ProcessingManager implements Runnable {
 				okayToUpdate = true;
 			}
 			// -----------------------------------------------------------------------------------------------------------------------
+		
+			secondCounter += 1/refreshFreq;
+			
+			if(secondCounter > uiRefresh){
+				//Update UI
+				updateUIPercent(getCurrentPercent());
+				updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
+				
+				secondCounter = 0;
+			}
 		}
 	}
 
@@ -148,32 +171,29 @@ public class ProcessingManager implements Runnable {
 		return currentSpots;
 	}
 
-	public void getCurrentPercent() {
+	public int getCurrentPercent() {
 
 		int total = 0;
 
 		for (int i = 0; i < currentSpots.length; i++) {
 			total += currentSpots[i];
 		}
-		int percent = 100 * total / currentSpots.length;
+		return 100 * total / currentSpots.length;
+	}
 
+	public void updateUIPercent(int percent){
 		//Update UI with cool stuff
 		DisplayUI.parkingPercent.setText(String.format(percent + "%% of the spots in this lot are currently full."));
 
 		// get current date time with Calendar
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Calendar cal = Calendar.getInstance();
 		DisplayUI.timeText.setText(String.format("Time: " + cal.getTime()));
 	}
-
-	public DataInputStream getLotVideoFeed() {
-		return null;
-	}
-
-	public int[] getLotHistory() {
-		return null;
-	}
-
-	public void setLotHistory(int[] newHist) {
+	
+	public void updateUILiveFeed(WritableImage wr){
+				DisplayUI.pane.setBackground(
+				new Background(new BackgroundImage(wr, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
 	}
 }// end ProcessigManager

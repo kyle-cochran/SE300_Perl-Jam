@@ -35,6 +35,7 @@ import javafx.scene.layout.BackgroundSize;
  * @version 1.0
  */
 public class ImageProcessor {
+	private Frame currentFrame;
 	private IplImage lotIplImage;
 	private IplImage lotIplImage_gray;
 	private IplImage refPic;
@@ -83,7 +84,9 @@ public class ImageProcessor {
 	 */
 	public int[][] diffAsBinArray() {
 
-		lotIplImage = iplConverter.convert(cameraDriver.getImage());
+		currentFrame = cameraDriver.getImage();
+		
+		lotIplImage = iplConverter.convert(currentFrame);
 
 		// add a blur to lot image and reference image to eliminate jitter
 		// effects
@@ -424,7 +427,9 @@ public class ImageProcessor {
 	 * following sources:
 	 * 
 	 * https://blog.idrsolutions.com/2012/11/convert-bufferedimage-to-javafx-
-	 * image/ http://stackoverflow.com/questions/31873704/javacv-how-to-convert-
+	 * image/ 
+	 * 
+	 * http://stackoverflow.com/questions/31873704/javacv-how-to-convert-
 	 * iplimage-tobufferedimage
 	 * 
 	 * @param src
@@ -433,7 +438,7 @@ public class ImageProcessor {
 	 *         JavaFX library
 	 */
 
-	public static void IplImageToWritableImage(Frame framesrc) {
+	public WritableImage IplImageToWritableImage(Frame framesrc) {
 
 		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
 		BufferedImage bf = paintConverter.getBufferedImage(framesrc, 1);
@@ -449,9 +454,10 @@ public class ImageProcessor {
 				}
 			}
 		}
-
-		DisplayUI.pane.setBackground(
-				new Background(new BackgroundImage(wr, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
+		return wr;
+	}
+	
+	public Frame returnCurrentFrame(){
+		return currentFrame;
 	}
 }// end ImageProcessor

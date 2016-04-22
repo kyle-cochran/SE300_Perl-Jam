@@ -32,13 +32,13 @@ import org.xml.sax.SAXException;
 
 public class HistoryHandler {
 	// Some class definitions
-	File historyFile = new File("/src/media/7_day_history.xml"); // the file
+	File historyFile;// the file
 	// where the
 	// parking
 	// history
 	// will be
 	// stored
-	File parkingHistoryFile = new File("/src/media/Parking_History.txt"); // file
+	File parkingHistoryFile; // file
 	// used
 	// to
 	// display
@@ -54,7 +54,7 @@ public class HistoryHandler {
 	// a file
 	Transformer transformer; // For writing the document object to a file
 	DOMSource source; // For writing document object to a file
-	StreamResult result = new StreamResult(historyFile);// output to write to
+	StreamResult result;// output to write to
 
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // this is how
 	// the date will
@@ -92,6 +92,10 @@ public class HistoryHandler {
 
 	public HistoryHandler() {
 
+		historyFile = new File("src/media/8_day_history.xml"); 
+		parkingHistoryFile = new File("/home/kyle/git/SE300_Perl-Jam/Riddle_Run_Around_Parking/src/media/Parking_History.txt");
+		result = new StreamResult(historyFile);
+		
 		dbFactory = DocumentBuilderFactory.newInstance();
 		try {
 			// make the document builder, then the document

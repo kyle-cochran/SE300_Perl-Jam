@@ -24,6 +24,9 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -55,7 +58,6 @@ import javafx.scene.shape.*;
  */
 
 public class DisplayUI extends Pane {
-	// create new border pane
 	BorderPane borderpane;
 	Rectangle r;
 	Button PHbutton;
@@ -63,13 +65,18 @@ public class DisplayUI extends Pane {
 	HBox hbox;
 	HBox title;
 	VBox spacing;
+	Menu menu; 
+	MenuBar menuBar;
+	Menu menuAbout;
+	MenuItem myAbout;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
 	static Pane pane = new Pane();
+	static Rectangle rectangle;
 	static Label parkingPercent = new Label("Default Text");
-    static Label timeText = new Label();
-	
+	static Label timeText = new Label();
+	ProcessingManager pm;
 	HistoryHandler history = new HistoryHandler();
-	
+
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
 	 * then set to a corresponding variable so that the create objects can be
@@ -80,23 +87,57 @@ public class DisplayUI extends Pane {
 			"11:00 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM",
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
-
-	public DisplayUI() {
+	 
+	public DisplayUI(ProcessingManager pm) {
 		borderpane = new BorderPane();
-		r = addRectangle();
+		r =  addRectangleNoI();
 		PHbutton = buttonHistory();
 		infoPanel = addInfoPanel();
 		spacing = addSpacing();
 		hbox = addHBox();
 		title = addTitle();
+		this.pm = pm;
+		addMenu();
 	}
-
+	
+	public void addMenu(){
+		menuAbout = new Menu("Directions");
+		myAbout = new MenuItem("About This Program");
+		menuBar = new MenuBar();
+		menuAbout.getItems().add(myAbout);
+		menuBar.getMenus().addAll(menuAbout);
+		
+		myAbout.setOnAction(e -> showAbout());
+		
+	}
+	private void showAbout(){
+		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
+				+"The yellow highlights show where there are open spots. Please do not"
+				+"use this application and drive. Thank you. ";
+		
+		Label aboutLabel = new Label();
+		aboutLabel.setWrapText(true);
+		aboutLabel.setTextAlignment(TextAlignment.CENTER);
+		aboutLabel.setFont(Font.font("Comic Sans MS", 14));
+		aboutLabel.setText(aboutText);
+		
+		StackPane pane = new StackPane();
+		pane.getChildren().add(aboutLabel);
+		
+		Scene scene = new Scene(pane, 550, 300);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("About");
+		stage.setResizable(false);
+		stage.show();
+	}
 	public LineChart lastWeekToday() {
 
 		// TODO call a method to get these values
 		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
 				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
-		//double[] percentFull = history.getDaysAgoPercents(7); //Get parking data 7 days ago
+		// double[] percentFull = history.getDaysAgoPercents(7); //Get parking
+		// data 7 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
@@ -119,15 +160,16 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekYesterday() {
 		// TODO call a method to get these values
-		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-//		double[] percentFull = history.getDaysAgoPercents(8); //Get parking data 8 days ago
-		
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		// double[] percentFull = history.getDaysAgoPercents(8); //Get parking
+		// data 8 days ago
+
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
 		xAxis.setLabel("Time");
-		
+
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 
 		lineChart.setTitle("Yesterday Last Week");
@@ -144,9 +186,10 @@ public class DisplayUI extends Pane {
 
 	public LineChart lastWeekTomorrow() {
 		// TODO call a method to get these values
-		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 };
-//		double[] percentFull = history.getDaysAgoPercents(6); //Get parking data 6 days ago
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		// double[] percentFull = history.getDaysAgoPercents(6); //Get parking
+		// data 6 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
@@ -180,7 +223,7 @@ public class DisplayUI extends Pane {
 			try {
 				readHistory();
 			} catch (Exception e1) {
-				e1.printStackTrace();
+			//	e1.printStackTrace();
 			}
 		});
 
@@ -232,28 +275,14 @@ public class DisplayUI extends Pane {
 			// if the file can not be read the error is caught and given an
 			// exception
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 
 	}
-	// This method allows data to be written to a file, this might not go here
-	// but i thought i would create it then we could move it
-	// TODO: find out what we want in the parkingHistoryFile
-	// TODO: create a parkingHistoryFile
-	/*
-	 * private void writeHistorytoFile(String parkingdate) throws IOException{
-	 * 
-	 * File parkingHistoryFile = new File("Parking Spot History.txt");
-	 * parkingHistoryFile.createNewFile();
-	 * 
-	 * BufferedWriter buffWriter = new BufferedWriter(new
-	 * FileWriter(parkingHistoryFile, true)); //data we want in the file put
-	 * here //buffWriter.write(String.format());
-	 * //buffWriter.write(String.format(
-	 * "[%s] %s: Number of Clicks to Victory: %d\n", new Date().toString(),
-	 * playerName, gridPaneOpponent.getnClicks())); //closes the buffered writer
-	 * buffWriter.close(); }
-	 */
+	
+
+	
+
 
 	/**
 	 * Creates a vbox that will display the data regarding the parking
@@ -275,7 +304,7 @@ public class DisplayUI extends Pane {
 		title.setTextAlignment(TextAlignment.CENTER);
 		title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		title.setStyle("-fx-font-size: 42");
-		
+
 		parkingPercent.setWrapText(true);
 		parkingPercent.setMaxWidth(500);
 		parkingPercent.setMinWidth(500);
@@ -283,25 +312,22 @@ public class DisplayUI extends Pane {
 		parkingPercent.setTextAlignment(TextAlignment.CENTER);
 		parkingPercent.setFont(Font.font("Arial", 14));
 		parkingPercent.setStyle("-fx-font-size: 18");
-		
+
 		Rectangle fill = new Rectangle();
 		fill.setWidth(500);
 		fill.setWidth(500);
 		fill.setFill(Color.WHITE);
 		fill.setStroke(null);
-		
 
 		// date and calender not sure how to add to UI
 		// TODO: add these to UI if not already there
 
 		Text dateTimeTitle = new Text();
 		Label dateText = new Label();
-		
-		
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		// get current date time with Date()
 		Date date = new Date();
-
 
 		dateTimeTitle.setText("Date and Time");
 		dateTimeTitle.maxWidth(500);
@@ -310,7 +336,7 @@ public class DisplayUI extends Pane {
 		dateTimeTitle.setTextAlignment(TextAlignment.CENTER);
 		dateTimeTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		dateTimeTitle.setStyle("-fx-font-size: 42");
-		
+
 		dateText.setText(String.format("Date: " + dateFormat.format(date)));
 		dateText.setWrapText(true);
 		dateText.setMaxWidth(500);
@@ -319,7 +345,7 @@ public class DisplayUI extends Pane {
 		dateText.setTextAlignment(TextAlignment.CENTER);
 		dateText.setFont(Font.font("Arial", 14));
 		dateText.setStyle("-fx-font-size: 18");
-		
+
 		timeText.setWrapText(true);
 		timeText.setMaxWidth(500);
 		timeText.setMinWidth(500);
@@ -327,7 +353,7 @@ public class DisplayUI extends Pane {
 		timeText.setTextAlignment(TextAlignment.CENTER);
 		timeText.setFont(Font.font("Arial", 14));
 		timeText.setStyle("-fx-font-size: 18");
-		
+
 		vbox.getChildren().addAll(title, parkingPercent, PHbutton, fill, dateTimeTitle, dateText, timeText);
 		// add all does not accept date and calendar types
 
@@ -353,7 +379,7 @@ public class DisplayUI extends Pane {
 		LineChart graph1 = lastWeekToday();
 		LineChart graph2 = lastWeekTomorrow();
 		LineChart graph3 = lastWeekYesterday();
-		
+
 		hbox.getChildren().addAll(graph1, graph2, graph3);
 
 		return hbox;
@@ -365,7 +391,19 @@ public class DisplayUI extends Pane {
 	 * @return rectangle a rectangle of a set size to fit in the application
 	 *         window
 	 */
-	public Rectangle addRectangle() {
+	public static Rectangle addRectangle(int i) {
+		Rectangle rectangle = new Rectangle();
+		rectangle.setX(i);
+		rectangle.setY(i + 1);
+		rectangle.setWidth(i + 1);
+		rectangle.setHeight(i + 3);
+		rectangle.setFill(Color.YELLOW);
+
+		return rectangle;
+
+	}
+	
+	public static Rectangle addRectangleNoI() {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setX(50);
 		rectangle.setY(50);
@@ -374,7 +412,6 @@ public class DisplayUI extends Pane {
 		rectangle.setArcWidth(20);
 		rectangle.setArcHeight(20);
 		rectangle.setFill(null);
-		// set background to parking lot
 
 		return rectangle;
 
@@ -384,7 +421,7 @@ public class DisplayUI extends Pane {
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
 		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-		
+
 		Label title = new Label("Riddle Run Around Parking");
 		title.setAlignment(Pos.CENTER);
 		title.setTextAlignment(TextAlignment.CENTER);
@@ -419,16 +456,24 @@ public class DisplayUI extends Pane {
 		ImageProcessor ip = new ImageProcessor();
 		int[][] lines = ip.getSpotMatrix();
 
-		// Create the lines in a loop
-		for (int i = 0; i <= lines.length - 1; i++) {
+		// Create the lines in a looplines.length
+		int[] percentFull = pm.getCurrentSpots();
+		for (int i = 0; i < 28; i++) {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			/*
-			 * TODO: create an array with the percentages of spots filled if int
-			 * todaySpotsFilled[i] >= 60{ temp.setStroke(Color.YELLOW);} else{
-			 * temp.setStroke(Color.WHITE);}
-			 */
-			temp.setStroke(Color.WHITE);
+			if ((percentFull[i] == 0) ) {
+				temp.setStroke(Color.YELLOW);
+				temp.setStrokeWidth(30);
+				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+				
+				//rectangle = addRectangle(i);
+			} else {
+				temp.setStroke(Color.WHITE);
+				temp.setStrokeWidth(2.5);
+				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+			}
+//&& (percentFull[i + 1] >= 60)
 			pane.getChildren().add(temp);
+		
 		}
 
 		// sets pane to the center of border pane

@@ -13,6 +13,10 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
+
 
 /**
  * @author Kyle Cochran
@@ -30,6 +34,10 @@ public class ProcessingManager implements Runnable {
 	private volatile boolean timeToUpdate;
 	private volatile boolean okayToUpdate = true;
 	private Thread t;
+	HistoryHandler history = new HistoryHandler();
+	ImageProcessor ip = new ImageProcessor();
+	int[][] lines = ip.getSpotMatrix();
+
 
 	/**
 	 * Default constructor. Auto-sets refresh frequency to 1 per second.
@@ -122,6 +130,12 @@ public class ProcessingManager implements Runnable {
 			updateSpots();
 			
 
+			//should update the highlight
+			lineColor();
+			
+			//Update UI
+			getCurrentPercent();
+
 			// logic to update history at certain times of
 			// day-----------------------------------------------------------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();
@@ -196,4 +210,25 @@ public class ProcessingManager implements Runnable {
 				new Background(new BackgroundImage(wr, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
 						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
 	}
+	public void lineColor(){
+		
+	int[] spotStates = getCurrentSpots();
+	for (int i = 0; i < 28; i++) {
+		Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+		if ((spotStates[i] == 0) ) {
+			temp.setStroke(Color.YELLOW);
+			temp.setStroke(Color.YELLOW);
+			temp.setStrokeWidth(30);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+		} else {
+			temp.setStroke(Color.WHITE);
+			temp.setStrokeWidth(2.5);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE); 
+		}
+//&& (percentFull[i + 1] >= 60)
+		DisplayUI.pane.getChildren().add(temp);
+		// DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
+	}
+	}
+	
 }// end ProcessigManager

@@ -43,7 +43,7 @@ public class RiddleRunAroundParking extends Application {
 	 *            The stage containing the main application window
 	 */
 	public void start(Stage primaryStage) throws Exception {
-		DisplayUI ui = new DisplayUI();
+		DisplayUI ui = new DisplayUI(pm);
 		ui.start(primaryStage);
 	}
 }// end RiddleRunAroundParking

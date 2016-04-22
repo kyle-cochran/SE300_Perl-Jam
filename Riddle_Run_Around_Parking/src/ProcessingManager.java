@@ -7,6 +7,7 @@ import java.util.Calendar;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
 
 
 /**
@@ -111,6 +112,9 @@ public class ProcessingManager implements Runnable {
 			// get newest spot data
 			updateSpots();
 			
+			//should update the highlight
+			lineColor();
+			
 			//Update UI
 			getCurrentPercent();
 
@@ -183,21 +187,25 @@ public class ProcessingManager implements Runnable {
 
 	public void setLotHistory(int[] newHist) {
 	}
-	/*public void lineColor(){
-		double[] percentFull = history.getDaysAgoPercents(0); 
-		for (int i = 0; i <= lines.length - 1; i++) {
-			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-				if((percentFull[i] >= 60)){
-			  
-					temp.setStroke(Color.YELLOW);}
-					//DisplayUI.rectangle = DisplayUI.addRectangle(i);
-					 // && (percentFull[i+1] >= 60)
-				else{
-					temp.setStroke(Color.WHITE);} 
-		  
+	public void lineColor(){
+		
+	int[] percentFull = getCurrentSpots();
+	for (int i = 0; i < 28; i++) {
+		Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+		if ((percentFull[i] == 0) ) {
+			temp.setStroke(Color.YELLOW);
+			temp.setStroke(Color.YELLOW);
+			temp.setStrokeWidth(30);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+		} else {
+			temp.setStroke(Color.WHITE);
+			temp.setStrokeWidth(2.5);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE); 
+		}
+//&& (percentFull[i + 1] >= 60)
 		DisplayUI.pane.getChildren().add(temp);
 		// DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
 	}
-	}*/
+	}
 	
 }// end ProcessigManager

@@ -24,6 +24,9 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -55,7 +58,6 @@ import javafx.scene.shape.*;
  */
 
 public class DisplayUI extends Pane {
-	// create new border pane
 	BorderPane borderpane;
 	Rectangle r;
 	Button PHbutton;
@@ -63,6 +65,10 @@ public class DisplayUI extends Pane {
 	HBox hbox;
 	HBox title;
 	VBox spacing;
+	Menu menu; 
+	MenuBar menuBar;
+	Menu menuAbout;
+	MenuItem myAbout;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
 	static Pane pane = new Pane();
 	static Rectangle rectangle;
@@ -81,7 +87,7 @@ public class DisplayUI extends Pane {
 			"11:00 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM",
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
-
+	 
 	public DisplayUI(ProcessingManager pm) {
 		borderpane = new BorderPane();
 		r =  addRectangleNoI();
@@ -91,8 +97,40 @@ public class DisplayUI extends Pane {
 		hbox = addHBox();
 		title = addTitle();
 		this.pm = pm;
+		addMenu();
 	}
-
+	
+	public void addMenu(){
+		menuAbout = new Menu("Directions");
+		myAbout = new MenuItem("About This Program");
+		menuBar = new MenuBar();
+		menuAbout.getItems().add(myAbout);
+		menuBar.getMenus().addAll(menuAbout);
+		
+		myAbout.setOnAction(e -> showAbout());
+		
+	}
+	private void showAbout(){
+		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
+				+"The yellow highlights show where there are open spots. Please do not"
+				+"use this application and drive. Thank you. ";
+		
+		Label aboutLabel = new Label();
+		aboutLabel.setWrapText(true);
+		aboutLabel.setTextAlignment(TextAlignment.CENTER);
+		aboutLabel.setFont(Font.font("Comic Sans MS", 14));
+		aboutLabel.setText(aboutText);
+		
+		StackPane pane = new StackPane();
+		pane.getChildren().add(aboutLabel);
+		
+		Scene scene = new Scene(pane, 550, 300);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("About");
+		stage.setResizable(false);
+		stage.show();
+	}
 	public LineChart lastWeekToday() {
 
 		// TODO call a method to get these values
@@ -185,7 +223,7 @@ public class DisplayUI extends Pane {
 			try {
 				readHistory();
 			} catch (Exception e1) {
-				e1.printStackTrace();
+			//	e1.printStackTrace();
 			}
 		});
 
@@ -237,28 +275,14 @@ public class DisplayUI extends Pane {
 			// if the file can not be read the error is caught and given an
 			// exception
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 
 	}
-	// This method allows data to be written to a file, this might not go here
-	// but i thought i would create it then we could move it
-	// TODO: find out what we want in the parkingHistoryFile
-	// TODO: create a parkingHistoryFile
-	/*
-	 * private void writeHistorytoFile(String parkingdate) throws IOException{
-	 * 
-	 * File parkingHistoryFile = new File("Parking Spot History.txt");
-	 * parkingHistoryFile.createNewFile();
-	 * 
-	 * BufferedWriter buffWriter = new BufferedWriter(new
-	 * FileWriter(parkingHistoryFile, true)); //data we want in the file put
-	 * here //buffWriter.write(String.format());
-	 * //buffWriter.write(String.format(
-	 * "[%s] %s: Number of Clicks to Victory: %d\n", new Date().toString(),
-	 * playerName, gridPaneOpponent.getnClicks())); //closes the buffered writer
-	 * buffWriter.close(); }
-	 */
+	
+
+	
+
 
 	/**
 	 * Creates a vbox that will display the data regarding the parking
@@ -436,13 +460,20 @@ public class DisplayUI extends Pane {
 		int[] percentFull = pm.getCurrentSpots();
 		for (int i = 0; i < 28; i++) {
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			if ((percentFull[i] == 1) ) {
+			if ((percentFull[i] == 0) ) {
 				temp.setStroke(Color.YELLOW);
+				temp.setStrokeWidth(30);
+				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+				
+				//rectangle = addRectangle(i);
 			} else {
 				temp.setStroke(Color.WHITE);
+				temp.setStrokeWidth(2.5);
+				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 			}
 //&& (percentFull[i + 1] >= 60)
 			pane.getChildren().add(temp);
+		
 		}
 
 		// sets pane to the center of border pane

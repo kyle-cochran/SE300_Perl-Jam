@@ -60,7 +60,8 @@ public class ImageProcessor {
 		matConverter = new OpenCVFrameConverter.ToMat();
 
 		// load reference image from file as greyscale
-		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+//		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+		refPic = cvLoadImage("src/media/reference330.jpeg", CV_LOAD_IMAGE_GRAYSCALE);
 	}
 
 	/**

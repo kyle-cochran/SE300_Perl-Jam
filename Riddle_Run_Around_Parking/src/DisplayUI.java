@@ -1,29 +1,17 @@
 package src;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WeakChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -34,29 +22,28 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 /**
  * Class responsible for displaying main window and children objects
@@ -64,13 +51,13 @@ import javafx.scene.shape.*;
  * @author Taylor Hester, Matthew Caixeiro, Austin Musser
  * @version 2.0
  */
-
+@SuppressWarnings("rawtypes")
 public class DisplayUI extends Pane{
 	BorderPane borderpane;
 	Rectangle r;
 	Button PHbutton;
 	VBox infoPanel;
-	HBox hbox;
+	HBox graphsBox;
 	HBox title;
 	VBox spacing;
 	Menu menu; 
@@ -84,38 +71,7 @@ public class DisplayUI extends Pane{
 	Label timeText = new Label();//this was static
 	Calendar cal;
 	ProcessingManager pm;
-	HistoryHandler history = new HistoryHandler();
-	
-//	ChangeListener<Boolean> heyListen = new ChangeListener<Boolean>(){
-//		@Override
-//		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//			updateUIPercent();
-//			updateUILiveFeed();
-//			shouldUpdateUI=false;
-//		}
-//	};
-//	
-//	ObservableBooleanValue updateUI = new ObservableBooleanValue(){
-//		@Override
-//		public void addListener(ChangeListener<? super Boolean> listener) {listener = heyListen;}
-//
-//		@Override
-//		public void removeListener(ChangeListener<? super Boolean> listener) {listener = null;}
-//
-//		@Override
-//		public Boolean getValue() {return shouldUpdateUI;}
-//
-//		@Override
-//		public void addListener(InvalidationListener listener) {}
-//
-//		@Override
-//		public void removeListener(InvalidationListener listener) {}
-//
-//		@Override
-//		public boolean get() {return shouldUpdateUI.booleanValue();}
-//		
-//	};
-
+	HistoryHandler history;
 	
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
@@ -134,9 +90,10 @@ public class DisplayUI extends Pane{
 		PHbutton = buttonHistory();
 		infoPanel = addInfoPanel();
 		spacing = addSpacing();
-		hbox = addHBox();
+		graphsBox = addDummyGraphs();
 		title = addTitle();
 		this.pm = pm;
+		history = pm.hH;
 		addMenu();
 	}
 	
@@ -174,11 +131,11 @@ public class DisplayUI extends Pane{
 		stage.show();
 	}
 	public LineChart lastWeekToday() {
-
-		// TODO call a method to get these values
-		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
-		// double[] percentFull = history.getDaysAgoPercents(7); //Get parking
+		
+		int[] percentFull = history.getDaysAgoPercents(7); //Get parking
+		for(int i=0;i<percentFull.length;i++){
+		//System.out.println(percentFull[i]+"\n");
+		}
 		// data 7 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -201,10 +158,7 @@ public class DisplayUI extends Pane{
 	}
 
 	public LineChart lastWeekYesterday() {
-		// TODO call a method to get these values
-		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100 };
-		// double[] percentFull = history.getDaysAgoPercents(8); //Get parking
+		int[] percentFull = history.getDaysAgoPercents(8); //Get parking
 		// data 8 days ago
 
 		final CategoryAxis xAxis = new CategoryAxis();
@@ -227,10 +181,7 @@ public class DisplayUI extends Pane{
 	}
 
 	public LineChart lastWeekTomorrow() {
-		// TODO call a method to get these values
-		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-				100, 100, 100, 100, 100, 100, 100, 100, 100 };
-		// double[] percentFull = history.getDaysAgoPercents(6); //Get parking
+		int[] percentFull = history.getDaysAgoPercents(6); //Get parking
 		// data 6 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -251,6 +202,30 @@ public class DisplayUI extends Pane{
 		return lineChart;
 	}
 
+	public LineChart generateDummyGraph(){
+		//int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+		//		100, 100, 100, 100, 100, 100, 100, 100, 100 };
+
+		final CategoryAxis xAxis = new CategoryAxis();
+		final NumberAxis yAxis = new NumberAxis();
+		yAxis.setLabel("Percent Full");
+		xAxis.setLabel("Time");
+
+		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
+
+		lineChart.setTitle("Loading");
+
+		XYChart.Series series = new XYChart.Series<>();
+		/*
+		for (int i = 0; i < 28; i++) {
+			series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
+		}
+
+		lineChart.getData().add(series);
+		*/
+		return lineChart;
+	}
+	
 	/**
 	 * Creates a new method that creates a new button that when clicked will
 	 * display the parking history.
@@ -414,7 +389,21 @@ public class DisplayUI extends Pane{
 		return vbox;
 	}
 
+	public HBox addDummyGraphs(){
+		HBox hbox = new HBox(200);
+		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+
+		LineChart graph1 = generateDummyGraph();
+		LineChart graph2 = generateDummyGraph();
+		LineChart graph3 = generateDummyGraph();
+
+		hbox.getChildren().addAll(graph1, graph2, graph3);
+
+		return hbox;
+	}
+	
 	public HBox addHBox() {
+		
 		HBox hbox = new HBox(200);
 		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
 
@@ -476,7 +465,7 @@ public class DisplayUI extends Pane{
 		// sets the created button and vbox to a location within the border pane
 		borderpane.setTop(title);
 		borderpane.setLeft(infoPanel);
-		borderpane.setBottom(hbox);
+		borderpane.setBottom(graphsBox);
 		borderpane.setRight(spacing);
 
 		// creates a new pane that will display the parking lot with highlighted
@@ -513,6 +502,10 @@ public class DisplayUI extends Pane{
 		}
 	}
 	
+	public synchronized void addGraphs(){
+		graphsBox.getChildren().clear();
+		graphsBox.getChildren().addAll(addHBox().getChildren());
+	}
 	
 	
 	public synchronized void paintLines(){

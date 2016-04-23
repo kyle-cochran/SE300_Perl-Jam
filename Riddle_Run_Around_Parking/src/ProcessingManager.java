@@ -39,12 +39,18 @@ public class ProcessingManager implements Runnable {
 	ImageProcessor ip = new ImageProcessor();
 	int[][] lines = ip.getSpotMatrix();
 
-	
+
 	Runnable scheduledUIUpdate = new Runnable() {
-	    @Override
-	    public void run() {updateUI();}
-	    };
-	
+		@Override
+		public void run() {updateUI();}
+	};
+
+	Runnable addGraphs = new Runnable() {
+		@Override
+		public void run() {addGraphs();}
+	};
+
+
 	/**
 	 * Default constructor. Auto-sets refresh frequency to 1 per second.
 	 */
@@ -121,28 +127,28 @@ public class ProcessingManager implements Runnable {
 
 		procOn = true;
 		boolean waiting = true;
-		
+
 		while (waiting){
 			//Waiting for the UI to boot up so that we can reference and update UI objects
-			
+
 			try{
-				
+
 				if(!RiddleRunAroundParking.ui.equals(null)){
 					waiting = false;
 				}
-				
+
 			}catch(NullPointerException e){
 				System.out.println("Waiting for UI to fully initialize.....");
 			}
-			
+
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				System.out.println("Yo dude, the thread got interupted");
 			}
 		}
-		
-		
+
+
 		// this will loop to make the processing continuous
 		while (procOn) {
 			try {
@@ -152,15 +158,15 @@ public class ProcessingManager implements Runnable {
 				e.printStackTrace();
 			}
 
+			//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
+			Platform.runLater(addGraphs);
+			
+			
 			// get newest spot data
 			updateSpots();
 
-			// should update the highlight
-			// lineColor();
-
-			
 			Platform.runLater(scheduledUIUpdate);
-			
+
 			// logic to update history at certain times of
 			// day-----------------------------------------------------------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();
@@ -181,7 +187,7 @@ public class ProcessingManager implements Runnable {
 			}
 			// -----------------------------------------------------------------------------------------------------------------------
 		}
-		
+
 	}
 
 	/**
@@ -214,21 +220,25 @@ public class ProcessingManager implements Runnable {
 	public void setUIRef(DisplayUI ui){
 		this.ui = ui;
 	}
-	
+
 	public ImageProcessor returnImProcRef() {
 		return imP;
 	}
-	
-	
+
+
 	public synchronized void updateUI(){
 		// Update UI
 		try{
 			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
 			ui.updateUIPercent(getCurrentPercent());
-		
+
 		}catch(NullPointerException e){
 			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
 			e.printStackTrace();
 		}
+	}
+	
+	public synchronized void addGraphs(){
+		ui.addGraphs();
 	}
 }// end ProcessigManager

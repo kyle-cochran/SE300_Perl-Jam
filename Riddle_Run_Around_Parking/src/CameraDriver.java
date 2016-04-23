@@ -57,7 +57,6 @@ public class CameraDriver {
 			e.printStackTrace();
 		}
 		
-		ImageProcessor.IplImageToWritableImage(lotFrame);
 		return lotFrame;
 	}
 

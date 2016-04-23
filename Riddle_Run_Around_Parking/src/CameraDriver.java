@@ -1,5 +1,9 @@
 package src;
 
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
@@ -25,7 +29,15 @@ public class CameraDriver {
 		try {
 			frameGrabber.start();
 		} catch (Exception e) {
-			e.printStackTrace();
+			frameGrabber = new FFmpegFrameGrabber("src/media/blackImage.png");
+
+			try {
+				frameGrabber.start();
+			} catch (Exception e1) {
+				System.err.println("No internet and no black image...");
+			}
+			
+//			e.printStackTrace();
 		}
 	}
 
@@ -38,10 +50,12 @@ public class CameraDriver {
 	public Frame getImage() {
 		try {
 			lotFrame = frameGrabber.grab();
-			ImageProcessor.IplImageToWritableImage(lotFrame);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		ImageProcessor.IplImageToWritableImage(lotFrame);
 		return lotFrame;
 	}
 

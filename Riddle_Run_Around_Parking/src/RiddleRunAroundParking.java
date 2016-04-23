@@ -13,9 +13,8 @@ import javafx.stage.Stage;
  */
 public class RiddleRunAroundParking extends Application {
 
-	// private static ImageProcessor imageProc = new ImageProcessor();
 	private static ProcessingManager pm = new ProcessingManager(100);
-	DisplayUI ui;
+	public static DisplayUI ui;
 	public RiddleRunAroundParking() {
 	}
 

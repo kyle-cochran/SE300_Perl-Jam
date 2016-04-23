@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javafx.application.Platform;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -38,6 +39,12 @@ public class ProcessingManager implements Runnable {
 	ImageProcessor ip = new ImageProcessor();
 	int[][] lines = ip.getSpotMatrix();
 
+	
+	Runnable scheduledUIUpdate = new Runnable() {
+	    @Override
+	    public void run() {updateUI();}
+	    };
+	
 	/**
 	 * Default constructor. Auto-sets refresh frequency to 1 per second.
 	 */
@@ -113,7 +120,29 @@ public class ProcessingManager implements Runnable {
 		int minutes;
 
 		procOn = true;
-
+		boolean waiting = true;
+		
+		while (waiting){
+			//Waiting for the UI to boot up so that we can reference and update UI objects
+			
+			try{
+				
+				if(!RiddleRunAroundParking.ui.equals(null)){
+					waiting = false;
+				}
+				
+			}catch(NullPointerException e){
+				System.out.println("Waiting for UI to fully initialize.....");
+			}
+			
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				System.out.println("Yo dude, the thread got interupted");
+			}
+		}
+		
+		
 		// this will loop to make the processing continuous
 		while (procOn) {
 			try {
@@ -129,8 +158,8 @@ public class ProcessingManager implements Runnable {
 			// should update the highlight
 			// lineColor();
 
-			// Update UI
-			updateUI();
+			
+			Platform.runLater(scheduledUIUpdate);
 			
 			// logic to update history at certain times of
 			// day-----------------------------------------------------------------------
@@ -182,20 +211,6 @@ public class ProcessingManager implements Runnable {
 		return 100 * total / currentSpots.length;
 	}
 
-	/*
-	 * public void lineColor(){
-	 * 
-	 * int[] spotStates = getCurrentSpots(); for (int i = 0; i < 28; i++) { Line
-	 * temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]); if
-	 * ((spotStates[i] == 0) ) { temp.setStroke(Color.YELLOW);
-	 * temp.setStroke(Color.YELLOW); temp.setStrokeWidth(30);
-	 * temp.setStrokeLineCap(StrokeLineCap.SQUARE); } else {
-	 * temp.setStroke(Color.WHITE); temp.setStrokeWidth(2.5);
-	 * temp.setStrokeLineCap(StrokeLineCap.SQUARE); } //&& (percentFull[i + 1]
-	 * >= 60) DisplayUI.pane.getChildren().add(temp); //
-	 * DisplayUI.pane.getChildren().add(DisplayUI.rectangle); } }
-	 */
-
 	public void setUIRef(DisplayUI ui){
 		this.ui = ui;
 	}
@@ -204,13 +219,16 @@ public class ProcessingManager implements Runnable {
 		return imP;
 	}
 	
+	
 	public synchronized void updateUI(){
 		
 		// Update UI
 		try{
-		ui.updateUIPercent(getCurrentPercent());
-		ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
+			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
+			ui.updateUIPercent(getCurrentPercent());
+		
 		}catch(NullPointerException e){
+			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
 			e.printStackTrace();
 		}
 	}

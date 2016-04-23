@@ -36,6 +36,7 @@ import javafx.scene.layout.BackgroundSize;
  */
 public class ImageProcessor {
 	private Frame currentFrame;
+	private Frame previousFrame;
 	private IplImage lotIplImage;
 	private IplImage lotIplImage_gray;
 	private IplImage refPic;
@@ -44,6 +45,8 @@ public class ImageProcessor {
 	private OpenCVFrameConverter.ToIplImage iplConverter;
 	private OpenCVFrameConverter.ToMat matConverter;
 
+	
+	private volatile int[][] lines;
 	private int[][] binaryArray = new int[1440][1080]; // these values may need
 														// to be change later if
 														// we crop the pic
@@ -56,6 +59,9 @@ public class ImageProcessor {
 	 */
 	public ImageProcessor() {
 
+		
+		generateSpotMatrix();
+		
 		// initialize necessary image converters
 		iplConverter = new OpenCVFrameConverter.ToIplImage();
 		matConverter = new OpenCVFrameConverter.ToMat();
@@ -86,7 +92,15 @@ public class ImageProcessor {
 
 		currentFrame = cameraDriver.getImage();
 		
+		if(currentFrame.equals(null)){
+				currentFrame = previousFrame;
+		}
+		
+		try{
 		lotIplImage = iplConverter.convert(currentFrame);
+		}catch(NullPointerException e){
+			System.out.println("The program is unable to retrieve video data. Check your internet connection.");
+		}
 
 		// add a blur to lot image and reference image to eliminate jitter
 		// effects
@@ -111,6 +125,8 @@ public class ImageProcessor {
 		matDiff = matConverter.convert(iplConverter.convert(diff));
 		binaryArray = matToBinary.toBinaryArray(matDiff);
 
+		previousFrame=currentFrame;
+		
 		return binaryArray;
 
 	}
@@ -235,19 +251,8 @@ public class ImageProcessor {
 	/**
 	 * @ignore
 	 */
-	private boolean[] generateSpotMatrix() {
-		boolean[] temp = { false, false, false };
-		return temp;
-	}
-
-	/**
-	 * Identify where divisor lines are in current lot view.
-	 * 
-	 * @return an array of coordinate pairs that represents the pixel location
-	 *         of parking spots divisor lines
-	 */
-	public int[][] getSpotMatrix() {
-		int[][] lines = new int[32][4];
+	private void generateSpotMatrix() {
+		lines = new int[32][4];
 
 		int offset = 0;
 
@@ -417,7 +422,15 @@ public class ImageProcessor {
 		lines[31][2] = 415;
 		lines[31][3] = 480 + offset;
 		// End
+	}
 
+	/**
+	 * Identify where divisor lines are in current lot view.
+	 * 
+	 * @return an array of coordinate pairs that represents the pixel location
+	 *         of parking spots divisor lines
+	 */
+	public int[][] getSpotMatrix() {
 		return lines;
 	}
 

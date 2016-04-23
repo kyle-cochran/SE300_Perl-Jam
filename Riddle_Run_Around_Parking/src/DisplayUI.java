@@ -1,5 +1,7 @@
 package src;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,6 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.WeakChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -58,7 +65,7 @@ import javafx.scene.shape.*;
  * @version 2.0
  */
 
-public class DisplayUI extends Pane {
+public class DisplayUI extends Pane{
 	BorderPane borderpane;
 	Rectangle r;
 	Button PHbutton;
@@ -71,13 +78,45 @@ public class DisplayUI extends Pane {
 	Menu menuAbout;
 	MenuItem myAbout;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
-	volatile Pane pane = new Pane();//this was static
-	volatile Rectangle rectangle;//this was static
-	volatile Label parkingPercent = new Label("Default Text");//this was static
-	volatile Label timeText = new Label();//this was static
+	Pane pane = new Pane();//this was static
+	Rectangle rectangle;//this was static
+	Label parkingPercent = new Label("Default Text");//this was static
+	Label timeText = new Label();//this was static
+	Calendar cal;
 	ProcessingManager pm;
 	HistoryHandler history = new HistoryHandler();
+	
+//	ChangeListener<Boolean> heyListen = new ChangeListener<Boolean>(){
+//		@Override
+//		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//			updateUIPercent();
+//			updateUILiveFeed();
+//			shouldUpdateUI=false;
+//		}
+//	};
+//	
+//	ObservableBooleanValue updateUI = new ObservableBooleanValue(){
+//		@Override
+//		public void addListener(ChangeListener<? super Boolean> listener) {listener = heyListen;}
+//
+//		@Override
+//		public void removeListener(ChangeListener<? super Boolean> listener) {listener = null;}
+//
+//		@Override
+//		public Boolean getValue() {return shouldUpdateUI;}
+//
+//		@Override
+//		public void addListener(InvalidationListener listener) {}
+//
+//		@Override
+//		public void removeListener(InvalidationListener listener) {}
+//
+//		@Override
+//		public boolean get() {return shouldUpdateUI.booleanValue();}
+//		
+//	};
 
+	
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
 	 * then set to a corresponding variable so that the create objects can be
@@ -114,7 +153,8 @@ public class DisplayUI extends Pane {
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
 				+"The yellow highlights show where there are open spots. Please do not"
-				+"use this application and drive. Thank you. ";
+				+"use this application and drive. Thank you. \n Copyright: Perl-Jam"
+				+ "Software Enterprises, 2016";
 		
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
@@ -453,32 +493,6 @@ public class DisplayUI extends Pane {
 		pane.getChildren().add(r);
 		pane.setMinSize(800, 500);
 		
-		/*
-		// Create image processor class so the lines can be created
-		ImageProcessor ip = pm.returnImProcRef();
-		int[][] lines = ip.getSpotMatrix();
-
-		// Create the lines in a looplines.length
-		int[] percentFull = pm.getCurrentSpots();
-		for (int i = 0; i < 28; i++) {
-			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			if ((percentFull[i] == 0) ) {
-				temp.setStroke(Color.YELLOW);
-				temp.setStrokeWidth(30);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-				
-				//rectangle = addRectangle(i);
-			} else {
-				temp.setStroke(Color.WHITE);
-				temp.setStrokeWidth(2.5);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-			}
-//&& (percentFull[i + 1] >= 60)
-			pane.getChildren().add(temp);
-			
-		
-		}
-*/
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 
@@ -489,19 +503,47 @@ public class DisplayUI extends Pane {
 
 	}
 	
-	public synchronized void updateUIPercent(int percent){
+	public synchronized void updateUIPercent(int percentFull){
 		//Update UI with cool stuff
-		parkingPercent.setText(String.format(percent + "%% of the spots in this lot are currently full."));
+		parkingPercent.setText(String.format(percentFull + "%% of the spots in this lot are currently full."));
 
 		// get current date time with Calendar
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Calendar cal = Calendar.getInstance();
+		cal = Calendar.getInstance();
 		timeText.setText(String.format("Time: " + cal.getTime()));
 	}
 	
-	public synchronized void updateUILiveFeed(WritableImage wr){
+	public synchronized void updateUILiveFeed(WritableImage bkg){
+		try{
 		pane.setBackground(
-				new Background(new BackgroundImage(wr, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+				new Background(new BackgroundImage(bkg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
 						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
+		}catch(NullPointerException e){
+			System.out.println("laggy internet");
+		}
+	}
+	
+	
+	
+	public synchronized void paintLines(){
+	int[][] lines = pm.ip.getSpotMatrix();
+	Line temp;
+	
+	int[] percentFull = pm.getCurrentSpots();
+	
+	for (int i = 0; i < 28; i++) {
+		temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+		if ((percentFull[i] == 0) ) {
+			temp.setStroke(Color.YELLOW);
+			temp.setStrokeWidth(30);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+			
+		} else {
+			temp.setStroke(Color.WHITE);
+			temp.setStrokeWidth(2.5);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+		}
+
+		pane.getChildren().add(temp);
+		}
 	}
 }

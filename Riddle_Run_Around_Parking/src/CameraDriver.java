@@ -23,10 +23,7 @@ public class CameraDriver {
 
 		// create a grabber object to extract frames from this camera
 		frameGrabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg");
-		System.out.println("pixel format is this:     " + frameGrabber.getPixelFormat());
-		frameGrabber.setPixelFormat(avutil.AV_PIX_FMT_YUVJ422P);
-		System.out.println("sample rate is this:     " + frameGrabber.getSampleRate());
-		frameGrabber.setSampleRate(sampleRate);
+
 		// grab a frame from the video file
 		try {
 			frameGrabber.start();
@@ -44,6 +41,7 @@ public class CameraDriver {
 	public Frame getImage() {
 		try {
 			lotFrame = frameGrabber.grab();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

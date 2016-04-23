@@ -155,6 +155,7 @@ public class DisplayUI extends Pane{
 				+"The yellow highlights show where there are open spots. Please do not"
 				+"use this application and drive. Thank you. \n Copyright: Perl-Jam"
 				+ "Software Enterprises, 2016";
+
 		
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
@@ -432,17 +433,7 @@ public class DisplayUI extends Pane{
 	 * @return rectangle a rectangle of a set size to fit in the application
 	 *         window
 	 */
-	public static Rectangle addRectangle(int i) {
-		Rectangle rectangle = new Rectangle();
-		rectangle.setX(i);
-		rectangle.setY(i + 1);
-		rectangle.setWidth(i + 1);
-		rectangle.setHeight(i + 3);
-		rectangle.setFill(Color.YELLOW);
-
-		return rectangle;
-
-	}
+	
 	
 	public static Rectangle addRectangleNoI() {
 		Rectangle rectangle = new Rectangle();

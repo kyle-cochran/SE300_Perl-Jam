@@ -1,12 +1,14 @@
 package jUnitTests;
 
-/*import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import src.CameraDriver;
 
 public class CameraDriverTest {
 
@@ -28,7 +30,13 @@ public class CameraDriverTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		CameraDriver cd = new CameraDriver();
+		
+		assertNotNull(cd.getImage());
+		
+		
+		
+//		fail("Not yet implemented");
 	}
 
-}*/
+}

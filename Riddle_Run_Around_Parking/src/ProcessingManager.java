@@ -221,7 +221,6 @@ public class ProcessingManager implements Runnable {
 	
 	
 	public synchronized void updateUI(){
-		
 		// Update UI
 		try{
 			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));

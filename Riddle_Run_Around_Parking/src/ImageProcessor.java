@@ -256,41 +256,41 @@ public class ImageProcessor {
 
 		int offset = 0;
 
-		lines[0][0] = 198;
+		lines[0][0] = 200;
 		lines[0][1] = 224 + offset;
-		lines[0][2] = 191;
-		lines[0][3] = 253 + offset;
+		lines[0][2] = 190;
+		lines[0][3] = 255 + offset;
 
-		lines[1][0] = 223;
+		lines[1][0] = 227;
 		lines[1][1] = 225 + offset;
 		lines[1][2] = 219;
-		lines[1][3] = 253 + offset;
+		lines[1][3] = 258 + offset;
 
 		lines[2][0] = 262;
 		lines[2][1] = 228 + offset;
 		lines[2][2] = 260;
-		lines[2][3] = 258 + offset;
+		lines[2][3] = 260 + offset;
 
 		lines[3][0] = 300;
 		lines[3][1] = 231 + offset;
-		lines[3][2] = 300;
+		lines[3][2] = 303;
 		lines[3][3] = 261 + offset;
 
-		lines[4][0] = 336;
+		lines[4][0] = 334;
 		lines[4][1] = 231 + offset;
-		lines[4][2] = 341;
-		lines[4][3] = 261 + offset;
+		lines[4][2] = 343;
+		lines[4][3] = 265 + offset;
 
 		// Grass area between these lines
 
-		lines[5][0] = 379;
+		lines[5][0] = 374;
 		lines[5][1] = 234 + offset;
-		lines[5][2] = 388;
+		lines[5][2] = 386;
 		lines[5][3] = 265 + offset;
 
-		lines[6][0] = 414;
+		lines[6][0] = 408;
 		lines[6][1] = 234 + offset;
-		lines[6][2] = 426;
+		lines[6][2] = 424;
 		lines[6][3] = 266 + offset;
 
 		lines[7][0] = 445;
@@ -308,9 +308,9 @@ public class ImageProcessor {
 		lines[9][2] = 525;
 		lines[9][3] = 271 + offset;
 
-		lines[10][0] = 532;
+		lines[10][0] = 535;
 		lines[10][1] = 245 + offset;
-		lines[10][2] = 558;
+		lines[10][2] = 560;
 		lines[10][3] = 273 + offset;
 
 		lines[11][0] = 561;
@@ -327,20 +327,20 @@ public class ImageProcessor {
 
 		lines[13][0] = 240;
 		lines[13][1] = 278 + offset;
-		lines[13][2] = 233;
-		lines[13][3] = 328 + offset;
+		lines[13][2] = 235;
+		lines[13][3] = 326 + offset;
 
-		lines[14][0] = 280;
+		lines[14][0] = 282;
 		lines[14][1] = 279 + offset;
 		lines[14][2] = 280;
 		lines[14][3] = 329 + offset;
 
-		lines[15][0] = 319;
+		lines[15][0] = 321;
 		lines[15][1] = 282 + offset;
 		lines[15][2] = 327;
 		lines[15][3] = 331 + offset;
 
-		lines[16][0] = 364;
+		lines[16][0] = 360;
 		lines[16][1] = 283 + offset;
 		lines[16][2] = 374;
 		lines[16][3] = 332 + offset;
@@ -367,7 +367,7 @@ public class ImageProcessor {
 
 		lines[21][0] = 543;
 		lines[21][1] = 290 + offset;
-		lines[21][2] = 557;
+		lines[21][2] = 570;
 		lines[21][3] = 330 + offset;
 
 		lines[22][0] = 571;
@@ -387,7 +387,7 @@ public class ImageProcessor {
 
 		lines[25][0] = 657;
 		lines[25][1] = 290 + offset;
-		lines[25][2] = 685;
+		lines[25][2] = 688;
 		lines[25][3] = 328 + offset;
 
 		// New line
@@ -395,32 +395,32 @@ public class ImageProcessor {
 		lines[26][0] = 118;
 		lines[26][1] = 405 + offset;
 		lines[26][2] = 100;
-		lines[26][3] = 475 + offset;
+		lines[26][3] = 478 + offset;
 
-		lines[27][0] = 173;
+		lines[27][0] = 174;
 		lines[27][1] = 408 + offset;
-		lines[27][2] = 161;
-		lines[27][3] = 480 + offset;
+		lines[27][2] = 163;
+		lines[27][3] = 478 + offset;
 
 		lines[28][0] = 228;
 		lines[28][1] = 412 + offset;
 		lines[28][2] = 224;
-		lines[28][3] = 479 + offset;
+		lines[28][3] = 478 + offset;
 
 		lines[29][0] = 283;
 		lines[29][1] = 414 + offset;
-		lines[29][2] = 287;
-		lines[29][3] = 480 + offset;
+		lines[29][2] = 288;
+		lines[29][3] = 478 + offset;
 
-		lines[30][0] = 342;
+		lines[30][0] = 340;
 		lines[30][1] = 413 + offset;
-		lines[30][2] = 354;
-		lines[30][3] = 481 + offset;
+		lines[30][2] = 353;
+		lines[30][3] = 478 + offset;
 
-		lines[31][0] = 396;
+		lines[31][0] = 394;
 		lines[31][1] = 413 + offset;
-		lines[31][2] = 415;
-		lines[31][3] = 480 + offset;
+		lines[31][2] = 413;
+		lines[31][3] = 478 + offset;
 		// End
 	}
 

@@ -48,7 +48,7 @@ public class MatToBinaryTest {
 	}
 
 	@Test
-	public void test() {
+	public void test1ToBinaryArray() {
 		
 		MatToBinary mtb = new MatToBinary();
 		

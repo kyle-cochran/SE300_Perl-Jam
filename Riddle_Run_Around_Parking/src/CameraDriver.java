@@ -1,5 +1,6 @@
 package src;
 
+import org.bytedeco.javacpp.avutil;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
@@ -23,7 +24,7 @@ public class CameraDriver {
 		// create a grabber object to extract frames from this camera
 		frameGrabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg");
 		System.out.println("pixel format is this:     " + frameGrabber.getPixelFormat());
-		frameGrabber.setPixelFormat(3);
+		frameGrabber.setPixelFormat(avutil.AV_PIX_FMT_YUVJ422P);
 		System.out.println("sample rate is this:     " + frameGrabber.getSampleRate());
 		frameGrabber.setSampleRate(sampleRate);
 		// grab a frame from the video file

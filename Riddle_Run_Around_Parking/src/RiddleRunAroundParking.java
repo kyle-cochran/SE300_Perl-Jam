@@ -15,7 +15,7 @@ public class RiddleRunAroundParking extends Application {
 
 	// private static ImageProcessor imageProc = new ImageProcessor();
 	private static ProcessingManager pm = new ProcessingManager(100);
-
+	DisplayUI ui;
 	public RiddleRunAroundParking() {
 	}
 
@@ -34,6 +34,8 @@ public class RiddleRunAroundParking extends Application {
 		pm.beginProcThread();
 
 		launch(args);
+		
+		
 	}
 
 	/**
@@ -43,7 +45,8 @@ public class RiddleRunAroundParking extends Application {
 	 *            The stage containing the main application window
 	 */
 	public void start(Stage primaryStage) throws Exception {
-		DisplayUI ui = new DisplayUI(pm);
+		ui = new DisplayUI(pm);
 		ui.start(primaryStage);
+		pm.setUIRef(ui);
 	}
 }// end RiddleRunAroundParking

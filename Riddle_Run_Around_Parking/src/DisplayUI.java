@@ -28,6 +28,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -70,10 +71,10 @@ public class DisplayUI extends Pane {
 	Menu menuAbout;
 	MenuItem myAbout;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
-	static Pane pane = new Pane();
-	static Rectangle rectangle;
-	static Label parkingPercent = new Label("Default Text");
-	static Label timeText = new Label();
+	volatile Pane pane = new Pane();//this was static
+	volatile Rectangle rectangle;//this was static
+	volatile Label parkingPercent = new Label("Default Text");//this was static
+	volatile Label timeText = new Label();//this was static
 	ProcessingManager pm;
 	HistoryHandler history = new HistoryHandler();
 
@@ -486,5 +487,21 @@ public class DisplayUI extends Pane {
 		primaryStage.setTitle("Riddle Run Around Parking");
 		primaryStage.show();
 
+	}
+	
+	public synchronized void updateUIPercent(int percent){
+		//Update UI with cool stuff
+		parkingPercent.setText(String.format(percent + "%% of the spots in this lot are currently full."));
+
+		// get current date time with Calendar
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Calendar cal = Calendar.getInstance();
+		timeText.setText(String.format("Time: " + cal.getTime()));
+	}
+	
+	public synchronized void updateUILiveFeed(WritableImage wr){
+		pane.setBackground(
+				new Background(new BackgroundImage(wr, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
 	}
 }

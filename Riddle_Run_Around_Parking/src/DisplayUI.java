@@ -98,7 +98,7 @@ public class DisplayUI extends Pane{
 		title = addTitle();
 		this.pm = pm;
 		history = pm.hH;
-		addMenu();
+		menuBar = addMenu();
 	}
 	
 	public MenuBar addMenu(){

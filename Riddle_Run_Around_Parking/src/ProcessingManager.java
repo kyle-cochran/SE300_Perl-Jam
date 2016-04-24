@@ -214,7 +214,7 @@ public class ProcessingManager implements Runnable {
 						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
-				if ((percentFull[i] == 0) ) {
+				if ((percentFull[i-1] == 0) ) {
 					temp.setFill(Color.YELLOW);
 				} else {
 					temp.setFill(null);
@@ -229,7 +229,7 @@ public class ProcessingManager implements Runnable {
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
 
-				if ((percentFull[i] == 0) ) {
+				if ((percentFull[i-2] == 0) ) {
 					temp.setFill(Color.YELLOW);
 				} else {
 					temp.setFill(null);
@@ -242,7 +242,7 @@ public class ProcessingManager implements Runnable {
 						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
-				if ((percentFull[i] == 0) ) {
+				if ((percentFull[i-3] == 0) ) {
 					temp.setFill(Color.YELLOW);
 
 				} else {
@@ -252,7 +252,7 @@ public class ProcessingManager implements Runnable {
 				DisplayUI.pane.getChildren().add(polyVec.elementAt(i)); 
 			}
 		} else {
-			for (int i = 0;  i <= 30; i++) {
+			for (int i = 0;  i <= 28; i++) {
 
 				if ((percentFull[i] == 0) ) {
 					polyVec.elementAt(i).setFill(Color.YELLOW);

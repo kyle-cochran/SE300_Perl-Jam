@@ -536,38 +536,75 @@ public class DisplayUI extends Pane{
 	}
 
 	public synchronized void lineColor(){
-
-		int[][] lines = pm.lines;
+		int[][] lines = new ImageProcessor().getSpotMatrix();
 		int[] percentFull = pm.getCurrentSpots();
 		if (count == 0){
 			count = 1;
-			for (int i = 0;  i <= 30; i++) {
+			for (int i = 0;  i <= 3; i++) {
 				Polygon temp = new Polygon(new double[]{
 						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
-				if ((i != 4) && (i != 11) && (i != 25)){
-					if ((percentFull[i] == 0) ) {
-						temp.setFill(Color.YELLOW);
-					} else {
-						temp.setFill(null);
-					}
+				if ((percentFull[i] == 0) ) {
+					temp.setFill(Color.YELLOW);
 				} else {
 					temp.setFill(null);
 				}
 				polyVec.addElement(temp);
 				pane.getChildren().add(polyVec.elementAt(i)); 
 			}
+			for (int i = 5;  i <= 10; i++) {
+				Polygon temp = new Polygon(new double[]{
+						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
+						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
+				});
+				if ((percentFull[i-1] == 0) ) {
+					temp.setFill(Color.YELLOW);
+				} else {
+					temp.setFill(null);
+				}
+				polyVec.addElement(temp);
+				pane.getChildren().add(polyVec.elementAt(i-1)); 
+			}
+			for (int i = 12;  i <= 24; i++) {
+
+				Polygon temp = new Polygon(new double[]{
+						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
+						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
+				});
+
+				if ((percentFull[i-2] == 0) ) {
+					temp.setFill(Color.YELLOW);
+				} else {
+					temp.setFill(null);
+				}
+				polyVec.addElement(temp);
+				pane.getChildren().add(polyVec.elementAt(i-2)); 
+			}
+			for (int i = 26;  i <= 30; i++) {
+				Polygon temp = new Polygon(new double[]{
+						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
+						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
+				});
+				if ((percentFull[i-3] == 0) ) {
+					temp.setFill(Color.YELLOW);
+
+				} else {
+					temp.setFill(null);
+				}
+				polyVec.addElement(temp);
+				pane.getChildren().add(polyVec.elementAt(i-3)); 
+			}
 		} else {
-			for (int i = 0;  i <= 30; i++) {
-				if ((i != 4) && (i != 11) && (i != 25)){
-					if ((percentFull[i] == 0) ) {
-						polyVec.elementAt(i).setFill(Color.YELLOW);
-					} else {
-						polyVec.elementAt(i).setFill(null);
-					}
+			for (int i = 0;  i <= 27; i++) {
+
+				if ((percentFull[i] == 0) ) {
+					polyVec.elementAt(i).setFill(Color.YELLOW);
+				} else {
+					polyVec.elementAt(i).setFill(null);
 				}
 			} 
 		}
 	}
+
 }

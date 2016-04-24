@@ -128,8 +128,9 @@ public class ImageProcessor {
 	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
-		int[] isEmpty = new int[31];
-		int[] count = new int[31];
+		double percentage = 0.6;
+		int[] isEmpty = new int[28];
+		int[] count = new int[28];
 
 		for (int i = 0; i <= count.length - 1; i++) {
 			count[i] = 0;
@@ -148,7 +149,7 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
+			if (count[i] < percentage * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
 					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i] = 1;
 				// If that is greater than 60% of the max value for spaces, the
@@ -172,7 +173,7 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i - 1] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
+			if (count[i - 1] < percentage * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
 					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 1] = 1;
 				// If that is greater than 60% of the max value for spaces, the
@@ -194,7 +195,7 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i - 3] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
+			if (count[i - 3] < percentage * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
 					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 2] = 1;
 				// If that is greater than 60% of the max value for spaces, the
@@ -216,7 +217,7 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i - 3] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
+			if (count[i - 3] < percentage * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
 					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 3] = 1;
 				// If that is greater than 60% of the max value for spaces, the

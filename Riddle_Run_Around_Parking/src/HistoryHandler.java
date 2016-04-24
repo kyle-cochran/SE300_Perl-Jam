@@ -74,6 +74,7 @@ public class HistoryHandler {
 						// format:
 	// [day][time][spot no.]
 
+	
 	// some random dates used for testing
 	GregorianCalendar[] dates = { new GregorianCalendar(2016, 3, 20), new GregorianCalendar(2016, 3, 21),
 			new GregorianCalendar(2016, 3, 22), new GregorianCalendar(2016, 3, 23), new GregorianCalendar(2016, 3, 24),
@@ -88,10 +89,8 @@ public class HistoryHandler {
 	public HistoryHandler() {
 
 		historyFile = new File("src/media/8_day_history.xml");
-		parkingHistoryFile = new File(
-				"/home/kyle/git/SE300_Perl-Jam/Riddle_Run_Around_Parking/src/media/Parking_History.txt");
+		parkingHistoryFile = new File("src/media/Parking_History.txt");
 		result = new StreamResult(historyFile);
-
 		dbFactory = DocumentBuilderFactory.newInstance();
 		try {
 			// make the document builder, then the document
@@ -109,6 +108,8 @@ public class HistoryHandler {
 			// set the input and output for writing
 			source = new DOMSource(doc);
 			result = new StreamResult(historyFile);
+			
+			//PlainText(parkingHistoryFile);
 
 		} catch (Exception e) {
 		}
@@ -386,25 +387,29 @@ public class HistoryHandler {
 	 * @param parkingHistoryFile
 	 * @throws FileNotFoundException
 	 */
-	public void saveAsPlainText(String parkingHistoryFile) throws FileNotFoundException {
-		// make sure the history Document Object Model is up to date a list of the day DOM objects
-		getDOM();
-		NodeList days = doc.getDocumentElement().getElementsByTagName("day");
-		// get the percent full data for the saved history
+	public void saveAsPlainText(File parkingHistoryFile) throws FileNotFoundException {
+		// get the percent full data for the saved history. This will automatically make sure the DOM is updated
 		double[][] percents = getAllPercents();
+		NodeList days = doc.getDocumentElement().getElementsByTagName("day");
+		System.out.println("this many days: "+days.getLength());
+		
 		BufferedWriter writer;
 		try {
-			writer = new BufferedWriter(new FileWriter(parkingHistoryFile));
-			writer.write("Date:\tTime:\t%Full:\n");
+			writer = new BufferedWriter(new FileWriter(parkingHistoryFile.getAbsoluteFile()));
 			for (int i = 0; i < histL; i++) {
+				
+				writer.write("\n\nDate:\t\tTime:\t\t%Full:\n");
+				writer.write("--------------------------------------------------------\n");
 				for (int j = 0; j < timeIncr; j++) {
-					writer.write(days.item(i).getAttributes().getNamedItem("date") + "\t"
-							+ days.item(i).getChildNodes().item(j).getAttributes().getNamedItem("time") + "\t"
+					writer.write(days.item(i).getAttributes().getNamedItem("date").getNodeValue() + "\t"
+							+ days.item(i).getChildNodes().item(2*j+1).getAttributes().getNamedItem("time").getNodeValue() + "         "
 							+ String.valueOf(percents[i][j]) + "\n");
 				}
+				
 			}
 			writer.write("\n\nPerl Jam Software LLC. sincerely thanks you for your patronage.");
-		} catch (IOException e) {
+			writer.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

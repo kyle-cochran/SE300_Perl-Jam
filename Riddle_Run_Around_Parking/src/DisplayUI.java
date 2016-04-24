@@ -66,7 +66,7 @@ public class DisplayUI extends Pane{
 	MenuBar menuBar;
 	Menu menuAbout;
 	MenuItem myAbout;
-	File parkingHistoryFile = new File("Parking Spot History.txt");
+	File parkingHistoryFile = new File("Parking_History.txt");
 	Pane pane = new Pane();//this was static
 	Rectangle rectangle;//this was static
 	Label parkingPercent = new Label("Default Text");//this was static

@@ -50,7 +50,7 @@ public class ImageProcessor {
 	private int[][] binaryArray = new int[1440][1080]; // these values may need
 														// to be change later if
 														// we crop the pic
-	private CameraDriver cameraDriver = new CameraDriver();
+	public CameraDriver cameraDriver = new CameraDriver();
 	private MatToBinary matToBinary = new MatToBinary();
 
 	/**

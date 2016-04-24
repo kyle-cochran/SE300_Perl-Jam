@@ -38,7 +38,7 @@ public class ProcessingManager implements Runnable {
 	private volatile boolean timeToUpdate;
 	private volatile boolean okayToUpdate = true;
 	private Thread t;
-	HistoryHandler history = new HistoryHandler();
+	HistoryHandler history;
 	ImageProcessor ip = new ImageProcessor();
 	int[][] lines = ip.getSpotMatrix();
 
@@ -124,7 +124,6 @@ public class ProcessingManager implements Runnable {
 	 * "Runnable". Updates "currentSpots" in a timed loop.
 	 */
 	public void run() {
-
 		updateSpots();
 
 		int minutes;
@@ -162,7 +161,7 @@ public class ProcessingManager implements Runnable {
 				e.printStackTrace();
 			}
 
-
+			
 			//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
 			Platform.runLater(addGraphs);
 			
@@ -197,6 +196,7 @@ public class ProcessingManager implements Runnable {
 				okayToUpdate = true;
 			}
 			// -----------------------------------------------------------------------------------------------------------------------
+			
 		}
 
 	}
@@ -242,7 +242,7 @@ public class ProcessingManager implements Runnable {
 	public synchronized void updateUI(){
 		// Update UI
 		try{
-			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
+			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.cameraDriver.getImage()));
 			ui.updateUIPercent(getCurrentPercent());			ui.lineColor();
 		}catch(NullPointerException e){
 			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 

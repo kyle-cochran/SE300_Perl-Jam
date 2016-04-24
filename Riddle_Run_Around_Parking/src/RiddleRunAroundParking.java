@@ -13,8 +13,9 @@ import javafx.stage.Stage;
  */
 public class RiddleRunAroundParking extends Application {
 
-	private static ProcessingManager pm = new ProcessingManager(40);
-	public static DisplayUI ui;
+	// private static ImageProcessor imageProc = new ImageProcessor();
+	private static ProcessingManager pm = new ProcessingManager(20);
+
 	public RiddleRunAroundParking() {
 	}
 
@@ -33,8 +34,6 @@ public class RiddleRunAroundParking extends Application {
 		pm.beginProcThread();
 
 		launch(args);
-		
-		
 	}
 
 	/**
@@ -44,8 +43,7 @@ public class RiddleRunAroundParking extends Application {
 	 *            The stage containing the main application window
 	 */
 	public void start(Stage primaryStage) throws Exception {
-		ui = new DisplayUI(pm);
+		DisplayUI ui = new DisplayUI(pm);
 		ui.start(primaryStage);
-		pm.setUIRef(ui);
 	}
 }// end RiddleRunAroundParking

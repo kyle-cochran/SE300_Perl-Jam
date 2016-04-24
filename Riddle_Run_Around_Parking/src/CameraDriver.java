@@ -1,9 +1,21 @@
 package src;
 
+
+import java.awt.image.BufferedImage;
+
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameGrabber.Exception;
+import org.bytedeco.javacv.Java2DFrameConverter;
+
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 /**
  * Class responsible for access the video feed
@@ -16,12 +28,22 @@ public class CameraDriver {
 	private Frame lotFrame;
 	private FrameGrabber frameGrabber;
 
+	private WritableImage bkg;
+	Frame framesrc;
+	Java2DFrameConverter paintConverter;
+	BufferedImage bf;
+	WritableImage wr;
+	PixelWriter pw;
+
 	public CameraDriver() {
 
 		// create a grabber object to extract frames from this camera
 		frameGrabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg");
-
+		frameGrabber.setSampleRate(10);
 		// grab a frame from the video file
+		
+
+		
 		try {
 			frameGrabber.start();
 			
@@ -35,7 +57,7 @@ public class CameraDriver {
 				System.err.println("No internet and no back up image...");
 				
 			}
-//			e.printStackTrace();
+
 		}
 	}
 
@@ -46,13 +68,45 @@ public class CameraDriver {
 	 */
 
 	public Frame getImage() {
+		
 		try {
 			lotFrame = frameGrabber.grab();
-			ImageProcessor.IplImageToWritableImage(lotFrame);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lotFrame;
+	}
+	
+	public WritableImage getWritableImage() {
+
+		framesrc = getImage();
+		
+		paintConverter = new Java2DFrameConverter();
+		bf = paintConverter.getBufferedImage(framesrc, 1);
+
+		wr = null;
+
+		if (bf != null) {
+			wr = new WritableImage(bf.getWidth(), bf.getHeight());
+			pw = wr.getPixelWriter();
+			for (int x = 0; x < bf.getWidth(); x++) {
+				for (int y = 0; y < bf.getHeight(); y++) {
+					pw.setArgb(x, y, bf.getRGB(x, y));
+				}
+			}
+		}
+		return wr;
+	}
+	
+	public synchronized void updateUILiveFeed(){
+		bkg = getWritableImage();
+		try{
+			RiddleRunAroundParking.ui.pane.setBackground(
+					new Background(new BackgroundImage(bkg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+							BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
+		}catch(NullPointerException e){
+			System.out.println("laggy internet");
+		}
 	}
 
 }// end CameraDriver

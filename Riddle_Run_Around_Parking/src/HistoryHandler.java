@@ -69,33 +69,28 @@ public class HistoryHandler {
 	// time
 	int timeIncr = 28; // the number of different time steps during the day that
 	// will be considered
-	int numSpots = 32; // the number of parking spots in one lot
-	int[][][] spots; // the matrix that holds all spot data, format:
+	int numSpots = 25; // the number of parking spots in one lot
+	int[][][] spots; // the matrix that holds all spot data as a binary integer,
+						// format:
 	// [day][time][spot no.]
 
+	
 	// some random dates used for testing
-	GregorianCalendar[] dates = { new GregorianCalendar(2016, 3, 20),
-			new GregorianCalendar(2016, 3, 21),
-			new GregorianCalendar(2016, 3, 22),
-			new GregorianCalendar(2016, 3, 23),
-			new GregorianCalendar(2016, 3, 24),
-			new GregorianCalendar(2016, 3, 25),
-			new GregorianCalendar(2016, 3, 26) };
+	GregorianCalendar[] dates = { new GregorianCalendar(2016, 3, 20), new GregorianCalendar(2016, 3, 21),
+			new GregorianCalendar(2016, 3, 22), new GregorianCalendar(2016, 3, 23), new GregorianCalendar(2016, 3, 24),
+			new GregorianCalendar(2016, 3, 25), new GregorianCalendar(2016, 3, 26) };
 
 	// All the times of day
-	String[] timeOfDay = { "7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM",
-			"9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM",
-			"12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM",
-			"3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM",
-			"6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM", "8:30 PM",
-			"9:00 PM" };
+	String[] timeOfDay = { "7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM",
+			"11:00 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM",
+			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
+			"8:30 PM", "9:00 PM" };
 
 	public HistoryHandler() {
 
-		historyFile = new File("src/media/8_day_history.xml"); 
-		parkingHistoryFile = new File("/home/kyle/git/SE300_Perl-Jam/Riddle_Run_Around_Parking/src/media/Parking_History.txt");
+		historyFile = new File("src/media/8_day_history.xml");
+		parkingHistoryFile = new File("src/media/Parking_History.txt");
 		result = new StreamResult(historyFile);
-		
 		dbFactory = DocumentBuilderFactory.newInstance();
 		try {
 			// make the document builder, then the document
@@ -108,12 +103,13 @@ public class HistoryHandler {
 
 			// makes the xml formatted nicely
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty(
-					"{http://xml.apache.org/xslt}indent-amount", "2");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
 			// set the input and output for writing
 			source = new DOMSource(doc);
 			result = new StreamResult(historyFile);
+			
+			//PlainText(parkingHistoryFile);
 
 		} catch (Exception e) {
 		}
@@ -133,17 +129,12 @@ public class HistoryHandler {
 			NodeList days = rootElement.getElementsByTagName("day");
 
 			// make sure that there is already a day for today
-			boolean todayIsOnFile = days
-					.item(days.getLength() - 1)
-					.getAttributes()
-					.getNamedItem("date")
-					.toString()
+			boolean todayIsOnFile = days.item(days.getLength() - 1).getAttributes().getNamedItem("date").toString()
 					.equals(dateFormat.format(Calendar.getInstance().getTime()));
 			if (!todayIsOnFile) {
 				Element day = doc.createElement("day");
 				rootElement.appendChild(day);
-				day.setAttribute("date",
-						dateFormat.format(Calendar.getInstance().getTime()));
+				day.setAttribute("date", dateFormat.format(Calendar.getInstance().getTime()));
 				days = rootElement.getElementsByTagName("day");
 			}
 
@@ -151,8 +142,7 @@ public class HistoryHandler {
 			// "time" attribute to be the current time, set it's text content to
 			// be the data
 			Element currentData = doc.createElement("spotmatrix");
-			currentData.setAttribute("time",
-					timeFormat.format(Calendar.getInstance().getTime()));
+			currentData.setAttribute("time", timeFormat.format(Calendar.getInstance().getTime()));
 			currentData.setTextContent(intMatToStr(nowSpots));
 
 			// add the current data element to the rest of the document object
@@ -199,11 +189,8 @@ public class HistoryHandler {
 			// as a child of lot
 			day[i] = doc.createElement("day");
 			rootElement.appendChild(day[i]);
-			day[i].setAttribute(
-					"date",
-					dates[i].get(Calendar.YEAR) + "-"
-							+ dates[i].get(Calendar.MONTH) + "-"
-							+ dates[i].get(Calendar.DAY_OF_MONTH));
+			day[i].setAttribute("date", dates[i].get(Calendar.YEAR) + "-" + dates[i].get(Calendar.MONTH) + "-"
+					+ dates[i].get(Calendar.DAY_OF_MONTH));
 
 			// loop through all the times of day
 			for (int j = 0; j < timeIncr; j++) {
@@ -212,8 +199,7 @@ public class HistoryHandler {
 				spotmatrix[j] = doc.createElement("spotmatrix");
 				day[i].appendChild(spotmatrix[j]);
 				spotmatrix[j].setAttribute("time", timeOfDay[j]);
-				spotmatrix[j].appendChild(doc
-						.createTextNode(intMatToStr(spots[i][j])));
+				spotmatrix[j].appendChild(doc.createTextNode(intMatToStr(spots[i][j])));
 			}
 		}
 		// --------------------------------------------------------------
@@ -249,8 +235,7 @@ public class HistoryHandler {
 			// If the file already has the maximum number of days stored, remove
 			// the oldest one
 			if (rootElement.getElementsByTagName("day").getLength() < histL) {
-				rootElement.removeChild(rootElement.getElementsByTagName("day")
-						.item(0));
+				rootElement.removeChild(rootElement.getElementsByTagName("day").item(0));
 			}
 
 			Element day = doc.createElement("day");
@@ -258,8 +243,7 @@ public class HistoryHandler {
 			Element[] spotmatrix = new Element[timeOfDay.length];
 
 			day.setAttribute("date",
-					date.get(Calendar.YEAR) + "-" + date.get(Calendar.MONTH)
-							+ "-" + date.get(Calendar.DAY_OF_MONTH));
+					date.get(Calendar.YEAR) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.DAY_OF_MONTH));
 
 			// loop through all the times of day
 			for (int j = 0; j < timeOfDay.length; j++) {
@@ -268,8 +252,7 @@ public class HistoryHandler {
 				spotmatrix[j] = doc.createElement("spotmatrix");
 				day.appendChild(spotmatrix[j]);
 				spotmatrix[j].setAttribute("time", timeOfDay[j]);
-				spotmatrix[j].appendChild(doc
-						.createTextNode(intMatToStr(spots[j])));
+				spotmatrix[j].appendChild(doc.createTextNode(intMatToStr(spots[j])));
 			}
 			// ---------------------------------------------------------------------------------------------------
 
@@ -324,8 +307,14 @@ public class HistoryHandler {
 				for (int j = 0; j < timeIncr; j++) {
 					// get the spot array at day i, and time j and convert from
 					// string to int matrix
-					spots[i][j] = strToIntMat(days.item(i).getChildNodes()
-							.item(j).getTextContent());
+					
+					/*
+					 * for whatever reason, the brilliant minds behind xml consider
+					 * whitespace as a Document object node. So after ~4 hours of pain
+					 * I changed the code to cycle through every 2*j+1 element instead
+					 * of every j element
+					 */
+					spots[i][j] = strToIntMat(days.item(i).getChildNodes().item(2*j+1).getTextContent());
 				}
 			}
 		} catch (Exception e) {
@@ -385,8 +374,7 @@ public class HistoryHandler {
 					numFull += spots[i][j][k];
 				}
 
-				wPercents[i][j] = 100 * (new Integer(numFull).doubleValue())
-						/ (new Integer(numSpots).doubleValue());
+				wPercents[i][j] = 100 * (new Integer(numFull).doubleValue()) / (new Integer(numSpots).doubleValue());
 			}
 		}
 
@@ -399,36 +387,29 @@ public class HistoryHandler {
 	 * @param parkingHistoryFile
 	 * @throws FileNotFoundException
 	 */
-	public void saveAsPlainText(String parkingHistoryFile)
-			throws FileNotFoundException {
-
-		getDOM(); // make sure the history Document Object Model is up to date
-		NodeList days = doc.getDocumentElement().getElementsByTagName("day");// a
-																				// list
-																				// of
-																				// the
-																				// day
-																				// DOM
-																				// objects
-		double[][] percents = getAllPercents(); // get the percent full data for
-												// the saved history
+	public void saveAsPlainText(File parkingHistoryFile) throws FileNotFoundException {
+		// get the percent full data for the saved history. This will automatically make sure the DOM is updated
+		double[][] percents = getAllPercents();
+		NodeList days = doc.getDocumentElement().getElementsByTagName("day");
+		System.out.println("this many days: "+days.getLength());
+		
 		BufferedWriter writer;
 		try {
-			writer = new BufferedWriter(new FileWriter(parkingHistoryFile));
-			writer.write("Date:\tTime:\t%Full:\n");
+			writer = new BufferedWriter(new FileWriter(parkingHistoryFile.getAbsoluteFile()));
 			for (int i = 0; i < histL; i++) {
+				
+				writer.write("\n\nDate:\t\tTime:\t\t%Full:\n");
+				writer.write("--------------------------------------------------------\n");
 				for (int j = 0; j < timeIncr; j++) {
-					writer.write(days.item(i).getAttributes()
-							.getNamedItem("date")
-							+ "\t"
-							+ days.item(i).getChildNodes().item(j)
-									.getAttributes().getNamedItem("time")
-							+ "\t" + String.valueOf(percents[i][j]) + "\n");
+					writer.write(days.item(i).getAttributes().getNamedItem("date").getNodeValue() + "\t"
+							+ days.item(i).getChildNodes().item(2*j+1).getAttributes().getNamedItem("time").getNodeValue() + "         "
+							+ String.valueOf(percents[i][j]) + "\n");
 				}
+				
 			}
-			writer.write("\n\nPerl Jam Software LLC. sincerely thanks you for your support.");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			writer.write("\n\nPerl Jam Software LLC. sincerely thanks you for your patronage.");
+			writer.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -443,12 +424,12 @@ public class HistoryHandler {
 	 * @return wPercents an array of double that represents the percentage full
 	 *         data of the specified day
 	 */
-	public double[] getDaysAgoPercents(int numDaysAgo) {
+	public int[] getDaysAgoPercents(int numDaysAgo) {
 		readData();
-		double[] dPercents = new double[timeIncr];
-		int numFull;
+		int[] percents = new int[timeIncr];
+
 		for (int j = 0; j < timeIncr; j++) {
-			numFull = 0;
+			int numFull = 0;
 			for (int k = 0; k < numSpots; k++) {
 				try {
 					numFull += spots[histL - 1 - numDaysAgo][j][k];
@@ -456,10 +437,9 @@ public class HistoryHandler {
 					numFull += spots[0][j][k];
 				}
 			}
-			dPercents[j] = 100 * (new Integer(numFull).doubleValue())
-					/ (new Integer(numSpots).doubleValue());
+			percents[j] = 100 * numFull / numSpots;
 		}
-		return dPercents;
+		return percents;
 	}
 
 	/**
@@ -485,14 +465,22 @@ public class HistoryHandler {
 	 * @return mat an array of integers
 	 */
 	public int[] strToIntMat(String str) {
+		str.trim();
 		int[] mat = new int[numSpots];
+
 		for (int i = 0; i < str.length(); i++) {
+			try{
 			mat[i] = Integer.parseInt(String.valueOf(str.charAt(i)).trim());
+			}catch(NumberFormatException e){
+				//at boot, this method is sometimes passed an empty string
+				//it doesn't like that
+			}
 		}
 		return mat;
 	}
 
-	// these methods make random data for testing--------------------------
+	// these methods make random data for testing---
+	// not included in the javadoc-------------
 	public int[][][] makeRandSpots3() {
 
 		int[][][] spots = new int[histL][timeIncr][numSpots];

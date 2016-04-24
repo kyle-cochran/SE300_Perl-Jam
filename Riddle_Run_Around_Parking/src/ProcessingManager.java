@@ -220,7 +220,7 @@ public class ProcessingManager implements Runnable {
 					temp.setFill(null);
 				}
 				polyVec.addElement(temp);
-				DisplayUI.pane.getChildren().add(polyVec.elementAt(i)); 
+				DisplayUI.pane.getChildren().add(polyVec.elementAt(i-1)); 
 			}
 			for (int i = 12;  i <= 24; i++) {
 
@@ -235,7 +235,7 @@ public class ProcessingManager implements Runnable {
 					temp.setFill(null);
 				}
 				polyVec.addElement(temp);
-				DisplayUI.pane.getChildren().add(polyVec.elementAt(i)); 
+				DisplayUI.pane.getChildren().add(polyVec.elementAt(i-2)); 
 			}
 			for (int i = 26;  i <= 30; i++) {
 				Polygon temp = new Polygon(new double[]{
@@ -249,10 +249,10 @@ public class ProcessingManager implements Runnable {
 					temp.setFill(null);
 				}
 				polyVec.addElement(temp);
-				DisplayUI.pane.getChildren().add(polyVec.elementAt(i)); 
+				DisplayUI.pane.getChildren().add(polyVec.elementAt(i-3)); 
 			}
 		} else {
-			for (int i = 0;  i <= 28; i++) {
+			for (int i = 0;  i <= 27; i++) {
 
 				if ((percentFull[i] == 0) ) {
 					polyVec.elementAt(i).setFill(Color.YELLOW);

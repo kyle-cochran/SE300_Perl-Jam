@@ -4,6 +4,10 @@ import org.bytedeco.javacpp.avutil;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import javax.imageio.ImageIO;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
@@ -35,12 +39,17 @@ public class CameraDriver {
 	private WritableImage bkg;
 	Frame framesrc;
 
+	
+	
 	public CameraDriver() {
 
 		// create a grabber object to extract frames from this camera
 		frameGrabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg");
 		frameGrabber.setSampleRate(10);
 		// grab a frame from the video file
+		
+
+		
 		try {
 			frameGrabber.start();
 		} catch (Exception e) {
@@ -51,8 +60,7 @@ public class CameraDriver {
 			} catch (Exception e1) {
 				System.err.println("No internet and no black image...");
 			}
-			
-//			e.printStackTrace();
+
 		}
 	}
 
@@ -63,13 +71,13 @@ public class CameraDriver {
 	 */
 
 	public Frame getImage() {
+		
 		try {
 			lotFrame = frameGrabber.grab();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return lotFrame;
 	}
 	

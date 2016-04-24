@@ -170,9 +170,10 @@ public class ProcessingManager implements Runnable {
 
 
 			// get newest spot data
-			if(procCount>1000){
+			if(procCount>100){
 			//updateSpots();
 			Platform.runLater(scheduledUIUpdate);
+				//updateUI();
 			procCount=0;
 			
 			}
@@ -258,7 +259,7 @@ public class ProcessingManager implements Runnable {
 	public synchronized void updateUI(){
 		// Update UI
 		try{
-			ui.updateUIPercent(getCurrentPercent());			ui.lineColor();
+			//ui.updateUIPercent(getCurrentPercent());			ui.lineColor();
 		}catch(NullPointerException e){
 			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
 

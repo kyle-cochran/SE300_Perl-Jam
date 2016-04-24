@@ -250,7 +250,7 @@ public class ImageProcessor {
 	}
 
 	/**
-	 * @ignore
+	 * 
 	 */
 	private void generateSpotMatrix() {
 		lines = new int[32][4];

@@ -91,7 +91,7 @@ public class DisplayUI extends Pane{
 	public DisplayUI(ProcessingManager pm) {
 		borderpane = new BorderPane();
 		r =  addRectangleNoI();
-		PHbutton = buttonHistory();
+		//PHbutton = buttonHistory();
 		infoPanel = addInfoPanel();
 		spacing = addSpacing();
 		graphsBox = addDummyGraphs();
@@ -236,6 +236,7 @@ public class DisplayUI extends Pane{
 	 * 
 	 * @return buttonPHistory A button to access the parking history
 	 */
+	/*
 	public Button buttonHistory() {
 		Button button = new Button("Parking History");
 		button.setPrefSize(200, 20);
@@ -251,10 +252,10 @@ public class DisplayUI extends Pane{
 		return button;
 	}
 
-	/**
+	*//**
 	 * the readHistory uses the buffered reader to read the high score file and
 	 * print it out into a text field. With its own label and pane
-	 */
+	 *//*
 
 	private void readHistory() {
 		BufferedReader buffRead = null;
@@ -301,7 +302,7 @@ public class DisplayUI extends Pane{
 
 	}
 
-
+*/
 
 
 
@@ -375,7 +376,7 @@ public class DisplayUI extends Pane{
 		timeText.setFont(Font.font("Arial", 14));
 		timeText.setStyle("-fx-font-size: 18");
 
-		vbox.getChildren().addAll(title, parkingPercent, PHbutton, fill, dateTimeTitle, dateText, timeText);
+		vbox.getChildren().addAll(title, parkingPercent, fill, dateTimeTitle, dateText, timeText);
 		// add all does not accept date and calendar types
 
 		// insert data regarding parking availability here

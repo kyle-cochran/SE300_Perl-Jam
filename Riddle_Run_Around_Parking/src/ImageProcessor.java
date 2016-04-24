@@ -152,6 +152,7 @@ public class ImageProcessor {
 	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
+		double percentage = 0.6;
 		int[] isEmpty = new int[28];
 		int count = 0;
 
@@ -168,7 +169,8 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count < .6 * ( (Math.abs((lines[i][0] - lines[i + 1][3]))
+
+			if (count < percentage * ( (Math.abs((lines[i][0] - lines[i + 1][3]))
 					* Math.abs((lines[i][2] - lines[i][3]))))) {
 				isEmpty[i] = 1;
 				// If that is greater than 60% of the max value for spaces, the
@@ -193,8 +195,9 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count < .6 * ((Math.abs((lines[i][0] - lines[i + 1][3]))
+			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][3]))
 					* Math.abs((lines[i][2] - lines[i][3]))))) {
+
 				isEmpty[i - 1] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
@@ -216,8 +219,9 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count < .6 * ((Math.abs((lines[i][0] - lines[i + 1][3]))
+			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][3]))
 					* Math.abs((lines[i][2] - lines[i][3]))))) {
+
 				isEmpty[i - 2] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
@@ -239,7 +243,7 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count < .6 * ((Math.abs((lines[i][0] - lines[i + 1][3]))
+			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][3]))
 					* Math.abs((lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 3] = 1;
 				// If that is greater than 60% of the max value for spaces, the

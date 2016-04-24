@@ -103,16 +103,15 @@ public class DisplayUI extends Pane {
 		borderpane = new BorderPane();
 		r =  addRectangleNoI();
 		//PHbutton = buttonHistory();
-		infoPanel = addInfoPanel();
-		spacing = addSpacing();
-		graphsBox = addDummyGraphs();
-		title = addTitle();
+		//infoPanel = addInfoPanel();
+		//spacing = addSpacing();
+		//graphsBox = addDummyGraphs();
+		//title = addTitle();
 		this.pm = pm;
 		history = pm.hH;
-		addMenu();
-		ip = pm.ip;
-}
-
+		//addMenu();
+	}
+	
 	public MenuBar addMenu(){
 		menuAbout = new Menu("Directions");
 		myAbout = new MenuItem("About This Program");
@@ -145,14 +144,8 @@ public class DisplayUI extends Pane {
 		stage.setTitle("About");
 		stage.setResizable(false);
 		stage.show();
-	}
-	/**
-	 * Creates a new method that creates a new line chart that will
-	 * display the parking data from last week. This is done with an array
-	 * and line chart features.
-	 * 
-	 * @return lineChart
-	 */
+	}	
+	
 	public LineChart lastWeekToday() {
 
 
@@ -246,7 +239,8 @@ public class DisplayUI extends Pane {
 	 * 
 	 * @return buttonPHistory A button to access the parking history
 	 */
-	/*public Button buttonHistory() {
+	/*
+	public Button buttonHistory() {
 		Button button = new Button("Parking History");
 		button.setPrefSize(200, 20);
 		button.setOnAction(e -> {
@@ -261,10 +255,10 @@ public class DisplayUI extends Pane {
 		return button;
 	}
 
-	/**
+	*//**
 	 * the readHistory uses the buffered reader to read the high score file and
 	 * print it out into a text field. With its own label and pane
-	 */
+	 *//*
 
 	/*private void readHistory() {
 		BufferedReader buffRead = null;
@@ -310,10 +304,6 @@ public class DisplayUI extends Pane {
 		}
 
 	}*/
-
-
-
-
 
 	/**
 	 * Creates a vbox that will display the data regarding the parking
@@ -385,7 +375,7 @@ public class DisplayUI extends Pane {
 		timeText.setFont(Font.font("Arial", 14));
 		timeText.setStyle("-fx-font-size: 18");
 
-		vbox.getChildren().addAll(title, parkingPercent, PHbutton, fill, dateTimeTitle, dateText, timeText);
+		vbox.getChildren().addAll(title, parkingPercent, fill, dateTimeTitle, dateText, timeText);
 		// add all does not accept date and calendar types
 
 		// insert data regarding parking availability here
@@ -526,24 +516,25 @@ public class DisplayUI extends Pane {
 		pane.setMinSize(800, 500);
 
 		// Create image processor class so the lines can be created
-		int[][] lines = ip.getSpotMatrix();
+		//int[][] lines = ip.getSpotMatrix();
 
+		/*
 		for (int i = 0; i <= 31; i++){
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
 			temp.setStroke(Color.WHITE);
 			temp.setStrokeWidth(2.5);
 			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 			pane.getChildren().add(temp);
-		}
+		}*/
 
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 
 		// Closes the thread and the project when the x is clicked
-		primaryStage.setOnCloseRequest(e -> {
+		/*primaryStage.setOnCloseRequest(e -> {
 			pm.endProcThread();
 			System.exit(0);
-		});
+		});*/
 
 		// displays the scene with the title
 		primaryStage.setScene(scene);

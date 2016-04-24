@@ -41,8 +41,7 @@ public class ProcessingManager implements Runnable {
 	HistoryHandler history = new HistoryHandler();
 	ImageProcessor ip = new ImageProcessor();
 	int[][] lines = ip.getSpotMatrix();
-	private int count = 0;
-	Vector<Polygon> polyVec = new Vector<Polygon>();
+
 	Calendar cal = Calendar.getInstance();
 
 	Runnable scheduledUIUpdate = new Runnable() {
@@ -244,8 +243,7 @@ public class ProcessingManager implements Runnable {
 		// Update UI
 		try{
 			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
-			ui.updateUIPercent(getCurrentPercent());
-			linecolor();
+			ui.updateUIPercent(getCurrentPercent());			ui.lineColor();
 		}catch(NullPointerException e){
 			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
 			
@@ -255,41 +253,9 @@ public class ProcessingManager implements Runnable {
 	public synchronized void addGraphs(){
 		ui.addGraphs();
 	}
-}// end ProcessigManager
+// end ProcessigManager
 
-	public synchronized void lineColor(){
 
-		int[] percentFull = getCurrentSpots();
-		if (count == 0){
-			count = 1;
-			for (int i = 0;  i <= 30; i++) {
-				Polygon temp = new Polygon(new double[]{
-						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
-						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
-				});
-				if ((i != 4) && (i != 11) && (i != 25)){
-					if ((percentFull[i] == 0) ) {
-						temp.setFill(Color.YELLOW);
-					} else {
-						temp.setFill(null);
-					}
-				} else {
-					temp.setFill(null);
-				}
-				polyVec.addElement(temp);
-				DisplayUI.pane.getChildren().add(polyVec.elementAt(i)); 
-			}
-		} else {
-			for (int i = 0;  i <= 30; i++) {
-				if ((i != 4) && (i != 11) && (i != 25)){
-					if ((percentFull[i] == 0) ) {
-						polyVec.elementAt(i).setFill(Color.YELLOW);
-					} else {
-						polyVec.elementAt(i).setFill(null);
-					}
-				}
-			} 
-		}
 		//			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
 		//			if ((percentFull[i] == 0) ) {
 		//				temp.setStroke(Color.YELLOW);
@@ -305,5 +271,5 @@ public class ProcessingManager implements Runnable {
 		// DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
 	}
 
-}// end ProcessigManager
+// end ProcessigManager
 

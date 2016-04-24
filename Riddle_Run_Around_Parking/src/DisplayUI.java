@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -37,6 +38,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
@@ -72,7 +74,9 @@ public class DisplayUI extends Pane{
 	Calendar cal;
 	ProcessingManager pm;
 	HistoryHandler history;
-	
+	private int count = 0;
+	Vector<Polygon> polyVec = new Vector<Polygon>();
+
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
 	 * then set to a corresponding variable so that the create objects can be
@@ -83,7 +87,7 @@ public class DisplayUI extends Pane{
 			"11:00 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM",
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
-	 
+
 	public DisplayUI(ProcessingManager pm) {
 		borderpane = new BorderPane();
 		r =  addRectangleNoI();
@@ -96,16 +100,16 @@ public class DisplayUI extends Pane{
 		history = pm.hH;
 		addMenu();
 	}
-	
+
 	public void addMenu(){
 		menuAbout = new Menu("Directions");
 		myAbout = new MenuItem("About This Program");
 		menuBar = new MenuBar();
 		menuAbout.getItems().add(myAbout);
 		menuBar.getMenus().addAll(menuAbout);
-		
+
 		myAbout.setOnAction(e -> showAbout());
-		
+
 	}
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
@@ -113,16 +117,16 @@ public class DisplayUI extends Pane{
 				+"use this application and drive. Thank you. \n Copyright: Perl-Jam"
 				+ "Software Enterprises, 2016";
 
-		
+
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
 		aboutLabel.setTextAlignment(TextAlignment.CENTER);
 		aboutLabel.setFont(Font.font("Comic Sans MS", 14));
 		aboutLabel.setText(aboutText);
-		
+
 		StackPane pane = new StackPane();
 		pane.getChildren().add(aboutLabel);
-		
+
 		Scene scene = new Scene(pane, 550, 300);
 		Stage stage = new Stage();
 		stage.setScene(scene);
@@ -131,10 +135,10 @@ public class DisplayUI extends Pane{
 		stage.show();
 	}
 	public LineChart lastWeekToday() {
-		
+
 		int[] percentFull = history.getDaysAgoPercents(7); //Get parking
 		for(int i=0;i<percentFull.length;i++){
-		//System.out.println(percentFull[i]+"\n");
+			//System.out.println(percentFull[i]+"\n");
 		}
 		// data 7 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
@@ -222,10 +226,10 @@ public class DisplayUI extends Pane{
 		}
 
 		lineChart.getData().add(series);
-		*/
+		 */
 		return lineChart;
 	}
-	
+
 	/**
 	 * Creates a new method that creates a new button that when clicked will
 	 * display the parking history.
@@ -240,7 +244,7 @@ public class DisplayUI extends Pane{
 			try {
 				readHistory();
 			} catch (Exception e1) {
-			//	e1.printStackTrace();
+				//	e1.printStackTrace();
 			}
 		});
 
@@ -296,9 +300,9 @@ public class DisplayUI extends Pane{
 		}
 
 	}
-	
 
-	
+
+
 
 
 	/**
@@ -401,9 +405,9 @@ public class DisplayUI extends Pane{
 
 		return hbox;
 	}
-	
+
 	public HBox addHBox() {
-		
+
 		HBox hbox = new HBox(200);
 		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
 
@@ -422,8 +426,8 @@ public class DisplayUI extends Pane{
 	 * @return rectangle a rectangle of a set size to fit in the application
 	 *         window
 	 */
-	
-	
+
+
 	public static Rectangle addRectangleNoI() {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setX(50);
@@ -482,7 +486,7 @@ public class DisplayUI extends Pane{
 		primaryStage.show();
 
 	}
-	
+
 	public synchronized void updateUIPercent(int percentFull){
 		//Update UI with cool stuff
 		parkingPercent.setText(String.format(percentFull + "%% of the spots in this lot are currently full."));
@@ -491,43 +495,79 @@ public class DisplayUI extends Pane{
 		cal = Calendar.getInstance();
 		timeText.setText(String.format("Time: " + cal.getTime()));
 	}
-	
+
 	public synchronized void updateUILiveFeed(WritableImage bkg){
 		try{
-		pane.setBackground(
-				new Background(new BackgroundImage(bkg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
+			pane.setBackground(
+					new Background(new BackgroundImage(bkg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+							BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
 		}catch(NullPointerException e){
 			System.out.println("laggy internet");
 		}
 	}
-	
+
 	public synchronized void addGraphs(){
 		graphsBox.getChildren().clear();
 		graphsBox.getChildren().addAll(addHBox().getChildren());
 	}
-	
-	
-	public synchronized void paintLines(){
-	int[][] lines = pm.ip.getSpotMatrix();
-	Line temp;
-	
-	int[] percentFull = pm.getCurrentSpots();
-	
-	for (int i = 0; i < 28; i++) {
-		temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-		if ((percentFull[i] == 0) ) {
-			temp.setStroke(Color.YELLOW);
-			temp.setStrokeWidth(30);
-			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-			
-		} else {
-			temp.setStroke(Color.WHITE);
-			temp.setStrokeWidth(2.5);
-			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-		}
 
-		pane.getChildren().add(temp);
+
+	public synchronized void paintLines(){
+		int[][] lines = pm.ip.getSpotMatrix();
+		Line temp;
+
+		int[] percentFull = pm.getCurrentSpots();
+
+		for (int i = 0; i < 28; i++) {
+			temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+			if ((percentFull[i] == 0) ) {
+				temp.setStroke(Color.YELLOW);
+				temp.setStrokeWidth(30);
+				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+
+			} else {
+				temp.setStroke(Color.WHITE);
+				temp.setStrokeWidth(2.5);
+				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+			}
+
+			pane.getChildren().add(temp);
+		}
+	}
+
+	public synchronized void lineColor(){
+
+		int[][] lines = pm.lines;
+		int[] percentFull = pm.getCurrentSpots();
+		if (count == 0){
+			count = 1;
+			for (int i = 0;  i <= 30; i++) {
+				Polygon temp = new Polygon(new double[]{
+						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
+						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
+				});
+				if ((i != 4) && (i != 11) && (i != 25)){
+					if ((percentFull[i] == 0) ) {
+						temp.setFill(Color.YELLOW);
+					} else {
+						temp.setFill(null);
+					}
+				} else {
+					temp.setFill(null);
+				}
+				polyVec.addElement(temp);
+				pane.getChildren().add(polyVec.elementAt(i)); 
+			}
+		} else {
+			for (int i = 0;  i <= 30; i++) {
+				if ((i != 4) && (i != 11) && (i != 25)){
+					if ((percentFull[i] == 0) ) {
+						polyVec.elementAt(i).setFill(Color.YELLOW);
+					} else {
+						polyVec.elementAt(i).setFill(null);
+					}
+				}
+			} 
 		}
 	}
 }

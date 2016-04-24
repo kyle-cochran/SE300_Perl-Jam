@@ -362,6 +362,12 @@ public class DisplayUI extends Pane {
 
 	}
 
+	/**
+	 * 
+	 * Method to make a white rectabgle on the right side of the UI for visua appeal
+	 * 
+	 * @return VBox - a vbox that provides spacing
+	 */
 	public VBox addSpacing() {
 		VBox vbox = new VBox();
 
@@ -372,6 +378,12 @@ public class DisplayUI extends Pane {
 		return vbox;
 	}
 
+	/**
+	 *
+	 * Method to create an HBox that is initialized with the three graphs of parking lot data
+	 * 
+	 * @return Hbox - an Hbox that contains parking lot data in the form of graphs 
+	 */
 	public HBox addHBox() {
 		HBox hbox = new HBox(200);
 		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
@@ -407,6 +419,11 @@ public class DisplayUI extends Pane {
 
 	}
 
+	/**
+	 * A method that creates an Hbox that contains the title of the project
+	 * 
+	 * @return Hbox - Hbox containing the title 
+	 */
 	public HBox addTitle() {
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
@@ -453,27 +470,11 @@ public class DisplayUI extends Pane {
 			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 			pane.getChildren().add(temp);
 		}
-		// Create the lines in a looplines.length
-//		int[] percentFull = pm.getCurrentSpots();
-//		for (int i = 0; i < 28; i++) {
-//			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-//			if ((percentFull[i] == 0) ) {
-//				temp.setStroke(Color.YELLOW);
-//				temp.setStrokeWidth(2.5);
-//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-//				
-//			} else {
-//				temp.setStroke(Color.WHITE);
-//				temp.setStrokeWidth(2.5);
-//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-//			}
-//			pane.getChildren().add(temp);
-//		
-//		}
 
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 
+		// Closes the thread and the project when the x is clicked
 		primaryStage.setOnCloseRequest(e -> {
 			pm.endProcThread();
 			System.exit(0);

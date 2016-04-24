@@ -161,6 +161,9 @@ public class ProcessingManager implements Runnable {
 		return currentSpots;
 	}
 
+	/**
+	 * Method to calculate the percentage of the spots that are full
+	 */
 	public void getCurrentPercent() {
 
 		int total = 0;
@@ -177,19 +180,10 @@ public class ProcessingManager implements Runnable {
 		DisplayUI.timeText.setText(String.format("Time: " + cal.getTime()));
 	}
 
-
-
-	public DataInputStream getLotVideoFeed() {
-		return null;
-	}
-
-	public int[] getLotHistory() {
-		return null;
-	}
-
-	public void setLotHistory(int[] newHist) {
-	}
-
+	/**
+	 * Creates polygons to visually represent the spots and highlights the ones
+	 * that are empty according to the method getCurrentSpots()
+	 */
 	public synchronized void lineColor(){
 
 		int[][] lines = new ImageProcessor().getSpotMatrix();

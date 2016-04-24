@@ -243,7 +243,7 @@ public class ProcessingManager implements Runnable {
 		// Update UI
 		try{
 			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.cameraDriver.getImage()));
-			ui.updateUIPercent(getCurrentPercent());			ui.lineColor();
+			ui.updateUIPercent(getCurrentPercent());			//ui.lineColor();
 		}catch(NullPointerException e){
 			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
 			

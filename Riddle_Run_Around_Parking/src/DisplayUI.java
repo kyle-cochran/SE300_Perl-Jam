@@ -1,18 +1,22 @@
 package src;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Vector;
 
-import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -23,29 +27,28 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
+import javafx.scene.shape.*;
 
 /**
  * Class responsible for displaying main window and children objects
@@ -53,13 +56,13 @@ import javafx.stage.Stage;
  * @author Taylor Hester, Matthew Caixeiro, Austin Musser
  * @version 2.0
  */
-@SuppressWarnings("rawtypes")
-public class DisplayUI extends Pane{
+
+public class DisplayUI extends Pane {
 	BorderPane borderpane;
 	Rectangle r;
 	Button PHbutton;
 	VBox infoPanel;
-	HBox graphsBox;
+	HBox hbox;
 	HBox title;
 	VBox spacing;
 	Menu menu; 
@@ -67,15 +70,12 @@ public class DisplayUI extends Pane{
 	Menu menuAbout;
 	MenuItem myAbout;
 	File parkingHistoryFile = new File("Parking Spot History.txt");
-	Pane pane = new Pane();//this was static
-	Rectangle rectangle;//this was static
-	Label parkingPercent = new Label("Default Text");//this was static
-	Label timeText = new Label();//this was static
-	Calendar cal;
+	static Pane pane = new Pane();
+	static Rectangle rectangle;
+	static Label parkingPercent = new Label("Default Text");
+	static Label timeText = new Label();
 	ProcessingManager pm;
-	HistoryHandler history;
-	private int count = 0;
-	Vector<Polygon> polyVec = new Vector<Polygon>();
+	HistoryHandler history = new HistoryHandler();
 
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
@@ -87,46 +87,43 @@ public class DisplayUI extends Pane{
 			"11:00 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM",
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
-
+	 
 	public DisplayUI(ProcessingManager pm) {
 		borderpane = new BorderPane();
 		r =  addRectangleNoI();
 		PHbutton = buttonHistory();
 		infoPanel = addInfoPanel();
 		spacing = addSpacing();
-		graphsBox = addDummyGraphs();
+		hbox = addHBox();
 		title = addTitle();
 		this.pm = pm;
-		history = pm.hH;
 		addMenu();
 	}
-
+	
 	public void addMenu(){
 		menuAbout = new Menu("Directions");
 		myAbout = new MenuItem("About This Program");
 		menuBar = new MenuBar();
 		menuAbout.getItems().add(myAbout);
 		menuBar.getMenus().addAll(menuAbout);
-
+		
 		myAbout.setOnAction(e -> showAbout());
-
+		
 	}
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
 				+"The yellow highlights show where there are open spots. Please do not"
-				+"use this application and drive. Thank you. \n Copyright: Perl-Jam"
-				+ "Software Enterprises, 2016";
-
-
+				+"use this application and drive. Thank you.";
+		
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
 		aboutLabel.setTextAlignment(TextAlignment.CENTER);
 		aboutLabel.setFont(Font.font("Comic Sans MS", 14));
 		aboutLabel.setText(aboutText);
-
+		
 		StackPane pane = new StackPane();
 		pane.getChildren().add(aboutLabel);
-
+		
 		Scene scene = new Scene(pane, 550, 300);
 		Stage stage = new Stage();
 		stage.setScene(scene);
@@ -136,10 +133,10 @@ public class DisplayUI extends Pane{
 	}
 	public LineChart lastWeekToday() {
 
-		int[] percentFull = history.getDaysAgoPercents(7); //Get parking
-		for(int i=0;i<percentFull.length;i++){
-			//System.out.println(percentFull[i]+"\n");
-		}
+		// TODO call a method to get these values
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100 };// = new int[27];
+		// double[] percentFull = history.getDaysAgoPercents(7); //Get parking
 		// data 7 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -162,7 +159,10 @@ public class DisplayUI extends Pane{
 	}
 
 	public LineChart lastWeekYesterday() {
-		int[] percentFull = history.getDaysAgoPercents(8); //Get parking
+		// TODO call a method to get these values
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		// double[] percentFull = history.getDaysAgoPercents(8); //Get parking
 		// data 8 days ago
 
 		final CategoryAxis xAxis = new CategoryAxis();
@@ -185,7 +185,10 @@ public class DisplayUI extends Pane{
 	}
 
 	public LineChart lastWeekTomorrow() {
-		int[] percentFull = history.getDaysAgoPercents(6); //Get parking
+		// TODO call a method to get these values
+		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+				100, 100, 100, 100, 100, 100, 100, 100, 100 };
+		// double[] percentFull = history.getDaysAgoPercents(6); //Get parking
 		// data 6 days ago
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
@@ -206,30 +209,6 @@ public class DisplayUI extends Pane{
 		return lineChart;
 	}
 
-	public LineChart generateDummyGraph(){
-		//int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-		//		100, 100, 100, 100, 100, 100, 100, 100, 100 };
-
-		final CategoryAxis xAxis = new CategoryAxis();
-		final NumberAxis yAxis = new NumberAxis();
-		yAxis.setLabel("Percent Full");
-		xAxis.setLabel("Time");
-
-		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
-
-		lineChart.setTitle("Loading");
-
-		XYChart.Series series = new XYChart.Series<>();
-		/*
-		for (int i = 0; i < 28; i++) {
-			series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
-		}
-
-		lineChart.getData().add(series);
-		 */
-		return lineChart;
-	}
-
 	/**
 	 * Creates a new method that creates a new button that when clicked will
 	 * display the parking history.
@@ -244,7 +223,7 @@ public class DisplayUI extends Pane{
 			try {
 				readHistory();
 			} catch (Exception e1) {
-				//	e1.printStackTrace();
+			//	e1.printStackTrace();
 			}
 		});
 
@@ -300,9 +279,9 @@ public class DisplayUI extends Pane{
 		}
 
 	}
+	
 
-
-
+	
 
 
 	/**
@@ -393,21 +372,7 @@ public class DisplayUI extends Pane{
 		return vbox;
 	}
 
-	public HBox addDummyGraphs(){
-		HBox hbox = new HBox(200);
-		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
-
-		LineChart graph1 = generateDummyGraph();
-		LineChart graph2 = generateDummyGraph();
-		LineChart graph3 = generateDummyGraph();
-
-		hbox.getChildren().addAll(graph1, graph2, graph3);
-
-		return hbox;
-	}
-
 	public HBox addHBox() {
-
 		HBox hbox = new HBox(200);
 		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
 
@@ -426,8 +391,8 @@ public class DisplayUI extends Pane{
 	 * @return rectangle a rectangle of a set size to fit in the application
 	 *         window
 	 */
-
-
+	
+	
 	public static Rectangle addRectangleNoI() {
 		Rectangle rectangle = new Rectangle();
 		rectangle.setX(50);
@@ -469,13 +434,42 @@ public class DisplayUI extends Pane{
 		// sets the created button and vbox to a location within the border pane
 		borderpane.setTop(title);
 		borderpane.setLeft(infoPanel);
-		borderpane.setBottom(graphsBox);
+		borderpane.setBottom(hbox);
 		borderpane.setRight(spacing);
 
 		// creates a new pane that will display the parking lot with highlighted
 		// spots
 		pane.getChildren().add(r);
 		pane.setMinSize(800, 500);
+
+		// Create image processor class so the lines can be created
+		ImageProcessor ip = new ImageProcessor();
+		int[][] lines = ip.getSpotMatrix();
+
+		for (int i = 0; i <= 31; i++){
+			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+			temp.setStroke(Color.WHITE);
+			temp.setStrokeWidth(2.5);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+			pane.getChildren().add(temp);
+		}
+		// Create the lines in a looplines.length
+//		int[] percentFull = pm.getCurrentSpots();
+//		for (int i = 0; i < 28; i++) {
+//			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+//			if ((percentFull[i] == 0) ) {
+//				temp.setStroke(Color.YELLOW);
+//				temp.setStrokeWidth(2.5);
+//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+//				
+//			} else {
+//				temp.setStroke(Color.WHITE);
+//				temp.setStrokeWidth(2.5);
+//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+//			}
+//			pane.getChildren().add(temp);
+//		
+//		}
 
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
@@ -485,122 +479,5 @@ public class DisplayUI extends Pane{
 		primaryStage.setTitle("Riddle Run Around Parking");
 		primaryStage.show();
 
-	}
-
-	public synchronized void updateUIPercent(int percentFull){
-		//Update UI with cool stuff
-		parkingPercent.setText(String.format(percentFull + "%% of the spots in this lot are currently full."));
-
-		// get current date time with Calendar
-		cal = Calendar.getInstance();
-		timeText.setText(String.format("Time: " + cal.getTime()));
-	}
-
-	public synchronized void updateUILiveFeed(WritableImage bkg){
-		try{
-			pane.setBackground(
-					new Background(new BackgroundImage(bkg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-							BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
-		}catch(NullPointerException e){
-			System.out.println("laggy internet");
-		}
-	}
-
-	public synchronized void addGraphs(){
-		graphsBox.getChildren().clear();
-		graphsBox.getChildren().addAll(addHBox().getChildren());
-	}
-
-
-	public synchronized void paintLines(){
-		int[][] lines = pm.ip.getSpotMatrix();
-		Line temp;
-
-		int[] percentFull = pm.getCurrentSpots();
-
-		for (int i = 0; i < 28; i++) {
-			temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			if ((percentFull[i] == 0) ) {
-				temp.setStroke(Color.YELLOW);
-				temp.setStrokeWidth(30);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-
-			} else {
-				temp.setStroke(Color.WHITE);
-				temp.setStrokeWidth(2.5);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-			}
-
-			pane.getChildren().add(temp);
-		}
-	}
-
-	public synchronized void lineColor(){
-
-		int[][] lines = pm.lines;
-		int[] percentFull = pm.getCurrentSpots();
-		if (count == 0){
-			count = 1;
-			for (int i = 0;  i <= 3; i++) {
-				Polygon temp = new Polygon(new double[]{
-						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
-						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
-				});
-				if ((percentFull[i] == 0) ) {
-					temp.setFill(Color.YELLOW);
-				} else {
-					temp.setFill(null);
-				}
-				polyVec.addElement(temp);
-				pane.getChildren().add(polyVec.elementAt(i)); 
-			}
-			for (int i = 5;  i <= 10; i++) {
-				Polygon temp = new Polygon(new double[]{
-						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
-						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
-				});
-				if ((percentFull[i] == 0) ) {
-					temp.setFill(Color.YELLOW);
-				} else {
-					temp.setFill(null);
-				}
-				polyVec.addElement(temp);
-				pane.getChildren().add(polyVec.elementAt(i)); 
-			}
-			for (int i = 12;  i <= 24; i++) {
-				Polygon temp = new Polygon(new double[]{
-						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
-						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
-				});
-				if ((percentFull[i] == 0) ) {
-					temp.setFill(Color.YELLOW);
-				} else {
-					temp.setFill(null);
-				}
-				polyVec.addElement(temp);
-				pane.getChildren().add(polyVec.elementAt(i)); 
-			}
-			for (int i = 26;  i <= 30; i++) {
-				Polygon temp = new Polygon(new double[]{
-						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
-						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
-				});
-				if ((percentFull[i] == 0) ) {
-					temp.setFill(Color.YELLOW);
-				} else {
-					temp.setFill(null);
-				}
-				polyVec.addElement(temp);
-				pane.getChildren().add(polyVec.elementAt(i)); 
-			}
-		} else {
-			for (int i = 0;  i <= 30; i++) {
-				if ((percentFull[i] == 0) ) {
-					polyVec.elementAt(i).setFill(Color.YELLOW);
-				} else {
-					polyVec.elementAt(i).setFill(null);
-				}
-			} 
-		}
 	}
 }

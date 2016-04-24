@@ -35,8 +35,6 @@ import javafx.scene.layout.BackgroundSize;
  * @version 1.0
  */
 public class ImageProcessor {
-	private Frame currentFrame;
-	private Frame previousFrame;
 	private IplImage lotIplImage;
 	private IplImage lotIplImage_gray;
 	private IplImage refPic;
@@ -45,8 +43,6 @@ public class ImageProcessor {
 	private OpenCVFrameConverter.ToIplImage iplConverter;
 	private OpenCVFrameConverter.ToMat matConverter;
 
-	
-	private volatile int[][] lines;
 	private int[][] binaryArray = new int[1440][1080]; // these values may need
 														// to be change later if
 														// we crop the pic
@@ -59,16 +55,12 @@ public class ImageProcessor {
 	 */
 	public ImageProcessor() {
 
-		
-		generateSpotMatrix();
-		
 		// initialize necessary image converters
 		iplConverter = new OpenCVFrameConverter.ToIplImage();
 		matConverter = new OpenCVFrameConverter.ToMat();
 
 		// load reference image from file as greyscale
-//		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-		refPic = cvLoadImage("src/media/reference330.jpeg", CV_LOAD_IMAGE_GRAYSCALE);
+		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 	}
 
 	/**
@@ -91,17 +83,7 @@ public class ImageProcessor {
 	 */
 	public int[][] diffAsBinArray() {
 
-		currentFrame = cameraDriver.getImage();
-		
-		if(currentFrame.equals(null)){
-				currentFrame = previousFrame;
-		}
-		
-		try{
-		lotIplImage = iplConverter.convert(currentFrame);
-		}catch(NullPointerException e){
-			System.out.println("The program is unable to retrieve video data. Check your internet connection.");
-		}
+		lotIplImage = iplConverter.convert(cameraDriver.getImage());
 
 		// add a blur to lot image and reference image to eliminate jitter
 		// effects
@@ -126,8 +108,6 @@ public class ImageProcessor {
 		matDiff = matConverter.convert(iplConverter.convert(diff));
 		binaryArray = matToBinary.toBinaryArray(matDiff);
 
-		previousFrame=currentFrame;
-		
 		return binaryArray;
 
 	}
@@ -148,8 +128,8 @@ public class ImageProcessor {
 	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
-		int[] isEmpty = new int[28];
-		int[] count = new int[28];
+		int[] isEmpty = new int[31];
+		int[] count = new int[31];
 
 		for (int i = 0; i <= count.length - 1; i++) {
 			count[i] = 0;
@@ -252,8 +232,19 @@ public class ImageProcessor {
 	/**
 	 * @ignore
 	 */
-	private void generateSpotMatrix() {
-		lines = new int[32][4];
+	private boolean[] generateSpotMatrix() {
+		boolean[] temp = { false, false, false };
+		return temp;
+	}
+
+	/**
+	 * Identify where divisor lines are in current lot view.
+	 * 
+	 * @return an array of coordinate pairs that represents the pixel location
+	 *         of parking spots divisor lines
+	 */
+	public int[][] getSpotMatrix() {
+		int[][] lines = new int[32][4];
 
 		int offset = 0;
 
@@ -423,15 +414,7 @@ public class ImageProcessor {
 		lines[31][2] = 413;
 		lines[31][3] = 478 + offset;
 		// End
-	}
 
-	/**
-	 * Identify where divisor lines are in current lot view.
-	 * 
-	 * @return an array of coordinate pairs that represents the pixel location
-	 *         of parking spots divisor lines
-	 */
-	public int[][] getSpotMatrix() {
 		return lines;
 	}
 
@@ -441,9 +424,7 @@ public class ImageProcessor {
 	 * following sources:
 	 * 
 	 * https://blog.idrsolutions.com/2012/11/convert-bufferedimage-to-javafx-
-	 * image/ 
-	 * 
-	 * http://stackoverflow.com/questions/31873704/javacv-how-to-convert-
+	 * image/ http://stackoverflow.com/questions/31873704/javacv-how-to-convert-
 	 * iplimage-tobufferedimage
 	 * 
 	 * @param src
@@ -452,7 +433,7 @@ public class ImageProcessor {
 	 *         JavaFX library
 	 */
 
-	public WritableImage IplImageToWritableImage(Frame framesrc) {
+	public static void IplImageToWritableImage(Frame framesrc) {
 
 		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
 		BufferedImage bf = paintConverter.getBufferedImage(framesrc, 1);
@@ -468,10 +449,9 @@ public class ImageProcessor {
 				}
 			}
 		}
-		return wr;
-	}
-	
-	public Frame returnCurrentFrame(){
-		return currentFrame;
+
+		DisplayUI.pane.setBackground(
+				new Background(new BackgroundImage(wr, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+						BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
 	}
 }// end ImageProcessor

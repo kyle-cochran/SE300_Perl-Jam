@@ -69,7 +69,7 @@ public class HistoryHandler {
 	// time
 	int timeIncr = 28; // the number of different time steps during the day that
 	// will be considered
-	int numSpots = 32; // the number of parking spots in one lot
+	int numSpots = 25; // the number of parking spots in one lot
 	int[][][] spots; // the matrix that holds all spot data as a binary integer,
 						// format:
 	// [day][time][spot no.]
@@ -306,14 +306,14 @@ public class HistoryHandler {
 				for (int j = 0; j < timeIncr; j++) {
 					// get the spot array at day i, and time j and convert from
 					// string to int matrix
-					spots[i][j] = strToIntMat(days.item(i).getChildNodes().item(j).getTextContent());
 					
-					//System.out.println(days.item(i).getChildNodes().item(j).getTextContent());
-					for(int lp = 0;lp<numSpots; lp++){
-						//System.out.print(spots[i][j][lp]);
-						//System.out.print(strToIntMat(days.item(i).getChildNodes().item(j).getTextContent())[lp]);
-					}
-					//System.out.println("\n");
+					/*
+					 * for whatever reason, the brilliant minds behind xml consider
+					 * whitespace as a Document object node. So after ~4 hours of pain
+					 * I changed the code to cycle through every 2*j+1 element instead
+					 * of every j element
+					 */
+					spots[i][j] = strToIntMat(days.item(i).getChildNodes().item(2*j+1).getTextContent());
 				}
 			}
 		} catch (Exception e) {
@@ -422,27 +422,17 @@ public class HistoryHandler {
 	public int[] getDaysAgoPercents(int numDaysAgo) {
 		readData();
 		int[] percents = new int[timeIncr];
-	for(int l=0;l<timeIncr;l++){
-		for(int i=0;i<numSpots;i++){
-			//System.out.print(spots[7][l][i]);
-		}
-		//System.out.println("\n\n");
-	}
+
 		for (int j = 0; j < timeIncr; j++) {
 			int numFull = 0;
-			//System.out.println("at beginning of j: "+numFull);
 			for (int k = 0; k < numSpots; k++) {
-				//System.out.println("at beginning of k: "+numFull);
 				try {
 					numFull += spots[histL - 1 - numDaysAgo][j][k];
 				} catch (ArrayIndexOutOfBoundsException aioobe) {
 					numFull += spots[0][j][k];
 				}
-				//System.out.println("at end of k: "+numFull);
 			}
-			//System.out.println(numFull);
 			percents[j] = 100 * numFull / numSpots;
-			//System.out.println(percents[j]);
 		}
 		return percents;
 	}
@@ -471,31 +461,16 @@ public class HistoryHandler {
 	 */
 	public int[] strToIntMat(String str) {
 		str.trim();
-		volatile int[] mat = new int[numSpots];
-		boolean gtg = false;
-		
-		do{
+		int[] mat = new int[numSpots];
+
 		for (int i = 0; i < str.length(); i++) {
 			try{
-				
-			mat[i] = Integer.parseInt(String.valueOf(str.charAt(i)));
-			//System.out.print(Integer.parseInt(String.valueOf(str.charAt(i))));
-			System.out.print(mat[i]);
+			mat[i] = Integer.parseInt(String.valueOf(str.charAt(i)).trim());
 			}catch(NumberFormatException e){
 				//at boot, this method is sometimes passed an empty string
 				//it doesn't like that
 			}
 		}
-	
-		for (int l = 0; l < mat.length; l++) {
-			if(mat[l] != 0){
-				gtg=true;
-			}
-			System.out.print(mat[l]);
-		}
-		}while(!gtg);
-		
-		System.out.println("\n");
 		return mat;
 	}
 

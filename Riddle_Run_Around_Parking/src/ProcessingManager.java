@@ -32,7 +32,7 @@ public class ProcessingManager implements Runnable {
 	private volatile int[] currentSpots;
 	public volatile int refreshFreq;
 	public volatile int uiRefresh;
-	public ImageProcessor imP;
+	public volatile ImageProcessor imP;
 	public HistoryHandler hH;
 	public volatile boolean procOn;
 	private volatile boolean timeToUpdate;
@@ -40,10 +40,16 @@ public class ProcessingManager implements Runnable {
 	private Thread t;
 	HistoryHandler history;
 	ImageProcessor ip = new ImageProcessor();
+	CameraDriver cd = new CameraDriver();
 	int[][] lines = ip.getSpotMatrix();
 
 	Calendar cal = Calendar.getInstance();
 
+	Runnable scheduledBkgUpdate = new Runnable() {
+		@Override
+		public void run() {updateUIBkg();}
+	};
+	
 	Runnable scheduledUIUpdate = new Runnable() {
 		@Override
 		public void run() {updateUI();}
@@ -125,7 +131,7 @@ public class ProcessingManager implements Runnable {
 	 */
 	public void run() {
 		updateSpots();
-
+		int procCount = 0;
 		int minutes;
 
 		procOn = true;
@@ -150,7 +156,8 @@ public class ProcessingManager implements Runnable {
 				System.out.println("Yo dude, the thread got interupted");
 			}
 		}
-
+		//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
+		Platform.runLater(addGraphs);
 
 		// this will loop to make the processing continuous
 		while (procOn) {
@@ -161,16 +168,17 @@ public class ProcessingManager implements Runnable {
 				e.printStackTrace();
 			}
 
-			
-			//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
-			Platform.runLater(addGraphs);
-			
-			
+
 			// get newest spot data
-			updateSpots();
-
+			if(procCount>1000){
+			//updateSpots();
 			Platform.runLater(scheduledUIUpdate);
-
+			procCount=0;
+			
+			}
+			
+			//Platform.runLater(scheduledBkgUpdate);
+			updateUIBkg();
 			// get newest spot data
 
 
@@ -196,7 +204,7 @@ public class ProcessingManager implements Runnable {
 				okayToUpdate = true;
 			}
 			// -----------------------------------------------------------------------------------------------------------------------
-			
+			procCount++;
 		}
 
 	}
@@ -237,39 +245,30 @@ public class ProcessingManager implements Runnable {
 		return imP;
 	}
 
+	public void updateUIBkg(){
+	try{
+		cd.updateUILiveFeed();
 
+	}catch(NullPointerException e){
+		System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
+
+	}
+}
 
 	public synchronized void updateUI(){
 		// Update UI
 		try{
-			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.cameraDriver.getImage()));
-			ui.updateUIPercent(getCurrentPercent());			//ui.lineColor();
+			ui.updateUIPercent(getCurrentPercent());			ui.lineColor();
 		}catch(NullPointerException e){
 			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
-			
+
 		}
 	}
-	
+
 	public synchronized void addGraphs(){
 		ui.addGraphs();
 	}
-// end ProcessigManager
-
-
-		//			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-		//			if ((percentFull[i] == 0) ) {
-		//				temp.setStroke(Color.YELLOW);
-		//				temp.setStroke(Color.YELLOW);
-		//				temp.setStrokeWidth(2.5);
-		//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-		//			} else {
-		//				temp.setStroke(Color.WHITE);
-		//				temp.setStrokeWidth(2.5);
-		//				temp.setStrokeLineCap(StrokeLineCap.SQUARE); 
-		//			}
-		//&& (percentFull[i + 1] >= 60)
-		// DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
-	}
+}
 
 // end ProcessigManager
 

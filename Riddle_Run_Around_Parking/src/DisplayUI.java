@@ -446,23 +446,30 @@ public class DisplayUI extends Pane {
 		ImageProcessor ip = new ImageProcessor();
 		int[][] lines = ip.getSpotMatrix();
 
-		// Create the lines in a looplines.length
-		int[] percentFull = pm.getCurrentSpots();
-		for (int i = 0; i < 28; i++) {
+		for (int i = 0; i <= 31; i++){
 			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			if ((percentFull[i] == 0) ) {
-				temp.setStroke(Color.YELLOW);
-				temp.setStrokeWidth(2.5);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-				
-			} else {
-				temp.setStroke(Color.WHITE);
-				temp.setStrokeWidth(2.5);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-			}
+			temp.setStroke(Color.WHITE);
+			temp.setStrokeWidth(2.5);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 			pane.getChildren().add(temp);
-		
 		}
+		// Create the lines in a looplines.length
+//		int[] percentFull = pm.getCurrentSpots();
+//		for (int i = 0; i < 28; i++) {
+//			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+//			if ((percentFull[i] == 0) ) {
+//				temp.setStroke(Color.YELLOW);
+//				temp.setStrokeWidth(2.5);
+//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+//				
+//			} else {
+//				temp.setStroke(Color.WHITE);
+//				temp.setStrokeWidth(2.5);
+//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+//			}
+//			pane.getChildren().add(temp);
+//		
+//		}
 
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);

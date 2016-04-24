@@ -4,9 +4,11 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Vector;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 
 
@@ -28,7 +30,9 @@ public class ProcessingManager implements Runnable {
 	HistoryHandler history = new HistoryHandler();
 	ImageProcessor ip = new ImageProcessor();
 	int[][] lines = ip.getSpotMatrix();
-
+	private int count = 0;
+	Vector<Polygon> polyVec = new Vector<Polygon>();
+	Calendar cal = Calendar.getInstance();
 
 	/**
 	 * Default constructor. Auto-sets refresh frequency to 1 per second.
@@ -111,10 +115,10 @@ public class ProcessingManager implements Runnable {
 
 			// get newest spot data
 			updateSpots();
-			
+
 			//should update the highlight
 			lineColor();
-			
+
 			//Update UI
 			getCurrentPercent();
 
@@ -170,11 +174,9 @@ public class ProcessingManager implements Runnable {
 		DisplayUI.parkingPercent.setText(String.format(percent + "%% of the spots in this lot are currently full."));
 
 		// get current date time with Calendar
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
 		DisplayUI.timeText.setText(String.format("Time: " + cal.getTime()));
 	}
-	
+
 
 
 	public DataInputStream getLotVideoFeed() {
@@ -188,24 +190,51 @@ public class ProcessingManager implements Runnable {
 	public void setLotHistory(int[] newHist) {
 	}
 	public void lineColor(){
-		
-	int[] percentFull = getCurrentSpots();
-	for (int i = 0; i < 28; i++) {
-		Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-		if ((percentFull[i] == 0) ) {
-			temp.setStroke(Color.YELLOW);
-			temp.setStroke(Color.YELLOW);
-			temp.setStrokeWidth(2.5);
-			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+
+		int[] percentFull = getCurrentSpots();
+		if (count == 0){
+			count = 1;
+			for (int i = 0;  i <= 30; i++) {
+				Polygon temp = new Polygon(new double[]{
+						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
+						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
+				});
+				if ((i != 4) && (i != 11) && (i != 25)){
+					if ((percentFull[i] == 0) ) {
+						temp.setFill(Color.YELLOW);
+					} else {
+						temp.setFill(null);
+					}
+				} else {
+					temp.setFill(null);
+				}
+				polyVec.addElement(temp);
+				DisplayUI.pane.getChildren().add(polyVec.elementAt(i)); 
+			}
 		} else {
-			temp.setStroke(Color.WHITE);
-			temp.setStrokeWidth(2.5);
-			temp.setStrokeLineCap(StrokeLineCap.SQUARE); 
+			for (int i = 0;  i <= 30; i++) {
+				if ((i != 4) && (i != 11) && (i != 25)){
+					if ((percentFull[i] == 0) ) {
+						polyVec.elementAt(i).setFill(Color.YELLOW);
+					} else {
+						polyVec.elementAt(i).setFill(null);
+					}
+				}
+			} 
 		}
-//&& (percentFull[i + 1] >= 60)
-		DisplayUI.pane.getChildren().add(temp);
+		//			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+		//			if ((percentFull[i] == 0) ) {
+		//				temp.setStroke(Color.YELLOW);
+		//				temp.setStroke(Color.YELLOW);
+		//				temp.setStrokeWidth(2.5);
+		//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+		//			} else {
+		//				temp.setStroke(Color.WHITE);
+		//				temp.setStrokeWidth(2.5);
+		//				temp.setStrokeLineCap(StrokeLineCap.SQUARE); 
+		//			}
+		//&& (percentFull[i + 1] >= 60)
 		// DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
 	}
-	}
-	
+
 }// end ProcessigManager

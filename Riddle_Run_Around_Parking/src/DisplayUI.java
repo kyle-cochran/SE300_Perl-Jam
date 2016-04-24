@@ -51,7 +51,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.*;
 
 /**
- * Class responsible for displaying main window and children objects
+ * Class responsible for displaying main window and children objects.
+ * DisplayUI extends Pane so that the objects created within Display 
+ * UI can be seen by the user. Many different Javafx instances were
+ * used to create the final product. 
  * 
  * @author Taylor Hester, Matthew Caixeiro, Austin Musser
  * @version 2.0
@@ -65,7 +68,7 @@ public class DisplayUI extends Pane {
 	HBox hbox;
 	HBox title;
 	VBox spacing;
-	Menu menu; 
+	VBox vboxTop;
 	MenuBar menuBar;
 	Menu menuAbout;
 	MenuItem myAbout;
@@ -77,30 +80,34 @@ public class DisplayUI extends Pane {
 	ProcessingManager pm;
 	HistoryHandler history = new HistoryHandler();
 
-	/*
-	 * call methods to create a rectangle, button and vbox their return value is
-	 * then set to a corresponding variable so that the create objects can be
-	 * displayed in a stage
-	 */
 
 	String[] timeOfDay = { "7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM",
 			"11:00 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM",
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
+	/**
+	 * Display UI calls methods to create a rectangle, vbox their return value is then
+	 * set to a corresponding variable so that the created objects can be displayed 
+	 * in the stage. Display UI is passed Processing Manager so the parking lines
+	 * and highlights can be updated.
+	 * 
+	 * @return void 
+	 */
 	 
 	public DisplayUI(ProcessingManager pm) {
 		borderpane = new BorderPane();
 		r =  addRectangleNoI();
-		PHbutton = buttonHistory();
+		//PHbutton = buttonHistory();
 		infoPanel = addInfoPanel();
 		spacing = addSpacing();
 		hbox = addHBox();
 		title = addTitle();
 		this.pm = pm;
-		addMenu();
+		menuBar = addMenu();
+		vboxTop = addTop();
 	}
 	
-	public void addMenu(){
+	public MenuBar addMenu(){
 		menuAbout = new Menu("Directions");
 		myAbout = new MenuItem("About This Program");
 		menuBar = new MenuBar();
@@ -108,17 +115,19 @@ public class DisplayUI extends Pane {
 		menuBar.getMenus().addAll(menuAbout);
 		
 		myAbout.setOnAction(e -> showAbout());
+		return menuBar;
 		
 	}
 	private void showAbout(){
-		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
-				+"The yellow highlights show where there are open spots. Please do not"
+		final String aboutText = "Welcome to the Riddle Run Around Parking Application "
+				+"The yellow highlights show where there are open spots. The graphs shown "
+				+ "at the bottom of the screen displays historic parking data. Please do not "
 				+"use this application and drive. Thank you.";
 		
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
 		aboutLabel.setTextAlignment(TextAlignment.CENTER);
-		aboutLabel.setFont(Font.font("Comic Sans MS", 14));
+		aboutLabel.setFont(Font.font("Comic Sans MS", 20));
 		aboutLabel.setText(aboutText);
 		
 		StackPane pane = new StackPane();
@@ -131,6 +140,13 @@ public class DisplayUI extends Pane {
 		stage.setResizable(false);
 		stage.show();
 	}
+	/**
+	 * Creates a new method that creates a new line chart that will
+	 * display the parking data from last week. This is done with an array
+	 * and line chart features.
+	 * 
+	 * @return lineChart
+	 */
 	public LineChart lastWeekToday() {
 
 		// TODO call a method to get these values
@@ -158,6 +174,13 @@ public class DisplayUI extends Pane {
 		return lineChart;
 	}
 
+	/**
+	 * Creates a new method that creates a new line chart that will
+	 * display the parking data from last week yesterday. This is done 
+	 * with an array and line chart features.
+	 * 
+	 * @return lineChart
+	 */
 	public LineChart lastWeekYesterday() {
 		// TODO call a method to get these values
 		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
@@ -183,7 +206,13 @@ public class DisplayUI extends Pane {
 		lineChart.getData().add(series);
 		return lineChart;
 	}
-
+	/**
+	 * Creates a new method that creates a new line chart that will
+	 * display the data from a week ago tomorrow. This is done with an array
+	 * and line chart features.
+	 * 
+	 * @return lineChart
+	 */
 	public LineChart lastWeekTomorrow() {
 		// TODO call a method to get these values
 		int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
@@ -215,7 +244,7 @@ public class DisplayUI extends Pane {
 	 * 
 	 * @return buttonPHistory A button to access the parking history
 	 */
-	public Button buttonHistory() {
+	/*public Button buttonHistory() {
 		Button button = new Button("Parking History");
 		button.setPrefSize(200, 20);
 		button.setOnAction(e -> {
@@ -235,7 +264,7 @@ public class DisplayUI extends Pane {
 	 * print it out into a text field. With its own label and pane
 	 */
 
-	private void readHistory() {
+	/*private void readHistory() {
 		BufferedReader buffRead = null;
 		try {
 			// tries to read parking history file
@@ -278,7 +307,7 @@ public class DisplayUI extends Pane {
 			//e.printStackTrace();
 		}
 
-	}
+	}*/
 	
 
 	
@@ -354,7 +383,7 @@ public class DisplayUI extends Pane {
 		timeText.setFont(Font.font("Arial", 14));
 		timeText.setStyle("-fx-font-size: 18");
 
-		vbox.getChildren().addAll(title, parkingPercent, PHbutton, fill, dateTimeTitle, dateText, timeText);
+		vbox.getChildren().addAll(title, parkingPercent, fill, dateTimeTitle, dateText, timeText);
 		// add all does not accept date and calendar types
 
 		// insert data regarding parking availability here
@@ -377,6 +406,7 @@ public class DisplayUI extends Pane {
 
 		return vbox;
 	}
+	
 
 	/**
 	 *
@@ -438,6 +468,14 @@ public class DisplayUI extends Pane {
 
 		return hbox;
 	}
+	
+	public VBox addTop(){
+		
+		VBox vboxTop = new VBox();
+		vboxTop.getChildren().addAll(menuBar, title);
+		
+		return vboxTop;
+	}
 
 	/**
 	 * Initializes the main window and sets all display sub-components
@@ -448,8 +486,8 @@ public class DisplayUI extends Pane {
 	public void start(Stage primaryStage) throws Exception {
 		// creates a new scene
 		Scene scene = new Scene(borderpane);
-		// sets the created button and vbox to a location within the border pane
-		borderpane.setTop(title);
+		// sets the created button and hbox to a location within the border pane
+		borderpane.setTop(vboxTop);
 		borderpane.setLeft(infoPanel);
 		borderpane.setBottom(hbox);
 		borderpane.setRight(spacing);

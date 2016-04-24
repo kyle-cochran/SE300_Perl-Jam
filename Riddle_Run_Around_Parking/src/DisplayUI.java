@@ -100,8 +100,8 @@ public class DisplayUI extends Pane{
 		history = pm.hH;
 		addMenu();
 	}
-
-	public void addMenu(){
+	
+	public MenuBar addMenu(){
 		menuAbout = new Menu("Directions");
 		myAbout = new MenuItem("About This Program");
 		menuBar = new MenuBar();
@@ -109,19 +109,19 @@ public class DisplayUI extends Pane{
 		menuBar.getMenus().addAll(menuAbout);
 
 		myAbout.setOnAction(e -> showAbout());
+		return menuBar;
 
 	}
 	private void showAbout(){
-		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
-				+"The yellow highlights show where there are open spots. Please do not"
-				+"use this application and drive. Thank you. \n Copyright: Perl-Jam"
-				+ "Software Enterprises, 2016";
-
+		final String aboutText = "Welcome to the Riddle Run Around Parking Application "
+				+"The yellow highlights show where there are open spots. The graphs shown "
+				+ "at the bottom of the screen displays historic parking data. Please do not "
+				+"use this application and drive. Thank you.";
 
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
 		aboutLabel.setTextAlignment(TextAlignment.CENTER);
-		aboutLabel.setFont(Font.font("Comic Sans MS", 14));
+		aboutLabel.setFont(Font.font("Comic Sans MS", 20));
 		aboutLabel.setText(aboutText);
 
 		StackPane pane = new StackPane();
@@ -133,7 +133,8 @@ public class DisplayUI extends Pane{
 		stage.setTitle("About");
 		stage.setResizable(false);
 		stage.show();
-	}
+	}	
+	
 	public LineChart lastWeekToday() {
 
 		int[] percentFull = history.getDaysAgoPercents(7); //Get parking

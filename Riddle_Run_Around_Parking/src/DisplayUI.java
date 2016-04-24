@@ -1,16 +1,11 @@
 package src;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -53,7 +48,8 @@ import javafx.stage.Stage;
  * @author Taylor Hester, Matthew Caixeiro, Austin Musser
  * @version 2.0
  */
-@SuppressWarnings("rawtypes")
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class DisplayUI extends Pane{
 	BorderPane borderpane;
 	Rectangle r;
@@ -100,8 +96,8 @@ public class DisplayUI extends Pane{
 		history = pm.hH;
 		addMenu();
 	}
-	
-	public MenuBar addMenu(){
+
+	public void addMenu(){
 		menuAbout = new Menu("Directions");
 		myAbout = new MenuItem("About This Program");
 		menuBar = new MenuBar();
@@ -109,9 +105,8 @@ public class DisplayUI extends Pane{
 		menuBar.getMenus().addAll(menuAbout);
 
 		myAbout.setOnAction(e -> showAbout());
-		return menuBar;
-
 	}
+	
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application "
 				+"The yellow highlights show where there are open spots. The graphs shown "
@@ -208,26 +203,14 @@ public class DisplayUI extends Pane{
 	}
 
 	public LineChart generateDummyGraph(){
-		//int[] percentFull = { 10, 50, 80, 70, 90, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-		//		100, 100, 100, 100, 100, 100, 100, 100, 100 };
 
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
 		xAxis.setLabel("Time");
-
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
-
 		lineChart.setTitle("Loading");
 
-		XYChart.Series series = new XYChart.Series<>();
-		/*
-		for (int i = 0; i < 28; i++) {
-			series.getData().add(new XYChart.Data(timeOfDay[i], percentFull[i]));
-		}
-
-		lineChart.getData().add(series);
-		 */
 		return lineChart;
 	}
 

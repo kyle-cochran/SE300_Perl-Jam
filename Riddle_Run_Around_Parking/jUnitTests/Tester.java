@@ -6,6 +6,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Vector;
+
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -15,6 +20,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import src.HistoryHandler;
 import src.ImageProcessor;
 import src.MatToBinary;
 import src.ProcessingManager;
@@ -135,6 +141,23 @@ public class Tester {
 			}
 		}
 	}
+	
+	/**
+	 * @author Matthew Caixeiro
+	 */
+	@Test
+	public void test1HHPercents() {
+		HistoryHandler hH = new HistoryHandler();
+		double[][] percents = hH.getAllPercents();
+		for(int i = 0; i <= 7; i++) {
+			for(int j = 0; j <= 27; j++){
+				if((percents[i][j] < 0) || (percents[i][j] > 100)){
+					fail("The percent value is negative or greater than 100.");
+				}
+			}
+		}
+	}
+
 	
 	
 	

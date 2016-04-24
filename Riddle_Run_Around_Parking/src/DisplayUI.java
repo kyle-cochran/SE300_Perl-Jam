@@ -474,6 +474,11 @@ public class DisplayUI extends Pane {
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 
+		primaryStage.setOnCloseRequest(e -> {
+			pm.endProcThread();
+			System.exit(0);
+		});
+		
 		// displays the scene with the title
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Riddle Run Around Parking");

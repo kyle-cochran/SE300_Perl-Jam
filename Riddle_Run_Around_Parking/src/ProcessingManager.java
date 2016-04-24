@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import java.util.GregorianCalendar;
 
 import javafx.application.Platform;
@@ -13,9 +14,11 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import java.util.Vector;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 
 /**
@@ -38,7 +41,9 @@ public class ProcessingManager implements Runnable {
 	HistoryHandler history = new HistoryHandler();
 	ImageProcessor ip = new ImageProcessor();
 	int[][] lines = ip.getSpotMatrix();
-
+	private int count = 0;
+	Vector<Polygon> polyVec = new Vector<Polygon>();
+	Calendar cal = Calendar.getInstance();
 
 	Runnable scheduledUIUpdate = new Runnable() {
 		@Override
@@ -158,6 +163,7 @@ public class ProcessingManager implements Runnable {
 				e.printStackTrace();
 			}
 
+
 			//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
 			Platform.runLater(addGraphs);
 			
@@ -166,6 +172,12 @@ public class ProcessingManager implements Runnable {
 			updateSpots();
 
 			Platform.runLater(scheduledUIUpdate);
+
+			// get newest spot data
+
+
+			//Update UI
+			getCurrentPercent();
 
 			// logic to update history at certain times of
 			// day-----------------------------------------------------------------------
@@ -214,6 +226,7 @@ public class ProcessingManager implements Runnable {
 		for (int i = 0; i < currentSpots.length; i++) {
 			total += currentSpots[i];
 		}
+
 		return 100 * total / currentSpots.length;
 	}
 
@@ -226,15 +239,16 @@ public class ProcessingManager implements Runnable {
 	}
 
 
+
 	public synchronized void updateUI(){
 		// Update UI
 		try{
 			ui.updateUILiveFeed(imP.IplImageToWritableImage(imP.returnCurrentFrame()));
 			ui.updateUIPercent(getCurrentPercent());
-
+			linecolor();
 		}catch(NullPointerException e){
 			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
-			e.printStackTrace();
+			
 		}
 	}
 	
@@ -242,3 +256,54 @@ public class ProcessingManager implements Runnable {
 		ui.addGraphs();
 	}
 }// end ProcessigManager
+
+	public synchronized void lineColor(){
+
+		int[] percentFull = getCurrentSpots();
+		if (count == 0){
+			count = 1;
+			for (int i = 0;  i <= 30; i++) {
+				Polygon temp = new Polygon(new double[]{
+						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
+						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
+				});
+				if ((i != 4) && (i != 11) && (i != 25)){
+					if ((percentFull[i] == 0) ) {
+						temp.setFill(Color.YELLOW);
+					} else {
+						temp.setFill(null);
+					}
+				} else {
+					temp.setFill(null);
+				}
+				polyVec.addElement(temp);
+				DisplayUI.pane.getChildren().add(polyVec.elementAt(i)); 
+			}
+		} else {
+			for (int i = 0;  i <= 30; i++) {
+				if ((i != 4) && (i != 11) && (i != 25)){
+					if ((percentFull[i] == 0) ) {
+						polyVec.elementAt(i).setFill(Color.YELLOW);
+					} else {
+						polyVec.elementAt(i).setFill(null);
+					}
+				}
+			} 
+		}
+		//			Line temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
+		//			if ((percentFull[i] == 0) ) {
+		//				temp.setStroke(Color.YELLOW);
+		//				temp.setStroke(Color.YELLOW);
+		//				temp.setStrokeWidth(2.5);
+		//				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
+		//			} else {
+		//				temp.setStroke(Color.WHITE);
+		//				temp.setStrokeWidth(2.5);
+		//				temp.setStrokeLineCap(StrokeLineCap.SQUARE); 
+		//			}
+		//&& (percentFull[i + 1] >= 60)
+		// DisplayUI.pane.getChildren().add(DisplayUI.rectangle);
+	}
+
+}// end ProcessigManager
+

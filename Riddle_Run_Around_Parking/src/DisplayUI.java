@@ -472,7 +472,7 @@ public class DisplayUI extends Pane{
 		// spots
 		pane.getChildren().add(r);
 		pane.setMinSize(800, 500);
-		
+
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 

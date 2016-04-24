@@ -148,8 +148,8 @@ public class ImageProcessor {
 	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
-		int[] isEmpty = new int[28];
-		int[] count = new int[28];
+		int[] isEmpty = new int[31];
+		int[] count = new int[31];
 
 		for (int i = 0; i <= count.length - 1; i++) {
 			count[i] = 0;

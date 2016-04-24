@@ -38,7 +38,10 @@ public class CameraDriver {
 	private int sampleRate = 10;
 	private WritableImage bkg;
 	Frame framesrc;
-
+	Java2DFrameConverter paintConverter;
+	BufferedImage bf;
+	WritableImage wr;
+	PixelWriter pw;
 	
 	
 	public CameraDriver() {
@@ -85,14 +88,14 @@ public class CameraDriver {
 
 		framesrc = getImage();
 		
-		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
-		BufferedImage bf = paintConverter.getBufferedImage(framesrc, 1);
+		paintConverter = new Java2DFrameConverter();
+		bf = paintConverter.getBufferedImage(framesrc, 1);
 
-		WritableImage wr = null;
+		wr = null;
 
 		if (bf != null) {
 			wr = new WritableImage(bf.getWidth(), bf.getHeight());
-			PixelWriter pw = wr.getPixelWriter();
+			pw = wr.getPixelWriter();
 			for (int x = 0; x < bf.getWidth(); x++) {
 				for (int y = 0; y < bf.getHeight(); y++) {
 					pw.setArgb(x, y, bf.getRGB(x, y));

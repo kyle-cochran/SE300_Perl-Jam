@@ -44,6 +44,10 @@ public class ImageProcessor {
 	private Mat matDiff;
 	private OpenCVFrameConverter.ToIplImage iplConverter;
 	private OpenCVFrameConverter.ToMat matConverter;
+	private PixelWriter pw;
+	Java2DFrameConverter paintConverter;
+	BufferedImage bf;
+	WritableImage wr = null;
 
 	
 	private volatile int[][] lines;
@@ -148,12 +152,8 @@ public class ImageProcessor {
 	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
-		int[] isEmpty = new int[31];
-		int[] count = new int[31];
-
-		for (int i = 0; i <= count.length - 1; i++) {
-			count[i] = 0;
-		}
+		int[] isEmpty = new int[28];
+		int count = 0;
 
 		// For the first block of cars
 		for (int i = 0; i <= 3; i++) {
@@ -162,20 +162,21 @@ public class ImageProcessor {
 				// And from the lower y bound to the higher y bounf
 				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
-					count[i] += binaryArray[j][k];
+					count += binaryArray[j][k];
 				}
 			}
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
+			if (count < .6 * ( (Math.abs((lines[i][0] - lines[i + 1][3]))
+					* Math.abs((lines[i][2] - lines[i][3]))))) {
 				isEmpty[i] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
 			} else {
 				isEmpty[i] = 0;
 			}
+			count=0;
 		}
 
 		// Repeat for all other blocks of spots
@@ -186,20 +187,21 @@ public class ImageProcessor {
 				// And from the lower y bound to the higher y bounf
 				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
-					count[i - 1] += binaryArray[j][k];
+					count += binaryArray[j][k];
 				}
 			}
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i - 1] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
+			if (count < .6 * ((Math.abs((lines[i][0] - lines[i + 1][3]))
+					* Math.abs((lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 1] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
 			} else {
 				isEmpty[i - 1] = 0;
 			}
+			count=0;
 		}
 
 		for (int i = 12; i <= 24; i++) {
@@ -208,20 +210,21 @@ public class ImageProcessor {
 				// And from the lower y bound to the higher y bounf
 				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
-					count[i - 2] += binaryArray[j][k];
+					count += binaryArray[j][k];
 				}
 			}
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i - 3] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
+			if (count < .6 * ((Math.abs((lines[i][0] - lines[i + 1][3]))
+					* Math.abs((lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 2] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
 			} else {
 				isEmpty[i - 2] = 0;
 			}
+			count=0;
 		}
 
 		for (int i = 26; i <= 30; i++) {
@@ -230,20 +233,21 @@ public class ImageProcessor {
 				// And from the lower y bound to the higher y bounf
 				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
-					count[i - 3] += binaryArray[j][k];
+					count += binaryArray[j][k];
 				}
 			}
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count[i - 3] < .6 * ((int) (Math.abs((double) (lines[i][0] - lines[i + 1][3]))
-					* Math.abs((double) (lines[i][2] - lines[i][3]))))) {
+			if (count < .6 * ((Math.abs((lines[i][0] - lines[i + 1][3]))
+					* Math.abs((lines[i][2] - lines[i][3]))))) {
 				isEmpty[i - 3] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
 			} else {
 				isEmpty[i - 3] = 0;
 			}
+			count=0;
 		}
 
 		return isEmpty;
@@ -454,14 +458,12 @@ public class ImageProcessor {
 
 	public WritableImage IplImageToWritableImage(Frame framesrc) {
 
-		Java2DFrameConverter paintConverter = new Java2DFrameConverter();
-		BufferedImage bf = paintConverter.getBufferedImage(framesrc, 1);
-
-		WritableImage wr = null;
+		paintConverter = new Java2DFrameConverter();
+		bf = paintConverter.getBufferedImage(framesrc, 1);
 
 		if (bf != null) {
 			wr = new WritableImage(bf.getWidth(), bf.getHeight());
-			PixelWriter pw = wr.getPixelWriter();
+			pw = wr.getPixelWriter();
 			for (int x = 0; x < bf.getWidth(); x++) {
 				for (int y = 0; y < bf.getHeight(); y++) {
 					pw.setArgb(x, y, bf.getRGB(x, y));

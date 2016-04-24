@@ -119,14 +119,15 @@ public class DisplayUI extends Pane {
 		
 	}
 	private void showAbout(){
-		final String aboutText = "Welcome to the Riddle Run Around Parking Application"
-				+"The yellow highlights show where there are open spots. Please do not"
+		final String aboutText = "Welcome to the Riddle Run Around Parking Application "
+				+"The yellow highlights show where there are open spots. The graphs shown "
+				+ "at the bottom of the screen displays historic parking data. Please do not "
 				+"use this application and drive. Thank you.";
 		
 		Label aboutLabel = new Label();
 		aboutLabel.setWrapText(true);
 		aboutLabel.setTextAlignment(TextAlignment.CENTER);
-		aboutLabel.setFont(Font.font("Comic Sans MS", 14));
+		aboutLabel.setFont(Font.font("Comic Sans MS", 20));
 		aboutLabel.setText(aboutText);
 		
 		StackPane pane = new StackPane();

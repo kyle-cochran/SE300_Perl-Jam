@@ -24,8 +24,18 @@ public class CameraDriver {
 		// grab a frame from the video file
 		try {
 			frameGrabber.start();
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			frameGrabber = new FFmpegFrameGrabber("src/media/blackImage.png");
+			
+			try {
+				frameGrabber.start();
+				
+			} catch (Exception e1) {
+				System.err.println("No internet and no back up image...");
+				
+			}
+//			e.printStackTrace();
 		}
 	}
 

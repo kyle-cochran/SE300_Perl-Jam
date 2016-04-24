@@ -487,7 +487,7 @@ public class HistoryHandler {
 	public int[] strToIntMat(String str) {
 		int[] mat = new int[numSpots];
 		for (int i = 0; i < str.length(); i++) {
-			mat[i] = Integer.valueOf(str.charAt(i));
+			mat[i] = Integer.parseInt(String.valueOf(str.charAt(i)).trim());
 		}
 		return mat;
 	}

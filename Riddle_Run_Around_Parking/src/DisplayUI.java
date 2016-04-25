@@ -51,7 +51,7 @@ public class DisplayUI extends Pane{
 	HBox graphsBox;
 	HBox title;
 	VBox spacing;
-	Menu menu; 
+	VBox vboxTop;
 	MenuBar menuBar;
 	Menu menuAbout;
 	MenuItem myAbout;
@@ -87,18 +87,22 @@ public class DisplayUI extends Pane{
 		title = addTitle();
 		this.pm = pm;
 		history = pm.hH;
-		addMenu();
+		menuBar= addMenu();
+		vboxTop = addTop();
 	}
 
-	public void addMenu(){
+	public MenuBar addMenu(){
 		menuAbout = new Menu("Directions");
 		myAbout = new MenuItem("About This Program");
 		menuBar = new MenuBar();
 		menuAbout.getItems().add(myAbout);
 		menuBar.getMenus().addAll(menuAbout);
-
+		
 		myAbout.setOnAction(e -> showAbout());
+		return menuBar;
+		
 	}
+
 
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application "
@@ -213,74 +217,7 @@ public class DisplayUI extends Pane{
 	 * 
 	 * @return buttonPHistory A button to access the parking history
 	 */
-	/*
-	public Button buttonHistory() {
-		Button button = new Button("Parking History");
-		button.setPrefSize(200, 20);
-		button.setOnAction(e -> {
-			// try throw catch for the file I/O
-			try {
-				readHistory();
-			} catch (Exception e1) {
-				//	e1.printStackTrace();
-			}
-		});
-
-		return button;
-	}
-
-	 *//**
-	 * the readHistory uses the buffered reader to read the high score file and
-	 * print it out into a text field. With its own label and pane
-	 *//*
-
-	private void readHistory() {
-		BufferedReader buffRead = null;
-		try {
-			// tries to read parking history file
-			buffRead = new BufferedReader(new FileReader(parkingHistoryFile));
-
-			String currentLine = "", fileText = "";
-
-			while ((currentLine = buffRead.readLine()) != null) {
-				fileText += currentLine + '\n';
-			}
-			// closes the buffered reader when all of the text has been read and
-			// printed
-			buffRead.close();
-
-			// create a text label
-			Label historyLabel = new Label();
-			historyLabel.setWrapText(true);
-			historyLabel.setTextAlignment(TextAlignment.CENTER);
-			historyLabel.setFont(Font.font("Comic Sans MS", 14));
-			historyLabel.setText(fileText);
-
-			// Add label to stack pane
-
-			StackPane pane = new StackPane();
-			pane.getChildren().add(historyLabel);
-
-			// a new stage, and a scene with a pane inside it.
-			Scene phscene = new Scene(pane, 550, 100);
-			Stage phstage = new Stage();
-
-			// create and display the pane in a new stage
-			phstage.setScene(phscene);
-			phstage.setTitle("Parking Spot History");
-			phstage.setResizable(false);
-			phstage.show();
-
-			// if the file can not be read the error is caught and given an
-			// exception
-		} catch (IOException e) {
-			//e.printStackTrace();
-		}
-
-	}
-
-	  */
-
+	
 
 
 	/**
@@ -434,6 +371,15 @@ public class DisplayUI extends Pane{
 
 		return hbox;
 	}
+	
+public VBox addTop(){
+		
+		VBox vboxTop = new VBox();
+		vboxTop.getChildren().addAll(menuBar, title);
+		
+		return vboxTop;
+	}
+
 
 	/**
 	 * Initializes the main window and sets all display sub-components
@@ -445,7 +391,7 @@ public class DisplayUI extends Pane{
 		// creates a new scene
 		Scene scene = new Scene(borderpane);
 		// sets the created button and vbox to a location within the border pane
-		borderpane.setTop(title);
+		borderpane.setTop(vboxTop);
 		borderpane.setLeft(infoPanel);
 		borderpane.setBottom(graphsBox);
 		borderpane.setRight(spacing);

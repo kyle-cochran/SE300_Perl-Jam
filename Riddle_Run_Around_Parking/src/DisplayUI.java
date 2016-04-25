@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -42,6 +41,7 @@ import javafx.stage.Stage;
  * @author Taylor Hester, Matthew Caixeiro, Austin Musser
  * @version 2.0
  */
+
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class DisplayUI extends Pane{
 	BorderPane borderpane;
@@ -196,12 +196,14 @@ public class DisplayUI extends Pane{
 	}
 
 	public LineChart generateDummyGraph(){
+
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		yAxis.setLabel("Percent Full");
 		xAxis.setLabel("Time");
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 		lineChart.setTitle("Loading");
+
 		return lineChart;
 	}
 
@@ -322,7 +324,7 @@ public class DisplayUI extends Pane{
 		Text dateTimeTitle = new Text();
 		Label dateText = new Label();
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		// get current date time with Date()
 		Date date = new Date();
 

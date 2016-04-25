@@ -159,9 +159,9 @@ public class ImageProcessor {
 		// For the first block of cars
 		for (int i = 0; i <= 3; i++) {
 			// Go from the lower x bound to the higher x bound
-			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
-				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
+			for (int j = lines[i][0]; j <= lines[i + 1][2]; j++) {
+				// And from the lower y bound to the higher y bound
+				for (int k = lines[i][1]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count += binaryArray[j][k];
 				}
@@ -170,8 +170,8 @@ public class ImageProcessor {
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
 
-			if (count < percentage * ( (Math.abs((lines[i][0] - lines[i + 1][3]))
-					* Math.abs((lines[i][2] - lines[i][3]))))) {
+			if (count < percentage * ( (Math.abs((lines[i][0] - lines[i + 1][2]))
+					* Math.abs((lines[i][1] - lines[i][3]))))) {
 				isEmpty[i] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full
@@ -185,9 +185,9 @@ public class ImageProcessor {
 
 		for (int i = 5; i <= 10; i++) {
 			// Go from the lower x bound to the higher x bound
-			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
-				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
+			for (int j = lines[i][0]; j <= lines[i + 1][2]; j++) {
+				// And from the lower y bound to the higher y bound
+				for (int k = lines[i][1]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count += binaryArray[j][k];
 				}
@@ -195,8 +195,8 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][3]))
-					* Math.abs((lines[i][2] - lines[i][3]))))) {
+			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][2]))
+					* Math.abs((lines[i][1] - lines[i][3]))))) {
 
 				isEmpty[i - 1] = 1;
 				// If that is greater than 60% of the max value for spaces, the
@@ -209,9 +209,9 @@ public class ImageProcessor {
 
 		for (int i = 12; i <= 24; i++) {
 			// Go from the lower x bound to the higher x bound
-			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
-				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
+			for (int j = lines[i][0]; j <= lines[i + 1][2]; j++) {
+				// And from the lower y bound to the higher y bound
+				for (int k = lines[i][1]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count += binaryArray[j][k];
 				}
@@ -219,8 +219,8 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][3]))
-					* Math.abs((lines[i][2] - lines[i][3]))))) {
+			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][2]))
+					* Math.abs((lines[i][1] - lines[i][3]))))) {
 
 				isEmpty[i - 2] = 1;
 				// If that is greater than 60% of the max value for spaces, the
@@ -233,9 +233,9 @@ public class ImageProcessor {
 
 		for (int i = 26; i <= 30; i++) {
 			// Go from the lower x bound to the higher x bound
-			for (int j = lines[i][0]; j <= lines[i + 1][3]; j++) {
-				// And from the lower y bound to the higher y bounf
-				for (int k = lines[i][2]; k <= lines[i + 1][3]; k++) {
+			for (int j = lines[i][0]; j <= lines[i + 1][2]; j++) {
+				// And from the lower y bound to the higher y bound
+				for (int k = lines[i][1]; k <= lines[i + 1][3]; k++) {
 					// And add them up into count
 					count += binaryArray[j][k];
 				}
@@ -243,8 +243,8 @@ public class ImageProcessor {
 
 			// If that is less than 60% of the max value for spaces, the spot is
 			// empty
-			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][3]))
-					* Math.abs((lines[i][2] - lines[i][3]))))) {
+			if (count < percentage * ((Math.abs((lines[i][0] - lines[i + 1][2]))
+					* Math.abs((lines[i][1] - lines[i][3]))))) {
 				isEmpty[i - 3] = 1;
 				// If that is greater than 60% of the max value for spaces, the
 				// spot is full

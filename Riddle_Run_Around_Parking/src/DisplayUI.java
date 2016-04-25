@@ -106,7 +106,7 @@ public class DisplayUI extends Pane{
 
 		myAbout.setOnAction(e -> showAbout());
 	}
-	
+
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application "
 				+"The yellow highlights show where there are open spots. The graphs shown "
@@ -129,7 +129,7 @@ public class DisplayUI extends Pane{
 		stage.setResizable(false);
 		stage.show();
 	}	
-	
+
 	public LineChart lastWeekToday() {
 
 		int[] percentFull = history.getDaysAgoPercents(7); //Get parking
@@ -236,7 +236,7 @@ public class DisplayUI extends Pane{
 		return button;
 	}
 
-	*//**
+	 *//**
 	 * the readHistory uses the buffered reader to read the high score file and
 	 * print it out into a text field. With its own label and pane
 	 *//*
@@ -286,7 +286,7 @@ public class DisplayUI extends Pane{
 
 	}
 
-*/
+	  */
 
 
 
@@ -465,6 +465,11 @@ public class DisplayUI extends Pane{
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 
+		primaryStage.setOnCloseRequest(e -> {
+			pm.endProcThread();
+			System.exit(0);
+		});
+		
 		// displays the scene with the title
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Riddle Run Around Parking");
@@ -505,16 +510,9 @@ public class DisplayUI extends Pane{
 
 		for (int i = 0; i < 28; i++) {
 			temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			if ((percentFull[i] == 0) ) {
-				temp.setStroke(Color.YELLOW);
-				temp.setStrokeWidth(30);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-
-			} else {
-				temp.setStroke(Color.WHITE);
-				temp.setStrokeWidth(2.5);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-			}
+			temp.setStroke(Color.WHITE);
+			temp.setStrokeWidth(2.5);
+			temp.setStrokeLineCap(StrokeLineCap.SQUARE);
 
 			pane.getChildren().add(temp);
 		}

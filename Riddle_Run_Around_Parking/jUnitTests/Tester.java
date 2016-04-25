@@ -7,11 +7,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Vector;
-
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -27,72 +22,87 @@ import src.MatToBinary;
 import src.ProcessingManager;
 
 public class Tester {
-	
+
 	ProcessingManager pm;
-	
+
 	private static IplImage image;
 	private static Mat mat;
 
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		
+
 		// Load a test image
 		image = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-		
+
 		// Create the converters
 		OpenCVFrameConverter.ToIplImage iplConverter= new OpenCVFrameConverter.ToIplImage();
 		OpenCVFrameConverter.ToMat matConverter = new OpenCVFrameConverter.ToMat();
-		
+
 		// Convert the IplImage to a Mat
 		mat = matConverter.convert(iplConverter.convert(image));
 	}
-	
+
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
-		 pm = new ProcessingManager();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		pm.endProcThread();
+		try{
+			if(!pm.equals(null)){
+				pm.endProcThread();
+				pm = null;
+			}
+		}catch(NullPointerException e){
+
+		}
 	}
 
-	
-	
+
+
 	/**
 	 * @author Kyle Cochran
 	 */
-	
 	@Test
 	public void testBeginProcThread() {
+		ProcessingManager pm = new ProcessingManager(20,true);
+		pm = new ProcessingManager(1,true);
 		pm.beginProcThread();
+		try {
+			//pauses to give the thread a chance to boot up
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
 		assertTrue(pm.procOn);
 	}
-
-	
 	@Test
 	public void testEndProcThread(){
+		ProcessingManager pm = new ProcessingManager(20,true);
 		pm.beginProcThread();
+		try {
+			//pauses to give the thread a chance to boot up
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
 		pm.endProcThread();
 		assertFalse(pm.procOn);
 	}
+
 	
 	/**
 	 * @author Austin Musser
 	 */
-	
 	@Test
 	public void test1GetSpotMatirx() {
-		
+
 		ImageProcessor ip = new ImageProcessor();
-		
+
 		// Getting the return value from the method
 		int[][] array = ip.getSpotMatrix();
-		
+
 		// Looping though every spot in the array
 		for (int i = 0; i < 32; i++)
 		{
@@ -119,15 +129,15 @@ public class Tester {
 			}
 		}
 	}
-	
+
 	@Test
 	public void test1ToBinaryArray() {
-		
+
 		MatToBinary mtb = new MatToBinary();
-		
+
 		// Getting the return value from the method
 		int[][] array = mtb.toBinaryArray(mat);
-		
+
 		// Looping though every spot in the array
 		for (int i = 0; i < 800; i++)
 		{
@@ -142,7 +152,7 @@ public class Tester {
 			}
 		}
 	}
-	
+
 	/**
 	 * @author Matthew Caixeiro
 	 */
@@ -158,13 +168,13 @@ public class Tester {
 			}
 		}
 	}
-	
+
 	@Test
 	public void testHH_IMTS() {
 		HistoryHandler hh = new HistoryHandler();
 		int mat [] = {1, 2, 3};
 		assertEquals( hh.intMatToStr(mat), "123");
-		
+
 	}
 	@Test
 	public void testHH_STIM(){
@@ -174,31 +184,31 @@ public class Tester {
 		assertEquals(result[0], 4);
 		assertEquals(result[1], 5);
 		assertEquals(result[2], 6);
-			
-		}
-	
+
+	}
+
 	@Test
 	public void test1IsEmptyMatrix() {
 		ImageProcessor ip = new ImageProcessor();
 		int[][] binaryArray = new int[800][500];
-		
+
 		for (int i = 0; i <= 499; i++){
 			for (int j = 0; j <= 799; j++){
 				binaryArray[j][i] = 1;
 			}
 		}
-		
+
 		int[][] lines = ip.getSpotMatrix();
-		
+
 		int[] isEmpty = ip.generateIsEmptyMatrix(binaryArray, lines);
-		
+
 		for (int k = 0; k <= isEmpty.length - 1; k++){
 			if (isEmpty[k] == 1){
 				fail("The matrix contains an incorrect value");
 			}
 		}
 	}
-	
-	
-	
+
+
+
 }

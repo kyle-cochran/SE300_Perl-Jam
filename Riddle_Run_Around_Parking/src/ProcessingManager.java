@@ -32,6 +32,7 @@ public class ProcessingManager implements Runnable {
 	CameraDriver cd = new CameraDriver();
 	int[][] lines = ip.getSpotMatrix();
 	Calendar cal = Calendar.getInstance();
+	boolean standalone;
 
 	//Runnable objects allow scheduling tasks to the UI to prevent thread errors
 	//They are method calls run by using: Platform.runLater(RunnableObject)
@@ -65,6 +66,7 @@ public class ProcessingManager implements Runnable {
 		procOn = false;
 		imP = new ImageProcessor();
 		hH = new HistoryHandler();
+		standalone = false;
 	}
 
 	/**
@@ -73,13 +75,14 @@ public class ProcessingManager implements Runnable {
 	 * @param rf
 	 *            an integer. (refreshes per second)
 	 */
-	public ProcessingManager(double rf) {
+	public ProcessingManager(double rf, boolean standalone) {
 		bkgRefreshFreq = rf;
 		paintRefreshFreq = 0.2;
 		infoRefreshFreq = 1.0;
 		procOn = false;
 		imP = new ImageProcessor();
 		hH = new HistoryHandler();
+		this.standalone = standalone;
 	}
 
 	/**
@@ -134,27 +137,29 @@ public class ProcessingManager implements Runnable {
 		boolean waiting = true;
 
 		//Waiting for the UI to boot up so that we can reference and update UI objects
-		while (waiting){
-			try{
-				if(!RiddleRunAroundParking.ui.equals(null)){
-					waiting = false;
+		if(!standalone){
+			while (waiting){
+				try{
+					if(!RiddleRunAroundParking.ui.equals(null)){
+						waiting = false;
+					}
+				}catch(NullPointerException e){
+					System.out.println("Waiting for UI to fully initialize.....");
 				}
-			}catch(NullPointerException e){
-				System.out.println("Waiting for UI to fully initialize.....");
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					System.out.println("Yo dude, the thread got interupted");
+				}
 			}
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				System.out.println("Yo dude, the thread got interupted");
-			}
-		}
 
-		updateUIBkg();
-		//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
-		Platform.runLater(scheduledAddGraphs);
-		//We will also paint the spots and update the percent
-		Platform.runLater(scheduledSpotDrawing);
-		Platform.runLater(scheduledInfoChange);
+			updateUIBkg();
+			//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
+			Platform.runLater(scheduledAddGraphs);
+			//We will also paint the spots and update the percent
+			Platform.runLater(scheduledSpotDrawing);
+			Platform.runLater(scheduledInfoChange);
+		}
 
 		//Enter the continuous processing loop
 		while (procOn) {
@@ -169,17 +174,17 @@ public class ProcessingManager implements Runnable {
 			//within the loop, if the timing also coincides with the timing for repainting spots or info on UI, then run those operations
 			if(paintRefreshFreq*procCount/bkgRefreshFreq>=1){
 				updateSpots();//Process a frame. Results stored in "currentSpots" variable
-				Platform.runLater(scheduledSpotDrawing);//using new data, repaint spots
+				if(!standalone){Platform.runLater(scheduledSpotDrawing);}//using new data, repaint spots
 			}else if(infoRefreshFreq*procCount/bkgRefreshFreq>=1){
-				Platform.runLater(scheduledInfoChange);//refresh clock and percent full
+				if(!standalone){Platform.runLater(scheduledInfoChange);}//refresh clock and percent full
 			}else if(procCount>100){
 				procCount=0;//can't let the counter get too high
 			}
-			
-			
+
+
 			//The background image will update every loop (loop timing defined by: bkgRefreshFreq)
-			updateUIBkg();
-			
+			if(!standalone){updateUIBkg();}
+
 			// logic to update history at certain times of day-------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();
 
@@ -191,7 +196,7 @@ public class ProcessingManager implements Runnable {
 			if (timeToUpdate && okayToUpdate) {
 				hH.appendCurrentTime(currentSpots);
 				try{
-				hH.saveAsPlainText();
+					hH.saveAsPlainText();
 				}catch(FileNotFoundException e){
 					System.err.println("Error in history writer. Unable to save recent as plain text");
 				}
@@ -269,7 +274,7 @@ public class ProcessingManager implements Runnable {
 
 		}
 	}
-	
+
 	/**
 	 * An error catching wrapper method that updates the UI info panel
 	 */

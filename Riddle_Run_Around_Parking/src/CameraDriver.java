@@ -74,7 +74,6 @@ public class CameraDriver {
 
 		try {
 			lotFrame = frameGrabber.grab();
-			System.out.println("it was grabbed");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{

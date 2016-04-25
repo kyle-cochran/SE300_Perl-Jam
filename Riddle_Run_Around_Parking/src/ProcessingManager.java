@@ -1,11 +1,14 @@
 package src;
 
+import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javafx.application.Platform;
 
 /**
+ * Class responsible for processing and update scheduling
+ * 
  * @author Kyle Cochran
  * @version 1.0
  * @created 18-Feb-2016 11:36:22 AM
@@ -15,9 +18,9 @@ public class ProcessingManager implements Runnable {
 
 	private volatile DisplayUI ui;
 	private volatile int[] currentSpots;
-	public volatile float bkgRefreshFreq;
-	public volatile float paintRefreshFreq;
-	public volatile float infoRefreshFreq;
+	public volatile double bkgRefreshFreq;
+	public volatile double paintRefreshFreq;
+	public volatile double infoRefreshFreq;
 	public volatile ImageProcessor imP;
 	public HistoryHandler hH;
 	public volatile boolean procOn;
@@ -56,9 +59,9 @@ public class ProcessingManager implements Runnable {
 	public ProcessingManager() {
 		bkgRefreshFreq = 1; // indicates that analysis should refresh once per
 		// second
-		bkgRefreshFreq = 20;
-		paintRefreshFreq = (float) 0.2;
-		infoRefreshFreq = 1;
+		bkgRefreshFreq = 20.0000;
+		paintRefreshFreq = 0.20;
+		infoRefreshFreq = 1.0;
 		procOn = false;
 		imP = new ImageProcessor();
 		hH = new HistoryHandler();
@@ -70,9 +73,10 @@ public class ProcessingManager implements Runnable {
 	 * @param rf
 	 *            an integer. (refreshes per second)
 	 */
-	public ProcessingManager(int rf) {
+	public ProcessingManager(double rf) {
 		bkgRefreshFreq = rf;
-
+		paintRefreshFreq = 0.2;
+		infoRefreshFreq = 1.0;
 		procOn = false;
 		imP = new ImageProcessor();
 		hH = new HistoryHandler();
@@ -147,6 +151,9 @@ public class ProcessingManager implements Runnable {
 
 		//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
 		Platform.runLater(scheduledAddGraphs);
+		//We will also paint the spots and update the percent
+		Platform.runLater(scheduledSpotDrawing);
+		Platform.runLater(scheduledInfoChange);
 
 		//Enter the continuous processing loop
 		while (procOn) {
@@ -166,10 +173,11 @@ public class ProcessingManager implements Runnable {
 				updateSpots();//Process a frame. Results stored in "currentSpots" variable
 				Platform.runLater(scheduledSpotDrawing);//using new data, repaint spots
 			}else if(infoRefreshFreq*procCount/bkgRefreshFreq>=1){
-				Platform.runLater(scheduledInfoChange);//refresh clock
+				Platform.runLater(scheduledInfoChange);//refresh clock and percent full
 			}else if(procCount>100){
 				procCount=0;//can't let the counter get too high
 			}
+			
 
 			// logic to update history at certain times of day-------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();
@@ -181,6 +189,11 @@ public class ProcessingManager implements Runnable {
 			// add the spots to history, deactivate update switch
 			if (timeToUpdate && okayToUpdate) {
 				hH.appendCurrentTime(currentSpots);
+				try{
+				hH.saveAsPlainText();
+				}catch(FileNotFoundException e){
+					System.err.println("Error in history writer. Unable to save recent as plain text");
+				}
 				okayToUpdate = false;
 			}
 

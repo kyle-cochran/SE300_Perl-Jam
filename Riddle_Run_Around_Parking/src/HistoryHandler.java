@@ -25,6 +25,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
+ * Class responsible for history file IO
+ * 
  * @author Kyle
  * @version 1.0
  * @created 18-Feb-2016 11:36:18 AM
@@ -63,9 +65,6 @@ public class HistoryHandler {
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
 
-	/**
-	 * The class that handles history file IO
-	 */
 	public HistoryHandler() {
 
 		historyFile = new File("src/media/8_day_history.xml");
@@ -254,10 +253,8 @@ public class HistoryHandler {
 		try {
 			doc = dBuilder.parse(historyFile);
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		doc.getDocumentElement().normalize();
@@ -368,7 +365,7 @@ public class HistoryHandler {
 	 * @param parkingHistoryFile
 	 * @throws FileNotFoundException
 	 */
-	public void saveAsPlainText(File parkingHistoryFile) throws FileNotFoundException {
+	public void saveAsPlainText() throws FileNotFoundException {
 		// get the percent full data for the saved history. This will automatically make sure the DOM is updated
 		double[][] percents = getAllPercents();
 		NodeList days = doc.getDocumentElement().getElementsByTagName("day");

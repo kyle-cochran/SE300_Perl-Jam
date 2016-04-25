@@ -2,6 +2,7 @@ package jUnitTests;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.CV_LOAD_IMAGE_GRAYSCALE;
 import static org.bytedeco.javacpp.opencv_imgcodecs.cvLoadImage;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -27,7 +28,7 @@ import src.ProcessingManager;
 
 public class Tester {
 	
-//	ProcessingManager pm;
+	ProcessingManager pm;
 	
 	private static IplImage image;
 	private static Mat mat;
@@ -52,12 +53,12 @@ public class Tester {
 	
 	@Before
 	public void setUp() throws Exception {
-//		pm = new ProcessingManager();
+		 pm = new ProcessingManager();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-//		pm.endProcThread();
+		pm.endProcThread();
 	}
 
 	
@@ -66,19 +67,19 @@ public class Tester {
 	 * @author Kyle Cochran
 	 */
 	
-//	@Test
-//	public void testBeginProcThread() {
-//		pm.beginProcThread();
-//		assertTrue(pm.procOn);
-//	}
-//
-//	
-//	@Test
-//	public void testEndProcThread(){
-//		pm.beginProcThread();
-//		pm.endProcThread();
-//		assertFalse(pm.procOn);
-//	}
+	@Test
+	public void testBeginProcThread() {
+		pm.beginProcThread();
+		assertTrue(pm.procOn);
+	}
+
+	
+	@Test
+	public void testEndProcThread(){
+		pm.beginProcThread();
+		pm.endProcThread();
+		assertFalse(pm.procOn);
+	}
 	
 	/**
 	 * @author Austin Musser
@@ -157,7 +158,46 @@ public class Tester {
 			}
 		}
 	}
-
+	
+	@Test
+	public void testHH_IMTS() {
+		HistoryHandler hh = new HistoryHandler();
+		int mat [] = {1, 2, 3};
+		assertEquals( hh.intMatToStr(mat), "123");
+		
+	}
+	@Test
+	public void testHH_STIM(){
+		HistoryHandler hh_1 = new HistoryHandler();
+		String str = "456";
+		int result[] = hh_1.strToIntMat(str);
+		assertEquals(result[0], 4);
+		assertEquals(result[1], 5);
+		assertEquals(result[2], 6);
+			
+		}
+	
+	@Test
+	public void test1IsEmptyMatrix() {
+		ImageProcessor ip = new ImageProcessor();
+		int[][] binaryArray = new int[800][500];
+		
+		for (int i = 0; i <= 499; i++){
+			for (int j = 0; j <= 799; j++){
+				binaryArray[j][i] = 1;
+			}
+		}
+		
+		int[][] lines = ip.getSpotMatrix();
+		
+		int[] isEmpty = ip.generateIsEmptyMatrix(binaryArray, lines);
+		
+		for (int k = 0; k <= isEmpty.length - 1; k++){
+			if (isEmpty[k] == 1){
+				fail("The matrix contains an incorrect value");
+			}
+		}
+	}
 	
 	
 	

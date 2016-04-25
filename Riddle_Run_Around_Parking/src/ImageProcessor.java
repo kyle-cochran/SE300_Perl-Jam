@@ -21,11 +21,6 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
 
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 
 /**
  * Class that manages all image processing and comparison. Handles access and
@@ -258,7 +253,7 @@ public class ImageProcessor {
 	}
 
 	/**
-	 * 
+	 * Wrapper method to define the lines variable to our specific case
 	 */
 	private void generateSpotMatrix() {
 		lines = new int[32][4];

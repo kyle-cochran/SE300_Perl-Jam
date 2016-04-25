@@ -32,47 +32,24 @@ import org.xml.sax.SAXException;
 
 public class HistoryHandler {
 	// Some class definitions
-	File historyFile;// the file
-	// where the
-	// parking
-	// history
-	// will be
-	// stored
-	File parkingHistoryFile; // file
-	// used
-	// to
-	// display
-	// parking
-	// data
-	DocumentBuilderFactory dbFactory; // A document builder builder (for making
-	// a document object)
-	DocumentBuilder dBuilder; // A document builder (for making a document
-	// object)
+	File historyFile;
+	File parkingHistoryFile; 
+	DocumentBuilderFactory dbFactory;
+	DocumentBuilder dBuilder;
 	Document doc;
 
-	TransformerFactory transformerFactory; // For writing the document object to
-	// a file
-	Transformer transformer; // For writing the document object to a file
-	DOMSource source; // For writing document object to a file
-	StreamResult result;// output to write to
+	TransformerFactory transformerFactory;
+	Transformer transformer;
+	DOMSource source;
+	StreamResult result;
 
-	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // this is how
-	// the date will
-	// be formatted
-	// in the xml
-	DateFormat timeFormat = new SimpleDateFormat("H:mm a"); // this is how the
-	// time will be
-	// formatted in the
-	// xml
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	DateFormat timeFormat = new SimpleDateFormat("H:mm a");
 
-	int histL = 8; // the number of past days that will be stored at any one
-	// time
-	int timeIncr = 28; // the number of different time steps during the day that
-	// will be considered
-	int numSpots = 25; // the number of parking spots in one lot
-	int[][][] spots; // the matrix that holds all spot data as a binary integer,
-						// format:
-	// [day][time][spot no.]
+	int histL = 8;
+	int timeIncr = 28;
+	int numSpots = 25; 
+	int[][][] spots; // [day][time][spot no.]
 
 	
 	// some random dates used for testing
@@ -80,12 +57,15 @@ public class HistoryHandler {
 			new GregorianCalendar(2016, 3, 22), new GregorianCalendar(2016, 3, 23), new GregorianCalendar(2016, 3, 24),
 			new GregorianCalendar(2016, 3, 25), new GregorianCalendar(2016, 3, 26) };
 
-	// All the times of day
+	// All the times of day that we're keeping track of
 	String[] timeOfDay = { "7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM",
 			"11:00 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM",
 			"4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM",
 			"8:30 PM", "9:00 PM" };
 
+	/**
+	 * The class that handles history file IO
+	 */
 	public HistoryHandler() {
 
 		historyFile = new File("src/media/8_day_history.xml");
@@ -108,13 +88,14 @@ public class HistoryHandler {
 			// set the input and output for writing
 			source = new DOMSource(doc);
 			result = new StreamResult(historyFile);
-			
-			//PlainText(parkingHistoryFile);
-
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 	}
 
+	/**
+	 * Appends the current state of the spots to the end of the history file and tags it with the current date and time.
+	 * 
+	 * @param nowSpots the current state of the lot
+	 */
 	public void appendCurrentTime(int[] nowSpots) {
 
 		try {

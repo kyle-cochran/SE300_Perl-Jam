@@ -19,13 +19,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
@@ -33,10 +28,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -463,6 +456,13 @@ public class DisplayUI extends Pane{
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
 
+
+		// Closes the thread and the project when the x is clicked
+		primaryStage.setOnCloseRequest(e -> {
+			pm.endProcThread();
+			System.exit(0);
+		});
+		
 		// displays the scene with the title
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Riddle Run Around Parking");
@@ -470,6 +470,11 @@ public class DisplayUI extends Pane{
 
 	}
 
+	/**
+	 * Post the newest percent full and time to the UI
+	 * 
+	 * @param percentFull an integer that represents the current percentage full state of the lot
+	 */
 	public synchronized void updateUIPercent(int percentFull){
 		//Update UI with cool stuff
 		parkingPercent.setText(String.format(percentFull + "%% of the spots in this lot are currently full."));
@@ -479,45 +484,17 @@ public class DisplayUI extends Pane{
 		timeText.setText(String.format("Time: " + cal.getTime()));
 	}
 
-	public synchronized void updateUILiveFeed(WritableImage bkg){
-		try{
-			pane.setBackground(
-					new Background(new BackgroundImage(bkg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-							BackgroundPosition.DEFAULT, new BackgroundSize(100, 100, true, true, true, true))));
-		}catch(NullPointerException e){
-			System.out.println("laggy internet");
-		}
-	}
-
+	/**
+	 * Post the history graphs to the UI
+	 */
 	public synchronized void addGraphs(){
 		graphsBox.getChildren().clear();
 		graphsBox.getChildren().addAll(addHBox().getChildren());
 	}
 
-
-	public synchronized void paintLines(){
-		int[][] lines = pm.ip.getSpotMatrix();
-		Line temp;
-
-		int[] percentFull = pm.getCurrentSpots();
-
-		for (int i = 0; i < 28; i++) {
-			temp = new Line(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
-			if ((percentFull[i] == 0) ) {
-				temp.setStroke(Color.YELLOW);
-				temp.setStrokeWidth(30);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-
-			} else {
-				temp.setStroke(Color.WHITE);
-				temp.setStrokeWidth(2.5);
-				temp.setStrokeLineCap(StrokeLineCap.SQUARE);
-			}
-
-			pane.getChildren().add(temp);
-		}
-	}
-
+	/**
+	 * paints the newest spot states to the UI
+	 */
 	public synchronized void lineColor(){
 		int[][] lines = new ImageProcessor().getSpotMatrix();
 		int[] percentFull = pm.getCurrentSpots();

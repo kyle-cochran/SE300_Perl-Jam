@@ -1,37 +1,23 @@
 package src;
 
-import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import java.util.GregorianCalendar;
 
 import javafx.application.Platform;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import java.util.Vector;
-
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.StrokeLineCap;
 
 /**
  * @author Kyle Cochran
  * @version 1.0
  * @created 18-Feb-2016 11:36:22 AM
  */
+@SuppressWarnings("deprecation")
 public class ProcessingManager implements Runnable {
 
 	private volatile DisplayUI ui;
 	private volatile int[] currentSpots;
-	public volatile int refreshFreq;
-	public volatile int uiRefresh;
+	public volatile float bkgRefreshFreq;
+	public volatile float paintRefreshFreq;
+	public volatile float infoRefreshFreq;
 	public volatile ImageProcessor imP;
 	public HistoryHandler hH;
 	public volatile boolean procOn;
@@ -42,20 +28,23 @@ public class ProcessingManager implements Runnable {
 	ImageProcessor ip = new ImageProcessor();
 	CameraDriver cd = new CameraDriver();
 	int[][] lines = ip.getSpotMatrix();
-
 	Calendar cal = Calendar.getInstance();
 
+	//Runnable objects allow scheduling tasks to the UI to prevent thread errors
+	//They are method calls run by using: Platform.runLater(RunnableObject)
 	Runnable scheduledBkgUpdate = new Runnable() {
 		@Override
 		public void run() {updateUIBkg();}
 	};
-	
-	Runnable scheduledUIUpdate = new Runnable() {
+	Runnable scheduledSpotDrawing = new Runnable() {
 		@Override
-		public void run() {updateUI();}
+		public void run() {updateUISpots();}
 	};
-
-	Runnable addGraphs = new Runnable() {
+	Runnable scheduledInfoChange = new Runnable() {
+		@Override
+		public void run() {updateUIInfo();}
+	};
+	Runnable scheduledAddGraphs = new Runnable() {
 		@Override
 		public void run() {addGraphs();}
 	};
@@ -65,9 +54,11 @@ public class ProcessingManager implements Runnable {
 	 * Default constructor. Auto-sets refresh frequency to 1 per second.
 	 */
 	public ProcessingManager() {
-		refreshFreq = 1; // indicates that analysis should refresh once per
+		bkgRefreshFreq = 1; // indicates that analysis should refresh once per
 		// second
-		uiRefresh = 2;// amount of seconds between UI refreshes
+		bkgRefreshFreq = 20;
+		paintRefreshFreq = (float) 0.2;
+		infoRefreshFreq = 1;
 		procOn = false;
 		imP = new ImageProcessor();
 		hH = new HistoryHandler();
@@ -80,7 +71,7 @@ public class ProcessingManager implements Runnable {
 	 *            an integer. (refreshes per second)
 	 */
 	public ProcessingManager(int rf) {
-		refreshFreq = rf;
+		bkgRefreshFreq = rf;
 
 		procOn = false;
 		imP = new ImageProcessor();
@@ -130,63 +121,57 @@ public class ProcessingManager implements Runnable {
 	 * "Runnable". Updates "currentSpots" in a timed loop.
 	 */
 	public void run() {
+		//Process a frame to start with initial data. Results stored in "currentSpots" variable
 		updateSpots();
+
 		int procCount = 0;
 		int minutes;
-
 		procOn = true;
 		boolean waiting = true;
 
+		//Waiting for the UI to boot up so that we can reference and update UI objects
 		while (waiting){
-			//Waiting for the UI to boot up so that we can reference and update UI objects
-
 			try{
-
 				if(!RiddleRunAroundParking.ui.equals(null)){
 					waiting = false;
 				}
-
 			}catch(NullPointerException e){
 				System.out.println("Waiting for UI to fully initialize.....");
 			}
-
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				System.out.println("Yo dude, the thread got interupted");
 			}
 		}
-		//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
-		Platform.runLater(addGraphs);
 
-		// this will loop to make the processing continuous
+		//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
+		Platform.runLater(scheduledAddGraphs);
+
+		//Enter the continuous processing loop
 		while (procOn) {
 			try {
-				Thread.sleep(1000 / refreshFreq);
+				//pause between loops
+				Thread.sleep((long) (1000 / bkgRefreshFreq));
 			} catch (InterruptedException e) {
 				System.out.println("Yo dude, the thread got interupted");
 				e.printStackTrace();
 			}
 
-
-			// get newest spot data
-			if(procCount>100){
-			updateSpots();
-			Platform.runLater(scheduledUIUpdate);
-			procCount=0;
-			
-			}
-			
-			//Platform.runLater(scheduledBkgUpdate);
+			//The background image will update every loop (loop timing defined by: bkgRefreshFreq)
 			updateUIBkg();
-			// get newest spot data
 
+			//within the loop, if the timing also coincides with the timing for repainting spots or info on UI, then run those operations
+			if(paintRefreshFreq*procCount/bkgRefreshFreq>=1){
+				updateSpots();//Process a frame. Results stored in "currentSpots" variable
+				Platform.runLater(scheduledSpotDrawing);//using new data, repaint spots
+			}else if(infoRefreshFreq*procCount/bkgRefreshFreq>=1){
+				Platform.runLater(scheduledInfoChange);//refresh clock
+			}else if(procCount>100){
+				procCount=0;//can't let the counter get too high
+			}
 
-			//Update UI
-			getCurrentPercent();
-
-			// logic to update history at certain times of
-			// day-----------------------------------------------------------------------
+			// logic to update history at certain times of day-------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();
 
 			// checks whether it's 00 or 30 minutes into the hour
@@ -203,7 +188,8 @@ public class ProcessingManager implements Runnable {
 			if (minutes == 1 || minutes == 31) {
 				okayToUpdate = true;
 			}
-			// -----------------------------------------------------------------------------------------------------------------------
+			// ------------------------------------------------------------------
+
 			procCount++;
 		}
 
@@ -226,44 +212,75 @@ public class ProcessingManager implements Runnable {
 		return currentSpots;
 	}
 
+	/**
+	 * Calculates the current percent full of the lot
+	 * 
+	 * @return an int that represents the current percent full of the lot
+	 */
 	public int getCurrentPercent() {
-
 		int total = 0;
-
 		for (int i = 0; i < currentSpots.length; i++) {
 			total += currentSpots[i];
 		}
-
 		return 100 * total / currentSpots.length;
 	}
 
+	/**
+	 * An access method that allows a UI reference to be set. This gives the ProcessingManager
+	 * accesss to UI elements.
+	 * 
+	 * @param ui a DisplayUI object that runs in tandem with the processing loop
+	 */
 	public void setUIRef(DisplayUI ui){
 		this.ui = ui;
 	}
 
+	/**
+	 * Returns a reference to the ImageProcessor object. This allows methods inside the UI to access image
+	 * processing functionality.
+	 * @return
+	 */
 	public ImageProcessor returnImProcRef() {
 		return imP;
 	}
 
-	public void updateUIBkg(){
-	try{
-		cd.updateUILiveFeed();
-
-	}catch(NullPointerException e){
-		System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
-
-	}
-}
-
-	public synchronized void updateUI(){
+	/**
+	 * An error catching wrapper method that updates the lot background image
+	 */
+	public synchronized void updateUIBkg(){
 		try{
-			ui.updateUIPercent(getCurrentPercent());			ui.lineColor();
+			cd.updateUILiveFeed();
 		}catch(NullPointerException e){
-			System.out.println("there was a null pointer when updating UI (changing elements) from PM"); 
+			System.out.println("there was a null pointer when updating UI background from PM"); 
+
+		}
+	}
+	
+	/**
+	 * An error catching wrapper method that updates the UI info panel
+	 */
+	public synchronized void updateUIInfo(){
+		try{
+			ui.updateUIPercent(getCurrentPercent());
+		}catch(NullPointerException e){
+			System.out.println("there was a null pointer when updating UI info panel from PM");
+		}
+	}
+
+	/**
+	 * An error catching wrapper method that repaints spots on the UI
+	 */
+	public synchronized void updateUISpots(){
+		try{			ui.lineColor();
+		}catch(NullPointerException e){
+			System.out.println("there was a null pointer when painting new UI spots from PM"); 
 
 		}
 	}
 
+	/**
+	 * An error catching wrapper method that
+	 */
 	public synchronized void addGraphs(){
 		ui.addGraphs();
 	}

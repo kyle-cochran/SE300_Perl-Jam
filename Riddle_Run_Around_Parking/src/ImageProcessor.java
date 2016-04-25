@@ -15,7 +15,6 @@ import java.awt.image.BufferedImage;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
-import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -68,7 +67,7 @@ public class ImageProcessor {
 
 		// load reference image from file as greyscale
 //		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-		refPic = cvLoadImage("src/media/reference330.jpeg", CV_LOAD_IMAGE_GRAYSCALE);
+		refPic = cvLoadImage("src/media/reference1130.jpeg", CV_LOAD_IMAGE_GRAYSCALE);
 	}
 
 	/**
@@ -112,8 +111,7 @@ public class ImageProcessor {
 		// difference picture
 		lotIplImage_gray = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
 		diff = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
-		CanvasFrame can = new CanvasFrame("Diff Pic");
-		can.showImage(iplConverter.convert(diff));
+
 		
 		// convert lot image to greyscale
 		cvCvtColor(lotIplImage, lotIplImage_gray, CV_RGB2GRAY);

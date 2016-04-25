@@ -149,6 +149,7 @@ public class ProcessingManager implements Runnable {
 			}
 		}
 
+		updateUIBkg();
 		//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
 		Platform.runLater(scheduledAddGraphs);
 		//We will also paint the spots and update the percent
@@ -165,9 +166,6 @@ public class ProcessingManager implements Runnable {
 				e.printStackTrace();
 			}
 
-			//The background image will update every loop (loop timing defined by: bkgRefreshFreq)
-			updateUIBkg();
-
 			//within the loop, if the timing also coincides with the timing for repainting spots or info on UI, then run those operations
 			if(paintRefreshFreq*procCount/bkgRefreshFreq>=1){
 				updateSpots();//Process a frame. Results stored in "currentSpots" variable
@@ -178,7 +176,10 @@ public class ProcessingManager implements Runnable {
 				procCount=0;//can't let the counter get too high
 			}
 			
-
+			
+			//The background image will update every loop (loop timing defined by: bkgRefreshFreq)
+			updateUIBkg();
+			
 			// logic to update history at certain times of day-------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();
 

@@ -48,7 +48,7 @@ public class CameraDriver {
 		
 		// create a grabber object to extract frames from this camera
 		frameGrabber = new FFmpegFrameGrabber("http://construction1.db.erau.edu/mjpg/video.mjpg");
-		frameGrabber.setSampleRate(0);
+		frameGrabber.setSampleRate(20);
 		
 		try {
 			frameGrabber.start();

@@ -30,36 +30,23 @@ public class ImageProcessorTest {
 	}
 
 	@Test
-	public void test1GetSpotMatirx() {
-		
+	public void test1IsEmptyMatrix() {
 		ImageProcessor ip = new ImageProcessor();
+		int[][] binaryArray = new int[800][500];
 		
-		// Getting the return value from the method
-		int[][] array = ip.getSpotMatrix();
+		for (int i = 0; i <= 499; i++){
+			for (int j = 0; j <= 799; j++){
+				binaryArray[j][i] = 1;
+			}
+		}
 		
-		// Looping though every spot in the array
-		for (int i = 0; i < 32; i++)
-		{
-			for ( int j = 0; j < 4; j++)
-			{
-				// Check the X range of the pixel values in the array
-				if ((j == 0) || (j == 2))
-				{
-					if ((array[i][j] < 0) || (array[i][j] > 800))
-					{
-						//If the X value is less than 0 or greater than 800 then it fails
-						fail("This pixel is not in the X range of the imaage");
-					}
-				}
-				// Check the Y range of the pixel values in the array
-				else if ((j == 1) || (j == 3))
-				{
-					//If the Y value is less than 0 or greater than 500 then it fails
-					if ((array[i][j] < 0) || (array[i][j] > 500))
-					{
-						fail("This pixel is not in the Y range of the imaage");
-					}
-				}
+		int[][] lines = ip.getSpotMatrix();
+		
+		int[] isEmpty = ip.generateIsEmptyMatrix(binaryArray, lines);
+		
+		for (int k = 0; k <= isEmpty.length - 1; k++){
+			if (isEmpty[k] == 1){
+				fail("The matrix contains an incorrect value");
 			}
 		}
 	}

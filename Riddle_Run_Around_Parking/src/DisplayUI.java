@@ -99,7 +99,7 @@ public class DisplayUI extends Pane{
 
 		myAbout.setOnAction(e -> showAbout());
 	}
-	
+
 	private void showAbout(){
 		final String aboutText = "Welcome to the Riddle Run Around Parking Application "
 				+"The yellow highlights show where there are open spots. The graphs shown "
@@ -122,7 +122,7 @@ public class DisplayUI extends Pane{
 		stage.setResizable(false);
 		stage.show();
 	}	
-	
+
 	public LineChart lastWeekToday() {
 
 		int[] percentFull = history.getDaysAgoPercents(7); //Get parking
@@ -229,7 +229,7 @@ public class DisplayUI extends Pane{
 		return button;
 	}
 
-	*//**
+	 *//**
 	 * the readHistory uses the buffered reader to read the high score file and
 	 * print it out into a text field. With its own label and pane
 	 *//*
@@ -279,7 +279,7 @@ public class DisplayUI extends Pane{
 
 	}
 
-*/
+	  */
 
 
 
@@ -457,7 +457,6 @@ public class DisplayUI extends Pane{
 
 		// sets pane to the center of border pane
 		borderpane.setCenter(pane);
-
 
 		// Closes the thread and the project when the x is clicked
 		primaryStage.setOnCloseRequest(e -> {

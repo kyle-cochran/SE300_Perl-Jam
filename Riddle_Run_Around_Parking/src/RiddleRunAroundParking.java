@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class RiddleRunAroundParking extends Application {
 
 	//Make the two main objects. The UI and the background processor
-	private static ProcessingManager pm = new ProcessingManager(20);
+	private static ProcessingManager pm = new ProcessingManager(20,false);
 	public static DisplayUI ui;
 
 	/**

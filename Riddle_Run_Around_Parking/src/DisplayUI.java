@@ -312,8 +312,8 @@ public class DisplayUI extends Pane{
 		
 		Image erau = new Image(erauURL);
 
-		Rectangle placeholder = new Rectangle(700, 500);
-		placeholder.setFill(new ImagePattern(erau));
+		Rectangle placeholder = new Rectangle(800, 500);
+		placeholder.setFill(new ImagePattern(erau,0,0,.8,1,true));
 		vbox.getChildren().add(placeholder);
 
 		return vbox;
@@ -464,7 +464,7 @@ public VBox addTop(){
 						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
-				if ((percentFull[i] == 0) ) {
+				if ((percentFull[i] == 1) ) {
 					temp.setFill(Color.YELLOW);
 				} else {
 					temp.setFill(null);
@@ -477,7 +477,7 @@ public VBox addTop(){
 						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
-				if ((percentFull[i-1] == 0) ) {
+				if ((percentFull[i-1] == 1) ) {
 					temp.setFill(Color.YELLOW);
 				} else {
 					temp.setFill(null);
@@ -492,7 +492,7 @@ public VBox addTop(){
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
 
-				if ((percentFull[i-2] == 0) ) {
+				if ((percentFull[i-2] == 1) ) {
 					temp.setFill(Color.YELLOW);
 				} else {
 					temp.setFill(null);
@@ -505,7 +505,7 @@ public VBox addTop(){
 						(double) lines[i][0],(double) lines[i][1],(double) lines[i][2],(double) lines[i][3],
 						(double) lines[i+1][2],(double) lines[i+1][3],(double) lines[i+1][0],(double) lines[i+1][1]
 				});
-				if ((percentFull[i-3] == 0) ) {
+				if ((percentFull[i-3] == 1) ) {
 					temp.setFill(Color.YELLOW);
 
 				} else {
@@ -517,7 +517,7 @@ public VBox addTop(){
 		} else {
 			for (int i = 0;  i <= 27; i++) {
 
-				if ((percentFull[i] == 0) ) {
+				if ((percentFull[i] == 1) ) {
 					polyVec.elementAt(i).setFill(Color.YELLOW);
 				} else {
 					polyVec.elementAt(i).setFill(null);

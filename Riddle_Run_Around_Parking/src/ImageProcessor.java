@@ -148,7 +148,7 @@ public class ImageProcessor {
 	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
-		double percentage = 0.6;
+		double percentage = 0.1;
 		int[] isEmpty = new int[28];
 		int count = 0;
 

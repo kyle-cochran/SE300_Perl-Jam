@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -27,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -55,7 +57,7 @@ public class DisplayUI extends Pane{
 	MenuBar menuBar;
 	Menu menuAbout;
 	MenuItem myAbout;
-	File parkingHistoryFile = new File("Parking_History.txt");
+	//File parkingHistoryFile = new File("Parking_History.txt");
 	Pane pane = new Pane();//this was static
 	Rectangle rectangle;//this was static
 	Label parkingPercent = new Label("Default Text");//this was static
@@ -65,6 +67,8 @@ public class DisplayUI extends Pane{
 	HistoryHandler history;
 	private int count = 0;
 	Vector<Polygon> polyVec = new Vector<Polygon>();
+	private static final String erauURL = "src/media/erau.jpg";
+	
 
 	/*
 	 * call methods to create a rectangle, button and vbox their return value is
@@ -230,7 +234,7 @@ public class DisplayUI extends Pane{
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(10));
 		vbox.setSpacing(20);
-		vbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		vbox.setBackground(new Background(new BackgroundFill(Color.SLATEGREY, new CornerRadii(0), new Insets(0))));
 		vbox.setAlignment(Pos.CENTER);
 
 		Text title = new Text("Available Parking Spots");
@@ -238,6 +242,7 @@ public class DisplayUI extends Pane{
 		title.minWidth(500);
 		title.setWrappingWidth(200);
 		title.setTextAlignment(TextAlignment.CENTER);
+		title.setFill(Color.WHITE);
 		title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		title.setStyle("-fx-font-size: 42");
 
@@ -246,6 +251,7 @@ public class DisplayUI extends Pane{
 		parkingPercent.setMinWidth(500);
 		parkingPercent.setAlignment(Pos.CENTER);
 		parkingPercent.setTextAlignment(TextAlignment.CENTER);
+		parkingPercent.setTextFill(Color.WHITE);
 		parkingPercent.setFont(Font.font("Arial", 14));
 		parkingPercent.setStyle("-fx-font-size: 18");
 
@@ -270,6 +276,7 @@ public class DisplayUI extends Pane{
 		dateTimeTitle.minWidth(500);
 		dateTimeTitle.setWrappingWidth(200);
 		dateTimeTitle.setTextAlignment(TextAlignment.CENTER);
+		dateTimeTitle.setFill(Color.WHITE);
 		dateTimeTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		dateTimeTitle.setStyle("-fx-font-size: 42");
 
@@ -279,6 +286,7 @@ public class DisplayUI extends Pane{
 		dateText.setMinWidth(500);
 		dateText.setAlignment(Pos.CENTER);
 		dateText.setTextAlignment(TextAlignment.CENTER);
+		dateText.setTextFill(Color.WHITE);
 		dateText.setFont(Font.font("Arial", 14));
 		dateText.setStyle("-fx-font-size: 18");
 
@@ -287,6 +295,7 @@ public class DisplayUI extends Pane{
 		timeText.setMinWidth(500);
 		timeText.setAlignment(Pos.CENTER);
 		timeText.setTextAlignment(TextAlignment.CENTER);
+		timeText.setTextFill(Color.WHITE);
 		timeText.setFont(Font.font("Arial", 14));
 		timeText.setStyle("-fx-font-size: 18");
 
@@ -300,9 +309,11 @@ public class DisplayUI extends Pane{
 
 	public VBox addSpacing() {
 		VBox vbox = new VBox();
+		
+		Image erau = new Image(erauURL);
 
-		Rectangle placeholder = new Rectangle(800, 500);
-		placeholder.setFill(Color.WHITE);
+		Rectangle placeholder = new Rectangle(700, 500);
+		placeholder.setFill(new ImagePattern(erau));
 		vbox.getChildren().add(placeholder);
 
 		return vbox;
@@ -310,7 +321,7 @@ public class DisplayUI extends Pane{
 
 	public HBox addDummyGraphs(){
 		HBox hbox = new HBox(200);
-		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGOLDENRODYELLOW, new CornerRadii(0), new Insets(0))));
 
 		LineChart graph1 = generateDummyGraph();
 		LineChart graph2 = generateDummyGraph();
@@ -324,7 +335,7 @@ public class DisplayUI extends Pane{
 	public HBox addHBox() {
 
 		HBox hbox = new HBox(200);
-		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		hbox.setBackground(new Background(new BackgroundFill(Color.SLATEGREY, new CornerRadii(0), new Insets(0))));
 
 		LineChart graph1 = lastWeekToday();
 		LineChart graph2 = lastWeekTomorrow();
@@ -360,12 +371,13 @@ public class DisplayUI extends Pane{
 	public HBox addTitle() {
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
-		hbox.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), new Insets(0))));
+		hbox.setBackground(new Background(new BackgroundFill(Color.SLATEGREY, new CornerRadii(0), new Insets(0))));
 
 		Label title = new Label("Riddle Run Around Parking");
 		title.setAlignment(Pos.CENTER);
 		title.setTextAlignment(TextAlignment.CENTER);
-		title.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 80");
+		title.setTextFill(Color.WHITE);
+		title.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 75");
 
 		hbox.getChildren().add(title);
 
@@ -424,7 +436,7 @@ public VBox addTop(){
 	 */
 	public synchronized void updateUIPercent(int percentFull){
 		//Update UI with cool stuff
-		parkingPercent.setText(String.format(percentFull + "%% of the spots in this lot are currently full."));
+		parkingPercent.setText(String.format(percentFull + "%% of the spots in this lot are currently empty."));
 
 		// get current date time with Calendar
 		cal = Calendar.getInstance();

@@ -13,14 +13,15 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 
 import java.awt.image.BufferedImage;
 
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
-
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 
 /**
  * Class that manages all image processing and comparison. Handles access and
@@ -30,6 +31,9 @@ import javafx.scene.image.WritableImage;
  * @version 1.0
  */
 public class ImageProcessor {
+	
+//	CanvasFrame canvas = new CanvasFrame("VideoCanvas"); 
+	
 	private Frame currentFrame;
 	private Frame previousFrame;
 	private IplImage lotIplImage;
@@ -120,8 +124,10 @@ public class ImageProcessor {
 		cvAbsDiff(lotIplImage_gray, refPic, diff);
 
 		// modify difference image to ignore some minor changes details
-		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
+		cvThreshold(diff, diff, 40, 250, CV_THRESH_BINARY);
 
+//		canvas.showImage(iplConverter.convert(diff)); 
+		
 		// convert to mat object, then to custom binary array
 		matDiff = matConverter.convert(iplConverter.convert(diff));
 		binaryArray = matToBinary.toBinaryArray(matDiff);
@@ -148,7 +154,7 @@ public class ImageProcessor {
 	 *         given lot
 	 */
 	public int[] generateIsEmptyMatrix(int[][] binaryArray, int[][] lines) {
-		double percentage = 0.6;
+		double percentage = 0.8;
 		int[] isEmpty = new int[28];
 		int count = 0;
 

@@ -61,7 +61,7 @@ public class ProcessingManager implements Runnable {
 		bkgRefreshFreq = 1; // indicates that analysis should refresh once per
 		// second
 		bkgRefreshFreq = 20.0000;
-		paintRefreshFreq = 0.20;
+		paintRefreshFreq = 0.1;
 		infoRefreshFreq = 1.0;
 		procOn = false;
 		imP = new ImageProcessor();
@@ -147,13 +147,13 @@ public class ProcessingManager implements Runnable {
 					System.out.println("Waiting for UI to fully initialize.....");
 				}
 				try {
-					Thread.sleep(500);
+					Thread.sleep(750);
 				} catch (InterruptedException e) {
 					System.out.println("Yo dude, the thread got interupted");
 				}
 			}
 
-			updateUIBkg();
+			//updateUIBkg();
 			//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
 			Platform.runLater(scheduledAddGraphs);
 			//We will also paint the spots and update the percent

@@ -63,7 +63,6 @@ public class ImageProcessor {
 	public ImageProcessor() {
 		
 		generateSpotMatrix();
-		
 		// initialize necessary image converters
 		iplConverter = new OpenCVFrameConverter.ToIplImage();
 		matConverter = new OpenCVFrameConverter.ToMat();
@@ -109,11 +108,6 @@ public class ImageProcessor {
 		}catch(NullPointerException e){
 			System.out.println("The program is unable to retrieve video data. Check your internet connection.");
 		}
-
-		// add a blur to lot image and reference image to eliminate jitter
-		// effects
-		//cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
-		//cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
 
 		// create image containers for the greyscale lot picture and the b/w
 		// difference picture

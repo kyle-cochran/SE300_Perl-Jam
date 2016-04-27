@@ -183,7 +183,7 @@ public class ProcessingManager implements Runnable {
 
 
 			//The background image will update every loop (loop timing defined by: bkgRefreshFreq)
-			if(!standalone){updateUIBkg();}
+			//if(!standalone){updateUIBkg();}
 
 			// logic to update history at certain times of day-------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();

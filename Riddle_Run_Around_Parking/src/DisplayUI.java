@@ -67,7 +67,7 @@ public class DisplayUI extends Pane{
 	HistoryHandler history;
 	private int count = 0;
 	Vector<Polygon> polyVec = new Vector<Polygon>();
-	private static final String erauURL = "src/media/erau.jpg";
+	private static final String erauURL = "media/erau.jpg";
 	
 
 	/*

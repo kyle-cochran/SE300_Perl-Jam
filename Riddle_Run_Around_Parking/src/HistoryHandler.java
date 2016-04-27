@@ -67,8 +67,8 @@ public class HistoryHandler {
 
 	public HistoryHandler() {
 
-		historyFile = new File("src/media/8_day_history.xml");
-		parkingHistoryFile = new File("src/media/Parking_History.txt");
+		historyFile = new File("media/8_day_history.xml");
+		parkingHistoryFile = new File("media/Parking_History.txt");
 		result = new StreamResult(historyFile);
 		dbFactory = DocumentBuilderFactory.newInstance();
 		try {

@@ -12,15 +12,17 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvSmooth;
 import static org.bytedeco.javacpp.opencv_imgproc.cvThreshold;
 
 import java.awt.image.BufferedImage;
-
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_core.Mat;
-import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.Java2DFrameConverter;
-import org.bytedeco.javacv.OpenCVFrameConverter;
+import java.util.Calendar;
 
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+
+import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 /**
  * Class that manages all image processing and comparison. Handles access and
@@ -30,6 +32,9 @@ import javafx.scene.image.WritableImage;
  * @version 1.0
  */
 public class ImageProcessor {
+	
+//	CanvasFrame canvas = new CanvasFrame("VideoCanvas"); 
+	
 	private Frame currentFrame;
 	private Frame previousFrame;
 	private IplImage lotIplImage;
@@ -43,12 +48,11 @@ public class ImageProcessor {
 	Java2DFrameConverter paintConverter;
 	BufferedImage bf;
 	WritableImage wr = null;
+	boolean isDay;
 
 	
 	private volatile int[][] lines;
-	private int[][] binaryArray = new int[1440][1080]; // these values may need
-														// to be change later if
-														// we crop the pic
+	private int[][] binaryArray = new int[1440][1080];
 	public CameraDriver cameraDriver = new CameraDriver();
 	private MatToBinary matToBinary = new MatToBinary();
 
@@ -57,17 +61,21 @@ public class ImageProcessor {
 	 * image.
 	 */
 	public ImageProcessor() {
-
 		
 		generateSpotMatrix();
 		
 		// initialize necessary image converters
 		iplConverter = new OpenCVFrameConverter.ToIplImage();
 		matConverter = new OpenCVFrameConverter.ToMat();
-
+		int hrs = Calendar.getInstance().getTime().getHours();
+		isDay = (hrs<16&&hrs>7);
 		// load reference image from file as greyscale
-//		refPic = cvLoadImage("src/media/frame1_edited_all_empty.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-		refPic = cvLoadImage("src/media/reference1130.jpeg", CV_LOAD_IMAGE_GRAYSCALE);
+		if(isDay){
+		refPic = cvLoadImage("media/reference330.jpeg", CV_LOAD_IMAGE_GRAYSCALE);
+		}else{
+			refPic = cvLoadImage("media/reference1130.jpeg", CV_LOAD_IMAGE_GRAYSCALE);
+		}
+		
 	}
 
 	/**
@@ -104,8 +112,8 @@ public class ImageProcessor {
 
 		// add a blur to lot image and reference image to eliminate jitter
 		// effects
-		cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
-		cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
+		//cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
+		//cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
 
 		// create image containers for the greyscale lot picture and the b/w
 		// difference picture
@@ -122,6 +130,8 @@ public class ImageProcessor {
 		// modify difference image to ignore some minor changes details
 		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
 
+//		canvas.showImage(iplConverter.convert(diff)); 
+		
 		// convert to mat object, then to custom binary array
 		matDiff = matConverter.convert(iplConverter.convert(diff));
 		binaryArray = matToBinary.toBinaryArray(matDiff);

@@ -128,7 +128,7 @@ public class ImageProcessor {
 		cvAbsDiff(lotIplImage_gray, refPic, diff);
 
 		// modify difference image to ignore some minor changes details
-		cvThreshold(diff, diff, 40, 250, CV_THRESH_BINARY);
+		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
 
 //		canvas.showImage(iplConverter.convert(diff)); 
 		

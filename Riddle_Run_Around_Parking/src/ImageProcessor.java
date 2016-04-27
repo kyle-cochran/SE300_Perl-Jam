@@ -63,7 +63,6 @@ public class ImageProcessor {
 	public ImageProcessor() {
 		
 		generateSpotMatrix();
-		
 		// initialize necessary image converters
 		iplConverter = new OpenCVFrameConverter.ToIplImage();
 		matConverter = new OpenCVFrameConverter.ToMat();

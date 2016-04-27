@@ -57,17 +57,17 @@ public class DisplayUI extends Pane{
 	MenuBar menuBar;
 	Menu menuAbout;
 	MenuItem myAbout;
-	//File parkingHistoryFile = new File("Parking_History.txt");
-	Pane pane = new Pane();//this was static
-	Rectangle rectangle;//this was static
-	Label parkingPercent = new Label("Default Text");//this was static
-	Label timeText = new Label();//this was static
+	Pane pane = new Pane();
+	Rectangle rectangle;
+	Label parkingPercent = new Label("Default Text");
+	Label timeText = new Label();
 	Calendar cal;
 	ProcessingManager pm;
 	HistoryHandler history;
 	private int count = 0;
 	Vector<Polygon> polyVec = new Vector<Polygon>();
 	private static final String erauURL = "media/erau.jpg";
+	SimpleDateFormat timeForm = new SimpleDateFormat("HH:mm:ss");
 	
 
 	/*
@@ -440,7 +440,7 @@ public VBox addTop(){
 
 		// get current date time with Calendar
 		cal = Calendar.getInstance();
-		timeText.setText(String.format("Time: " + cal.getTime()));
+		timeText.setText(String.format("Time: " + timeForm.format(cal.getTime())));
 	}
 
 	/**

@@ -61,7 +61,7 @@ public class ProcessingManager implements Runnable {
 		bkgRefreshFreq = 1; // indicates that analysis should refresh once per
 		// second
 		bkgRefreshFreq = 20.0000;
-		paintRefreshFreq = 0.20;
+		paintRefreshFreq = 0.1;
 		infoRefreshFreq = 1.0;
 		procOn = false;
 		imP = new ImageProcessor();
@@ -183,7 +183,7 @@ public class ProcessingManager implements Runnable {
 
 
 			//The background image will update every loop (loop timing defined by: bkgRefreshFreq)
-			//if(!standalone){updateUIBkg();}
+			if(!standalone){updateUIBkg();}
 
 			// logic to update history at certain times of day-------------------
 			minutes = GregorianCalendar.getInstance().getTime().getMinutes();

@@ -145,7 +145,7 @@ public class DisplayUI extends Pane{
 
 		final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 
-		lineChart.setTitle("Last Week Parking");
+		lineChart.setTitle("Last Week Today");
 
 		XYChart.Series series = new XYChart.Series();
 

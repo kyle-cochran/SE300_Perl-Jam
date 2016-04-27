@@ -60,21 +60,9 @@ public class ImageProcessor {
 	public ImageProcessor() {
 		
 		generateSpotMatrix();
-		
 		// initialize necessary image converters
 		iplConverter = new OpenCVFrameConverter.ToIplImage();
 		matConverter = new OpenCVFrameConverter.ToMat();
-		
-		// create image containers for the greyscale lot picture and the b/w
-		// difference picture
-		currentFrame = cameraDriver.getImage();
-		try{
-		lotIplImage = iplConverter.convert(currentFrame);
-		}catch(NullPointerException e){
-			System.out.println("The program is unable to retrieve video data. Check your internet connection.");
-		}
-		lotIplImage_gray = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
-		diff = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
 		
 		int hrs = Calendar.getInstance().getTime().getHours();
 		isDay = (hrs<16&&hrs>7);
@@ -121,8 +109,8 @@ public class ImageProcessor {
 
 		// add a blur to lot image and reference image to eliminate jitter
 		// effects
-		//cvSmooth(lotIplImage, lotIplImage, CV_GAUSSIAN, 9, 9, 2, 2);
-		//cvSmooth(refPic, refPic, CV_GAUSSIAN, 9, 9, 2, 2);
+		lotIplImage_gray = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
+		diff = IplImage.create(lotIplImage.width(), lotIplImage.height(), IPL_DEPTH_8U, 1);
 		
 		// convert lot image to greyscale
 		cvCvtColor(lotIplImage, lotIplImage_gray, CV_RGB2GRAY);
@@ -131,9 +119,7 @@ public class ImageProcessor {
 		cvAbsDiff(lotIplImage_gray, refPic, diff);
 
 		// modify difference image to ignore some minor changes details
-		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY);
-
-//		canvas.showImage(iplConverter.convert(diff)); 
+		cvThreshold(diff, diff, 25, 250, CV_THRESH_BINARY); 
 		
 		// convert to mat object, then to custom binary array
 		matDiff = matConverter.convert(iplConverter.convert(diff));

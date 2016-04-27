@@ -147,13 +147,13 @@ public class ProcessingManager implements Runnable {
 					System.out.println("Waiting for UI to fully initialize.....");
 				}
 				try {
-					Thread.sleep(750);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					System.out.println("Yo dude, the thread got interupted");
 				}
 			}
 
-			//updateUIBkg();
+			updateUIBkg();
 			//after we're sure that the UI is loaded, we'll replace the dummy graphs with real ones
 			Platform.runLater(scheduledAddGraphs);
 			//We will also paint the spots and update the percent
